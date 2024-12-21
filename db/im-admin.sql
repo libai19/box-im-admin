@@ -66,13 +66,6 @@ create table sys_tenant
 
 
 -- ----------------------------
--- 初始化-租户表数据
--- ----------------------------
-
-insert into sys_tenant values(1, '000000', '管理组', '15888888888', 'XXX有限公司', null, null, '多租户通用后台管理管理系统', null, null, null, null, -1, '0', '0', 103, 1, sysdate(), null, null);
-
-
--- ----------------------------
 -- 租户套餐表
 -- ----------------------------
 create table sys_tenant_package (
@@ -121,16 +114,7 @@ create table sys_dept (
 -- ----------------------------
 
 
-insert into sys_dept values(100, '000000', 0,   '0',          'XXX科技',   null,0, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
-insert into sys_dept values(101, '000000', 100, '0,100',      '深圳总公司', null,1, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
-insert into sys_dept values(102, '000000', 100, '0,100',      '长沙分公司', null,2, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
-insert into sys_dept values(103, '000000', 101, '0,100,101',  '研发部门',   null,1, 1, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
-insert into sys_dept values(104, '000000', 101, '0,100,101',  '市场部门',   null,2, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
-insert into sys_dept values(105, '000000', 101, '0,100,101',  '测试部门',   null,3, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
-insert into sys_dept values(106, '000000', 101, '0,100,101',  '财务部门',   null,4, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
-insert into sys_dept values(107, '000000', 101, '0,100,101',  '运维部门',   null,5, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
-insert into sys_dept values(108, '000000', 102, '0,100,102',  '市场部门',   null,1, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
-insert into sys_dept values(109, '000000', 102, '0,100,102',  '财务部门',   null,2, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
+insert into sys_dept values(100, '000000', 0,   '0',    '盒子科技',   null,0, null, '15888888888', 'xxx@qq.com', '0', '0', 103, 1, sysdate(), null, null);
 
 
 -- ----------------------------
@@ -164,9 +148,7 @@ create table sys_user (
 -- ----------------------------
 -- 初始化-用户信息表数据
 -- ----------------------------
-insert into sys_user values(1, '000000', 103, 'admin', '疯狂的狮子Li', 'sys_user', 'crazyLionLi@163.com', '15888888888', '1', null, '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 103, 1, sysdate(), null, null, '管理员');
-insert into sys_user values(3, '000000', 108, 'test', '本部门及以下 密码666666', 'sys_user', '', '', '0', null, '$2a$10$b8yUzN0C71sbz.PhNOCgJe.Tu1yWC3RNrTyjSQ8p1W0.aaUXUJ.Ne', '0', '0', '127.0.0.1', sysdate(), 103, 1, sysdate(), 3, sysdate(), null);
-insert into sys_user values(4, '000000', 102, 'test1', '仅本人 密码666666', 'sys_user', '', '', '0', null, '$2a$10$b8yUzN0C71sbz.PhNOCgJe.Tu1yWC3RNrTyjSQ8p1W0.aaUXUJ.Ne', '0', '0', '127.0.0.1', sysdate(), 103, 1, sysdate(), 4, sysdate(), null);
+insert into sys_user values(1, '000000', 100, 'admin', 'admin', 'sys_user', 'xxx@163.com', '15888888888', '1', null, '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 103, 1, sysdate(), null, null, '管理员');
 
 -- ----------------------------
 -- 3、岗位信息表
@@ -190,13 +172,6 @@ create table sys_post
     primary key (post_id)
 ) engine=innodb comment = '岗位信息表';
 
--- ----------------------------
--- 初始化-岗位信息表数据
--- ----------------------------
-insert into sys_post values(1, '000000', 103, 'ceo',  null, '董事长',    1, '0', 103, 1, sysdate(), null, null, '');
-insert into sys_post values(2, '000000', 100, 'se',   null, '项目经理',  2, '0', 103, 1, sysdate(), null, null, '');
-insert into sys_post values(3, '000000', 100, 'hr',   null, '人力资源',  3, '0', 103, 1, sysdate(), null, null, '');
-insert into sys_post values(4, '000000', 100, 'user', null, '普通员工',  4, '0', 103, 1, sysdate(), null, null, '');
 
 
 -- ----------------------------
@@ -226,8 +201,6 @@ create table sys_role (
 -- 初始化-角色信息表数据
 -- ----------------------------
 insert into sys_role values(1, '000000', '超级管理员',  'superadmin',  1, 1, 1, 1, '0', '0', 103, 1, sysdate(), null, null, '超级管理员');
-insert into sys_role values(3, '000000', '本部门及以下', 'test1', 3, 4, 1, 1, '0', '0', 103, 1, sysdate(), null, null, '');
-insert into sys_role values(4, '000000', '仅本人',      'test2', 4, 5, 1, 1, '0', '0', 103, 1, sysdate(), null, null, '');
 
 -- ----------------------------
 -- 5、菜单权限表
@@ -261,11 +234,9 @@ create table sys_menu (
 -- ----------------------------
 -- 一级菜单
 insert into sys_menu values('1', '系统管理', '0', '1', 'system',           null, '', 1, 0, 'M', '0', '0', '', 'system',   103, 1, sysdate(), null, null, '系统管理目录');
-insert into sys_menu values('6', '租户管理', '0', '2', 'tenant',           null, '', 1, 0, 'M', '0', '0', '', 'chart',    103, 1, sysdate(), null, null, '租户管理目录');
 insert into sys_menu values('2', '系统监控', '0', '3', 'monitor',          null, '', 1, 0, 'M', '0', '0', '', 'monitor',  103, 1, sysdate(), null, null, '系统监控目录');
 insert into sys_menu values('3', '系统工具', '0', '4', 'tool',             null, '', 1, 0, 'M', '0', '0', '', 'tool',     103, 1, sysdate(), null, null, '系统工具目录');
-insert into sys_menu values('4', 'PLUS官网', '0', '5', 'https://gitee.com/dromara/RuoYi-Vue-Plus', null, '', 0, 0, 'M', '0', '0', '', 'guide',    103, 1, sysdate(), null, null, 'RuoYi-Vue-Plus官网地址');
-insert into sys_menu values('5', '测试菜单', '0', '5', 'demo',             null, '', 1, 0, 'M', '0', '0', '', 'star',     103, 1, sysdate(), null, null, '测试菜单');
+
 -- 二级菜单
 insert into sys_menu values('100',  '用户管理',     '1',   '1', 'user',             'system/user/index',            '', 1, 0, 'C', '0', '0', 'system:user:list',            'user',          103, 1, sysdate(), null, null, '用户管理菜单');
 insert into sys_menu values('101',  '角色管理',     '1',   '2', 'role',             'system/role/index',            '', 1, 0, 'C', '0', '0', 'system:role:list',            'peoples',       103, 1, sysdate(), null, null, '角色管理菜单');
@@ -283,12 +254,8 @@ insert into sys_menu values('121',  '租户管理',     '6',   '1', 'tenant',   
 insert into sys_menu values('122',  '租户套餐管理',  '6',   '2', 'tenantPackage',    'system/tenantPackage/index',   '', 1, 0, 'C', '0', '0', 'system:tenantPackage:list',   'form',          103, 1, sysdate(), null, null, '租户套餐管理菜单');
 insert into sys_menu values('123',  '客户端管理',   '1',   '11', 'client',           'system/client/index',          '', 1, 0, 'C', '0', '0', 'system:client:list',          'international', 103, 1, sysdate(), null, null, '客户端管理菜单');
 
--- springboot-admin监控
-insert into sys_menu values('117',  'Admin监控',   '2',   '5',  'Admin',            'monitor/admin/index',         '', 1, 0, 'C', '0', '0', 'monitor:admin:list',           'dashboard',     103, 1, sysdate(), null, null, 'Admin监控菜单');
 -- oss菜单
 insert into sys_menu values('118',  '文件管理',     '1',   '10', 'oss',              'system/oss/index',            '', 1, 0, 'C', '0', '0', 'system:oss:list',              'upload',        103, 1, sysdate(), null, null, '文件管理菜单');
--- snail-job server控制台
-insert into sys_menu values('120',  '任务调度中心',  '2',   '6',  'snailjob',     'monitor/snailjob/index',    '', 1, 0, 'C', '0', '0', 'monitor:snailjob:list',          'job',           103, 1, sysdate(), null, null, 'SnailJob控制台菜单');
 
 -- 三级菜单
 insert into sys_menu values('500',  '操作日志', '108', '1', 'operlog',    'monitor/operlog/index',    '', 1, 0, 'C', '0', '0', 'monitor:operlog:list',    'form',          103, 1, sysdate(), null, null, '操作日志菜单');
@@ -370,37 +337,13 @@ insert into sys_menu values('1621', '配置添加', '118', '6', '#', '', '', 1, 
 insert into sys_menu values('1622', '配置编辑', '118', '6', '#', '', '', 1, 0, 'F', '0', '0', 'system:ossConfig:edit',        '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('1623', '配置删除', '118', '6', '#', '', '', 1, 0, 'F', '0', '0', 'system:ossConfig:remove',      '#', 103, 1, sysdate(), null, null, '');
 
--- 租户管理相关按钮
-insert into sys_menu values ('1606', '租户查询', '121', '1', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:query',   '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values ('1607', '租户新增', '121', '2', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:add',     '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values ('1608', '租户修改', '121', '3', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:edit',    '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values ('1609', '租户删除', '121', '4', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:remove',  '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values ('1610', '租户导出', '121', '5', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:export',  '#', 103, 1, sysdate(), null, null, '');
--- 租户套餐管理相关按钮
-insert into sys_menu values ('1611', '租户套餐查询', '122', '1', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:query',   '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values ('1612', '租户套餐新增', '122', '2', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:add',     '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values ('1613', '租户套餐修改', '122', '3', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:edit',    '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values ('1614', '租户套餐删除', '122', '4', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:remove',  '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values ('1615', '租户套餐导出', '122', '5', '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:export',  '#', 103, 1, sysdate(), null, null, '');
 -- 客户端管理按钮
 insert into sys_menu values('1061', '客户端管理查询', '123', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:query',        '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('1062', '客户端管理新增', '123', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:add',          '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('1063', '客户端管理修改', '123', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:edit',         '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('1064', '客户端管理删除', '123', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:remove',       '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('1065', '客户端管理导出', '123', '5',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:export',       '#', 103, 1, sysdate(), null, null, '');
--- 测试菜单
-insert into sys_menu values('1500', '测试单表',      '5',    '1', 'demo', 'demo/demo/index', '',  1, 0, 'C', '0', '0', 'demo:demo:list', '#', 103, 1, sysdate(), null, null, '测试单表菜单');
-insert into sys_menu values('1501', '测试单表查询',   '1500', '1', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:demo:query',               '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('1502', '测试单表新增',   '1500', '2', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:demo:add',                 '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('1503', '测试单表修改',   '1500', '3', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:demo:edit',                '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('1504', '测试单表删除',   '1500', '4', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:demo:remove',              '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('1505', '测试单表导出',   '1500', '5', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:demo:export',              '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('1506', '测试树表',      '5',    '1', 'tree', 'demo/tree/index', '',  1, 0, 'C', '0', '0', 'demo:tree:list', '#', 103, 1, sysdate(), null, null, '测试树表菜单');
-insert into sys_menu values('1507', '测试树表查询',   '1506', '1', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:tree:query',               '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('1508', '测试树表新增',   '1506', '2', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:tree:add',                 '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('1509', '测试树表修改',   '1506', '3', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:tree:edit',                '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('1510', '测试树表删除',   '1506', '4', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:tree:remove',              '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('1511', '测试树表导出',   '1506', '5', '#',    '', '',  1, 0, 'F', '0', '0', 'demo:tree:export',              '#', 103, 1, sysdate(), null, null, '');
+
 
 -- ----------------------------
 -- 6、用户和角色关联表  用户N-1角色
@@ -415,8 +358,6 @@ create table sys_user_role (
 -- 初始化-用户和角色关联表数据
 -- ----------------------------
 insert into sys_user_role values ('1', '1');
-insert into sys_user_role values ('3', '3');
-insert into sys_user_role values ('4', '4');
 
 -- ----------------------------
 -- 7、角色和菜单关联表  角色1-N菜单
@@ -426,93 +367,6 @@ create table sys_role_menu (
     menu_id   bigint(20) not null comment '菜单ID',
     primary key(role_id, menu_id)
 ) engine=innodb comment = '角色和菜单关联表';
-
--- ----------------------------
--- 初始化-角色和菜单关联表数据
--- ----------------------------
-insert into sys_role_menu values ('3', '1');
-insert into sys_role_menu values ('3', '5');
-insert into sys_role_menu values ('3', '100');
-insert into sys_role_menu values ('3', '101');
-insert into sys_role_menu values ('3', '102');
-insert into sys_role_menu values ('3', '103');
-insert into sys_role_menu values ('3', '104');
-insert into sys_role_menu values ('3', '105');
-insert into sys_role_menu values ('3', '106');
-insert into sys_role_menu values ('3', '107');
-insert into sys_role_menu values ('3', '108');
-insert into sys_role_menu values ('3', '500');
-insert into sys_role_menu values ('3', '501');
-insert into sys_role_menu values ('3', '1001');
-insert into sys_role_menu values ('3', '1002');
-insert into sys_role_menu values ('3', '1003');
-insert into sys_role_menu values ('3', '1004');
-insert into sys_role_menu values ('3', '1005');
-insert into sys_role_menu values ('3', '1006');
-insert into sys_role_menu values ('3', '1007');
-insert into sys_role_menu values ('3', '1008');
-insert into sys_role_menu values ('3', '1009');
-insert into sys_role_menu values ('3', '1010');
-insert into sys_role_menu values ('3', '1011');
-insert into sys_role_menu values ('3', '1012');
-insert into sys_role_menu values ('3', '1013');
-insert into sys_role_menu values ('3', '1014');
-insert into sys_role_menu values ('3', '1015');
-insert into sys_role_menu values ('3', '1016');
-insert into sys_role_menu values ('3', '1017');
-insert into sys_role_menu values ('3', '1018');
-insert into sys_role_menu values ('3', '1019');
-insert into sys_role_menu values ('3', '1020');
-insert into sys_role_menu values ('3', '1021');
-insert into sys_role_menu values ('3', '1022');
-insert into sys_role_menu values ('3', '1023');
-insert into sys_role_menu values ('3', '1024');
-insert into sys_role_menu values ('3', '1025');
-insert into sys_role_menu values ('3', '1026');
-insert into sys_role_menu values ('3', '1027');
-insert into sys_role_menu values ('3', '1028');
-insert into sys_role_menu values ('3', '1029');
-insert into sys_role_menu values ('3', '1030');
-insert into sys_role_menu values ('3', '1031');
-insert into sys_role_menu values ('3', '1032');
-insert into sys_role_menu values ('3', '1033');
-insert into sys_role_menu values ('3', '1034');
-insert into sys_role_menu values ('3', '1035');
-insert into sys_role_menu values ('3', '1036');
-insert into sys_role_menu values ('3', '1037');
-insert into sys_role_menu values ('3', '1038');
-insert into sys_role_menu values ('3', '1039');
-insert into sys_role_menu values ('3', '1040');
-insert into sys_role_menu values ('3', '1041');
-insert into sys_role_menu values ('3', '1042');
-insert into sys_role_menu values ('3', '1043');
-insert into sys_role_menu values ('3', '1044');
-insert into sys_role_menu values ('3', '1045');
-insert into sys_role_menu values ('3', '1500');
-insert into sys_role_menu values ('3', '1501');
-insert into sys_role_menu values ('3', '1502');
-insert into sys_role_menu values ('3', '1503');
-insert into sys_role_menu values ('3', '1504');
-insert into sys_role_menu values ('3', '1505');
-insert into sys_role_menu values ('3', '1506');
-insert into sys_role_menu values ('3', '1507');
-insert into sys_role_menu values ('3', '1508');
-insert into sys_role_menu values ('3', '1509');
-insert into sys_role_menu values ('3', '1510');
-insert into sys_role_menu values ('3', '1511');
-insert into sys_role_menu values ('4', '5');
-insert into sys_role_menu values ('4', '1500');
-insert into sys_role_menu values ('4', '1501');
-insert into sys_role_menu values ('4', '1502');
-insert into sys_role_menu values ('4', '1503');
-insert into sys_role_menu values ('4', '1504');
-insert into sys_role_menu values ('4', '1505');
-insert into sys_role_menu values ('4', '1506');
-insert into sys_role_menu values ('4', '1507');
-insert into sys_role_menu values ('4', '1508');
-insert into sys_role_menu values ('4', '1509');
-insert into sys_role_menu values ('4', '1510');
-insert into sys_role_menu values ('4', '1511');
 
 -- ----------------------------
 -- 8、角色和部门关联表  角色1-N部门
@@ -724,12 +578,6 @@ create table sys_notice (
     primary key (notice_id)
 ) engine=innodb comment = '通知公告表';
 
--- ----------------------------
--- 初始化-公告信息表数据
--- ----------------------------
-insert into sys_notice values('1', '000000', '温馨提醒：2018-07-01 新版本发布啦', '2', '新版本内容', '0', 103, 1, sysdate(), null, null, '管理员');
-insert into sys_notice values('2', '000000', '维护通知：2018-07-01 系统凌晨维护', '1', '维护内容',   '0', 103, 1, sysdate(), null, null, '管理员');
-
 
 -- ----------------------------
 -- 18、代码生成业务表
@@ -838,10 +686,6 @@ create table sys_oss_config (
 ) engine=innodb comment='对象存储配置表';
 
 insert into sys_oss_config values (1, '000000', 'minio',  'ruoyi',            'ruoyi123',        'ruoyi',             '', '127.0.0.1:9000',                '','N', '',             '1' ,'0', '', 103, 1, sysdate(), 1, sysdate(), null);
-insert into sys_oss_config values (2, '000000', 'qiniu',  'XXXXXXXXXXXXXXX',  'XXXXXXXXXXXXXXX', 'ruoyi',             '', 's3-cn-north-1.qiniucs.com',     '','N', '',             '1' ,'1', '', 103, 1, sysdate(), 1, sysdate(), null);
-insert into sys_oss_config values (3, '000000', 'aliyun', 'XXXXXXXXXXXXXXX',  'XXXXXXXXXXXXXXX', 'ruoyi',             '', 'oss-cn-beijing.aliyuncs.com',   '','N', '',             '1' ,'1', '', 103, 1, sysdate(), 1, sysdate(), null);
-insert into sys_oss_config values (4, '000000', 'qcloud', 'XXXXXXXXXXXXXXX',  'XXXXXXXXXXXXXXX', 'ruoyi-1250000000',  '', 'cos.ap-beijing.myqcloud.com',   '','N', 'ap-beijing',   '1' ,'1', '', 103, 1, sysdate(), 1, sysdate(), null);
-insert into sys_oss_config values (5, '000000', 'image',  'ruoyi',            'ruoyi123',        'ruoyi',             'image', '127.0.0.1:9000',           '','N', '',             '1' ,'1', '', 103, 1, sysdate(), 1, sysdate(), null);
 
 -- ----------------------------
 -- 系统授权表
@@ -869,67 +713,4 @@ insert into sys_client values (1, 'e5cd7e4891bf95d1d19206ce24a7b32e', 'pc', 'pc1
 insert into sys_client values (2, '428a8310cd442757ae699df5d894f051', 'app', 'app123', 'password,sms,social', 'android', 1800, 604800, 0, 0, 103, 1, sysdate(), 1, sysdate());
 
 
-CREATE TABLE test_demo
-(
-    id          bigint(0)    NOT NULL COMMENT '主键',
-    tenant_id   varchar(20)  NULL DEFAULT '000000' COMMENT '租户编号',
-    dept_id     bigint(0)    NULL DEFAULT NULL COMMENT '部门id',
-    user_id     bigint(0)    NULL DEFAULT NULL COMMENT '用户id',
-    order_num   int(0)       NULL DEFAULT 0 COMMENT '排序号',
-    test_key    varchar(255) NULL DEFAULT NULL COMMENT 'key键',
-    value       varchar(255) NULL DEFAULT NULL COMMENT '值',
-    version     int(0)       NULL DEFAULT 0 COMMENT '版本',
-    create_dept bigint(0)    NULL DEFAULT NULL COMMENT '创建部门',
-    create_time datetime(0)  NULL DEFAULT NULL COMMENT '创建时间',
-    create_by   bigint(0)    NULL DEFAULT NULL COMMENT '创建人',
-    update_time datetime(0)  NULL DEFAULT NULL COMMENT '更新时间',
-    update_by   bigint(0)    NULL DEFAULT NULL COMMENT '更新人',
-    del_flag    int(0)       NULL DEFAULT 0 COMMENT '删除标志',
-    PRIMARY KEY (id) USING BTREE
-) ENGINE = InnoDB COMMENT = '测试单表';
 
-CREATE TABLE test_tree
-(
-    id          bigint(0)    NOT NULL COMMENT '主键',
-    tenant_id   varchar(20)  NULL DEFAULT '000000' COMMENT '租户编号',
-    parent_id   bigint(0)    NULL DEFAULT 0 COMMENT '父id',
-    dept_id     bigint(0)    NULL DEFAULT NULL COMMENT '部门id',
-    user_id     bigint(0)    NULL DEFAULT NULL COMMENT '用户id',
-    tree_name   varchar(255) NULL DEFAULT NULL COMMENT '值',
-    version     int(0)       NULL DEFAULT 0 COMMENT '版本',
-    create_dept bigint(0)    NULL DEFAULT NULL COMMENT '创建部门',
-    create_time datetime(0)  NULL DEFAULT NULL COMMENT '创建时间',
-    create_by   bigint(0)    NULL DEFAULT NULL COMMENT '创建人',
-    update_time datetime(0)  NULL DEFAULT NULL COMMENT '更新时间',
-    update_by   bigint(0)    NULL DEFAULT NULL COMMENT '更新人',
-    del_flag    int(0)       NULL DEFAULT 0 COMMENT '删除标志',
-    PRIMARY KEY (id) USING BTREE
-) ENGINE = InnoDB COMMENT = '测试树表';
-
-INSERT INTO test_demo VALUES (1, '000000', 102, 4, 1, '测试数据权限', '测试', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (2, '000000', 102, 3, 2, '子节点1', '111', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (3, '000000', 102, 3, 3, '子节点2', '222', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (4, '000000', 108, 4, 4, '测试数据', 'demo', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (5, '000000', 108, 3, 13, '子节点11', '1111', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (6, '000000', 108, 3, 12, '子节点22', '2222', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (7, '000000', 108, 3, 11, '子节点33', '3333', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (8, '000000', 108, 3, 10, '子节点44', '4444', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (9, '000000', 108, 3, 9, '子节点55', '5555', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (10, '000000', 108, 3, 8, '子节点66', '6666', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (11, '000000', 108, 3, 7, '子节点77', '7777', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (12, '000000', 108, 3, 6, '子节点88', '8888', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_demo VALUES (13, '000000', 108, 3, 5, '子节点99', '9999', 0, 103, sysdate(), 1, NULL, NULL, 0);
-
-INSERT INTO test_tree VALUES (1, '000000', 0, 102, 4, '测试数据权限', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (2, '000000', 1, 102, 3, '子节点1', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (3, '000000', 2, 102, 3, '子节点2', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (4, '000000', 0, 108, 4, '测试树1', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (5, '000000', 4, 108, 3, '子节点11', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (6, '000000', 4, 108, 3, '子节点22', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (7, '000000', 4, 108, 3, '子节点33', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (8, '000000', 5, 108, 3, '子节点44', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (9, '000000', 6, 108, 3, '子节点55', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (10, '000000', 7, 108, 3, '子节点66', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (11, '000000', 7, 108, 3, '子节点77', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (12, '000000', 10, 108, 3, '子节点88', 0, 103, sysdate(), 1, NULL, NULL, 0);
-INSERT INTO test_tree VALUES (13, '000000', 10, 108, 3, '子节点99', 0, 103, sysdate(), 1, NULL, NULL, 0);
