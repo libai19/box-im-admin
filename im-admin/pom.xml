@@ -5,12 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.dromara</groupId>
-    <artifactId>ruoyi-vue-plus</artifactId>
+    <artifactId>im-admin</artifactId>
     <version>${revision}</version>
-
-    <name>RuoYi-Vue-Plus</name>
-    <url>https://gitee.com/dromara/RuoYi-Vue-Plus</url>
-    <description>RuoYi-Vue-Plus多租户管理系统</description>
+    <name>im-admin</name>
+    <description>盒子IM后台管理系统</description>
 
     <properties>
         <revision>5.2.3</revision>
@@ -49,8 +47,6 @@
         <fastjson.version>1.2.83</fastjson.version>
         <!-- 面向运行时的D-ORM依赖 -->
         <anyline.version>8.7.2-20241022</anyline.version>
-        <!--工作流配置-->
-        <flowable.version>7.0.1</flowable.version>
 
         <!-- 插件版本 -->
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
@@ -67,8 +63,6 @@
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
                 <profiles.active>local</profiles.active>
                 <logging.level>info</logging.level>
-                <monitor.username>ruoyi</monitor.username>
-                <monitor.password>123456</monitor.password>
             </properties>
         </profile>
         <profile>
@@ -77,8 +71,6 @@
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
                 <profiles.active>dev</profiles.active>
                 <logging.level>info</logging.level>
-                <monitor.username>ruoyi</monitor.username>
-                <monitor.password>123456</monitor.password>
             </properties>
             <activation>
                 <!-- 默认环境 -->
@@ -90,8 +82,6 @@
             <properties>
                 <profiles.active>prod</profiles.active>
                 <logging.level>warn</logging.level>
-                <monitor.username>ruoyi</monitor.username>
-                <monitor.password>123456</monitor.password>
             </properties>
         </profile>
     </profiles>
@@ -118,13 +108,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.flowable</groupId>
-                <artifactId>flowable-bom</artifactId>
-                <version>${flowable.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
             <!-- JustAuth 的依赖配置-->
             <dependency>
@@ -359,7 +342,6 @@
     <modules>
         <module>ruoyi-admin</module>
         <module>ruoyi-common</module>
-        <module>ruoyi-extend</module>
         <module>ruoyi-modules</module>
     </modules>
     <packaging>pom</packaging>

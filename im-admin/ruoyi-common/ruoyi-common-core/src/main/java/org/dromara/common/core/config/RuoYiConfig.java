@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "ruoyi")
+@ConfigurationProperties(prefix = "app")
 public class RuoYiConfig {
 
     /**

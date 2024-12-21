@@ -17,7 +17,7 @@ public class DromaraApplication {
         SpringApplication application = new SpringApplication(DromaraApplication.class);
         application.setApplicationStartup(new BufferingApplicationStartup(2048));
         application.run(args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  RuoYi-Vue-Plus启动成功   ლ(´ڡ`ლ)ﾞ");
+        System.out.println("盒子IM后台管理服务启动成功");
     }
 
 }
