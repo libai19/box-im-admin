@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "用户解锁")
-public class ImUserUnbanDTO {
+public class ImUserUnbanDto {
 
     @NotNull(message = "用户id不可为空")
     @Schema(description = "用户id")

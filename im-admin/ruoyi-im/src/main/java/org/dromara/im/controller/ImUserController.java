@@ -1,30 +1,27 @@
 package org.dromara.im.controller;
 
-import java.util.List;
-
-import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.*;
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import org.dromara.im.domain.dto.ImUserBanDTO;
-import org.dromara.im.domain.dto.ImUserUnbanDTO;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.annotation.Validated;
-import org.dromara.common.idempotent.annotation.RepeatSubmit;
-import org.dromara.common.log.annotation.Log;
-import org.dromara.common.web.core.BaseController;
-import org.dromara.common.mybatis.core.page.PageQuery;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.dromara.common.core.domain.R;
-import org.dromara.common.core.validate.AddGroup;
-import org.dromara.common.core.validate.EditGroup;
-import org.dromara.common.log.enums.BusinessType;
 import org.dromara.common.excel.utils.ExcelUtil;
-import org.dromara.im.domain.vo.ImUserVo;
-import org.dromara.im.domain.bo.ImUserBo;
-import org.dromara.im.service.IImUserService;
+import org.dromara.common.log.annotation.Log;
+import org.dromara.common.log.enums.BusinessType;
+import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
+import org.dromara.common.web.core.BaseController;
+import org.dromara.im.domain.bo.ImUserBo;
+import org.dromara.im.domain.dto.ImUserBanDto;
+import org.dromara.im.domain.dto.ImUserUnbanDto;
+import org.dromara.im.domain.vo.ImUserVo;
+import org.dromara.im.service.IImUserService;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 用户
@@ -74,7 +71,7 @@ public class ImUserController extends BaseController {
     @Operation(summary = "账号封禁")
     @PutMapping("/ban")
     @SaCheckPermission("im:user:ban")
-    public void ban(@RequestBody @Valid ImUserBanDTO dto){
+    public void ban(@RequestBody @Valid ImUserBanDto dto){
         userService.ban(dto);
     }
 
@@ -82,8 +79,17 @@ public class ImUserController extends BaseController {
     @Operation(summary = "账号解封")
     @PutMapping("/unban")
     @SaCheckPermission("im:user:ban")
-    public void unban(@RequestBody @Valid ImUserUnbanDTO dto){
+    public void unban(@RequestBody @Valid ImUserUnbanDto dto){
         userService.unban(dto);
     }
+
+    @GetMapping("/findByName")
+    @Operation(summary = "根据用户名查找用户",description = "用于下拉框选择用户")
+    @SaCheckPermission("im:user:info")
+    public R<List<ImUserVo>> findByName(@RequestParam String name){
+        List<ImUserVo> vos = userService.findByName(name);
+        return R.ok(vos);
+    }
+
 
 }

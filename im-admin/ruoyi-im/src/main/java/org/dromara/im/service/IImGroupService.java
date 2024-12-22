@@ -1,11 +1,12 @@
 package org.dromara.im.service;
 
-import org.dromara.im.domain.vo.ImGroupVo;
-import org.dromara.im.domain.bo.ImGroupBo;
-import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.common.mybatis.core.page.PageQuery;
+import org.dromara.common.mybatis.core.page.TableDataInfo;
+import org.dromara.im.domain.bo.ImGroupBo;
+import org.dromara.im.domain.dto.ImGroupBanDto;
+import org.dromara.im.domain.dto.ImGroupUnbanDto;
+import org.dromara.im.domain.vo.ImGroupVo;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -42,27 +43,28 @@ public interface IImGroupService {
     List<ImGroupVo> queryList(ImGroupBo bo);
 
     /**
-     * 新增群
+     * 群聊封禁
      *
-     * @param bo 群
-     * @return 是否新增成功
+     * @param dto dto
      */
-    Boolean insertByBo(ImGroupBo bo);
+    void ban(ImGroupBanDto dto);
 
     /**
-     * 修改群
+     * 群聊解封
      *
-     * @param bo 群
-     * @return 是否修改成功
+     * @param dto dto
      */
-    Boolean updateByBo(ImGroupBo bo);
+    void unban(ImGroupUnbanDto dto);
+
 
     /**
-     * 校验并批量删除群信息
+     * 根据用户名查找
      *
-     * @param ids     待删除的主键集合
-     * @param isValid 是否进行有效性校验
-     * @return 是否删除成功
+     * @param name 用户名
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    List<ImGroupVo> findByName(String name);
+
+
+
+
 }

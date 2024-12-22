@@ -1,8 +1,8 @@
 package org.dromara.im.mapper;
 
+import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
 import org.dromara.im.domain.ImSensitiveWord;
 import org.dromara.im.domain.vo.ImSensitiveWordVo;
-import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
 
 /**
  * 敏感词Mapper接口

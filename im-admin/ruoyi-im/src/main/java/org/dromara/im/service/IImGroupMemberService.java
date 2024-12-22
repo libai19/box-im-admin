@@ -1,11 +1,10 @@
 package org.dromara.im.service;
 
-import org.dromara.im.domain.vo.ImGroupMemberVo;
-import org.dromara.im.domain.bo.ImGroupMemberBo;
-import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.common.mybatis.core.page.PageQuery;
+import org.dromara.common.mybatis.core.page.TableDataInfo;
+import org.dromara.im.domain.bo.ImGroupMemberBo;
+import org.dromara.im.domain.vo.ImGroupMemberVo;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,28 +40,14 @@ public interface IImGroupMemberService {
      */
     List<ImGroupMemberVo> queryList(ImGroupMemberBo bo);
 
-    /**
-     * 新增群成员
-     *
-     * @param bo 群成员
-     * @return 是否新增成功
-     */
-    Boolean insertByBo(ImGroupMemberBo bo);
 
     /**
-     * 修改群成员
+     * 查询群成员数量
      *
-     * @param bo 群成员
-     * @return 是否修改成功
+     * @param groupId 群id
+     * @return 群成员数量
      */
-    Boolean updateByBo(ImGroupMemberBo bo);
+    Long findCountByGroupId(Long groupId);
 
-    /**
-     * 校验并批量删除群成员信息
-     *
-     * @param ids     待删除的主键集合
-     * @param isValid 是否进行有效性校验
-     * @return 是否删除成功
-     */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
 }

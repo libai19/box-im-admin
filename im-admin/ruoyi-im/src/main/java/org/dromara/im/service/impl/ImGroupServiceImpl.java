@@ -1,25 +1,35 @@
 package org.dromara.im.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import org.dromara.common.core.utils.MapstructUtils;
-import org.dromara.common.core.utils.StringUtils;
-import org.dromara.common.mybatis.core.page.TableDataInfo;
-import org.dromara.common.mybatis.core.page.PageQuery;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fhs.core.trans.anno.TransMethodResult;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
+import org.dromara.common.core.utils.StringUtils;
+import org.dromara.common.mybatis.core.page.PageQuery;
+import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.constant.ImConstant;
-import org.springframework.stereotype.Service;
-import org.dromara.im.domain.bo.ImGroupBo;
-import org.dromara.im.domain.vo.ImGroupVo;
+import org.dromara.im.constant.ImRedisKey;
 import org.dromara.im.domain.ImGroup;
+import org.dromara.im.domain.bo.ImGroupBo;
+import org.dromara.im.domain.dto.ImGroupBanDto;
+import org.dromara.im.domain.dto.ImGroupUnbanDto;
+import org.dromara.im.domain.vo.ImGroupVo;
 import org.dromara.im.mapper.ImGroupMapper;
+import org.dromara.im.mq.ImRedisMQTemplate;
+import org.dromara.im.service.IImGroupMemberService;
 import org.dromara.im.service.IImGroupService;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Collection;
 
 /**
  * 群Service业务层处理
@@ -28,12 +38,17 @@ import java.util.Collection;
  * @date 2024-12-22
  */
 @DS(ImConstant.DS_IM_PLATFORM)
+@CacheConfig(cacheNames = ImRedisKey.IM_CACHE_GROUP)
 @RequiredArgsConstructor
 @Service
 public class ImGroupServiceImpl implements IImGroupService {
 
     private final ImGroupMapper baseMapper;
 
+    private final ImRedisMQTemplate redisMQTemplate;
+
+
+    private final IImGroupMemberService groupMemberService;
     /**
      * 查询群
      *
@@ -56,6 +71,8 @@ public class ImGroupServiceImpl implements IImGroupService {
     public TableDataInfo<ImGroupVo> queryPageList(ImGroupBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ImGroup> lqw = buildQueryWrapper(bo);
         Page<ImGroupVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        // 填充成员数量
+        result.getRecords().forEach(vo -> vo.setMemberCount(groupMemberService.findCountByGroupId(vo.getId())));
         return TableDataInfo.build(result);
     }
 
@@ -65,76 +82,65 @@ public class ImGroupServiceImpl implements IImGroupService {
      * @param bo 查询条件
      * @return 群列表
      */
+    @TransMethodResult
     @Override
     public List<ImGroupVo> queryList(ImGroupBo bo) {
         LambdaQueryWrapper<ImGroup> lqw = buildQueryWrapper(bo);
         return baseMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<ImGroup> buildQueryWrapper(ImGroupBo bo) {
-        Map<String, Object> params = bo.getParams();
+
+    @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(key = "#dto.getId()")
+    @Override
+    public void ban(ImGroupBanDto dto) {
+        LambdaUpdateWrapper<ImGroup> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(ImGroup::getId, dto.getId());
+        wrapper.set(ImGroup::getIsBanned, true);
+        wrapper.set(ImGroup::getReason, dto.getReason());
+        baseMapper.update(wrapper);
+        // 推送到处理队列，等待im-platfrom处理
+        redisMQTemplate.opsForList().rightPush(ImRedisKey.IM_QUEUE_GROUP_BANNED, dto);
+    }
+
+    @CacheEvict(key = "#dto.getId()")
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void unban(ImGroupUnbanDto dto) {
+        LambdaUpdateWrapper<ImGroup> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(ImGroup::getId, dto.getId());
+        wrapper.set(ImGroup::getIsBanned, false);
+        wrapper.set(ImGroup::getReason, Strings.EMPTY);
+        baseMapper.update(wrapper);
+        // 推送到处理队列，等待im-platfrom处理
+        redisMQTemplate.opsForList().rightPush(ImRedisKey.IM_QUEUE_GROUP_UNBAN, dto);
+    }
+
+
+    @Override
+    public List<ImGroupVo> findByName(String name) {
+        // 取出用户名或昵称匹配的前10条
+        LambdaQueryWrapper<ImGroup> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.like(StrUtil.isNotEmpty(name), ImGroup::getName, name);
+        queryWrapper.select(ImGroup::getId, ImGroup::getName);
+        queryWrapper.orderByDesc(ImGroup::getId);
+        queryWrapper.last("limit 10");
+        return  baseMapper.selectVoList(queryWrapper);
+    }
+
+    private LambdaQueryWrapper<ImGroup> buildQueryWrapper(ImGroupBo bo) {;
+        Map<String, Object> params =  bo.getParams();
         LambdaQueryWrapper<ImGroup> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtils.isNotBlank(bo.getName()), ImGroup::getName, bo.getName());
         lqw.eq(bo.getOwnerId() != null, ImGroup::getOwnerId, bo.getOwnerId());
-        lqw.eq(StringUtils.isNotBlank(bo.getHeadImage()), ImGroup::getHeadImage, bo.getHeadImage());
-        lqw.eq(StringUtils.isNotBlank(bo.getHeadImageThumb()), ImGroup::getHeadImageThumb, bo.getHeadImageThumb());
-        lqw.eq(StringUtils.isNotBlank(bo.getNotice()), ImGroup::getNotice, bo.getNotice());
         lqw.eq(bo.getDissolve() != null, ImGroup::getDissolve, bo.getDissolve());
         lqw.eq(bo.getCreatedTime() != null, ImGroup::getCreatedTime, bo.getCreatedTime());
         lqw.eq(bo.getIsBanned() != null, ImGroup::getIsBanned, bo.getIsBanned());
         lqw.eq(StringUtils.isNotBlank(bo.getReason()), ImGroup::getReason, bo.getReason());
+        lqw.between(params.get("beginTime") != null && params.get("endTime") != null,
+            ImGroup::getCreatedTime, params.get("beginTime"), params.get("endTime"));
+        lqw.orderByDesc(ImGroup::getCreatedTime);
         return lqw;
     }
 
-    /**
-     * 新增群
-     *
-     * @param bo 群
-     * @return 是否新增成功
-     */
-    @Override
-    public Boolean insertByBo(ImGroupBo bo) {
-        ImGroup add = MapstructUtils.convert(bo, ImGroup.class);
-        validEntityBeforeSave(add);
-        boolean flag = baseMapper.insert(add) > 0;
-        if (flag) {
-            bo.setId(add.getId());
-        }
-        return flag;
-    }
-
-    /**
-     * 修改群
-     *
-     * @param bo 群
-     * @return 是否修改成功
-     */
-    @Override
-    public Boolean updateByBo(ImGroupBo bo) {
-        ImGroup update = MapstructUtils.convert(bo, ImGroup.class);
-        validEntityBeforeSave(update);
-        return baseMapper.updateById(update) > 0;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(ImGroup entity){
-        //TODO 做一些数据校验,如唯一约束
-    }
-
-    /**
-     * 校验并批量删除群信息
-     *
-     * @param ids     待删除的主键集合
-     * @param isValid 是否进行有效性校验
-     * @return 是否删除成功
-     */
-    @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
-        return baseMapper.deleteByIds(ids) > 0;
-    }
 }

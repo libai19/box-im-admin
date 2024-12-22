@@ -1,17 +1,10 @@
 package org.dromara.im.domain.bo;
 
-import org.dromara.im.domain.ImUser;
-import org.dromara.common.mybatis.core.domain.BaseEntity;
-import org.dromara.common.core.validate.AddGroup;
-import org.dromara.common.core.validate.EditGroup;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import jakarta.validation.constraints.*;
-import org.dromara.common.translation.annotation.Translation;
+import org.dromara.im.domain.ImUser;
+
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.dromara.common.translation.constant.TransConstant;
 
 /**
  * 用户业务对象 im_user
@@ -26,7 +19,6 @@ public class ImUserBo {
     /**
      * id
      */
-    @NotNull(message = "id不能为空", groups = { EditGroup.class })
     private Long id;
 
     /**

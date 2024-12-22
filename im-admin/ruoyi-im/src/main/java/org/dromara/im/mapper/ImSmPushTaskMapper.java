@@ -1,8 +1,8 @@
 package org.dromara.im.mapper;
 
+import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
 import org.dromara.im.domain.ImSmPushTask;
 import org.dromara.im.domain.vo.ImSmPushTaskVo;
-import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
 
 /**
  * 系统消息推送任务Mapper接口

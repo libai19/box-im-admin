@@ -1,8 +1,8 @@
 package org.dromara.im.mapper;
 
+import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
 import org.dromara.im.domain.ImPrivateMessage;
 import org.dromara.im.domain.vo.ImPrivateMessageVo;
-import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
 
 /**
  * 私聊消息Mapper接口

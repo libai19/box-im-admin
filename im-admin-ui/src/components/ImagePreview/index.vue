@@ -13,6 +13,7 @@ import { propTypes } from '@/utils/propTypes';
 
 const props = defineProps({
   src: propTypes.string.def(''),
+  fullSrc: propTypes.string.def(''),
   width: {
     type: [Number, String],
     default: ''
@@ -32,10 +33,11 @@ const realSrc = computed(() => {
 });
 
 const realSrcList = computed(() => {
-  if (!props.src) {
+  let src = props.fullSrc || props.src
+  if (!src) {
     return [];
   }
-  let real_src_list = props.src.split(',');
+  let real_src_list = src.split(',');
   let srcList: string[] = [];
   real_src_list.forEach((item: string) => {
     if (item.trim() === '') {

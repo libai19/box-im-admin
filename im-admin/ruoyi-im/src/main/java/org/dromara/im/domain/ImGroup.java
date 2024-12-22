@@ -1,15 +1,11 @@
 package org.dromara.im.domain;
 
-import org.dromara.common.mybatis.core.domain.BaseEntity;
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.dromara.common.translation.annotation.Translation;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.dromara.common.translation.constant.TransConstant;
 
 import java.io.Serial;
+import java.util.Date;
 
 /**
  * 群对象 im_group
@@ -63,7 +59,7 @@ public class ImGroup  {
     /**
      * 是否已解散
      */
-    private Long dissolve;
+    private Boolean dissolve;
 
     /**
      * 创建时间
@@ -73,7 +69,7 @@ public class ImGroup  {
     /**
      * 是否被封禁 0:否 1:是
      */
-    private Long isBanned;
+    private Boolean isBanned;
 
     /**
      * 被封禁原因

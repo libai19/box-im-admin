@@ -233,9 +233,9 @@ create table sys_menu (
 -- 初始化-菜单信息表数据
 -- ----------------------------
 -- 一级菜单
-insert into sys_menu values('1', '系统管理', '0', '1', 'system',           null, '', 1, 0, 'M', '0', '0', '', 'system',   103, 1, sysdate(), null, null, '系统管理目录');
-insert into sys_menu values('2', '系统监控', '0', '3', 'monitor',          null, '', 1, 0, 'M', '0', '0', '', 'monitor',  103, 1, sysdate(), null, null, '系统监控目录');
-insert into sys_menu values('3', '系统工具', '0', '4', 'tool',             null, '', 1, 0, 'M', '0', '0', '', 'tool',     103, 1, sysdate(), null, null, '系统工具目录');
+insert into sys_menu values('1', '系统管理', '0', '11', 'system',           null, '', 1, 0, 'M', '0', '0', '', 'system',   103, 1, sysdate(), null, null, '系统管理目录');
+insert into sys_menu values('2', '系统监控', '0', '13', 'monitor',          null, '', 1, 0, 'M', '0', '0', '', 'monitor',  103, 1, sysdate(), null, null, '系统监控目录');
+insert into sys_menu values('3', '系统工具', '0', '14', 'tool',             null, '', 1, 0, 'M', '0', '0', '', 'tool',     103, 1, sysdate(), null, null, '系统工具目录');
 
 -- 二级菜单
 insert into sys_menu values('100',  '用户管理',     '1',   '1', 'user',             'system/user/index',            '', 1, 0, 'C', '0', '0', 'system:user:list',            'user',          103, 1, sysdate(), null, null, '用户管理菜单');
@@ -250,8 +250,6 @@ insert into sys_menu values('108',  '日志管理',     '1',   '9', 'log',      
 insert into sys_menu values('109',  '在线用户',     '2',   '1', 'online',           'monitor/online/index',         '', 1, 0, 'C', '0', '0', 'monitor:online:list',         'online',        103, 1, sysdate(), null, null, '在线用户菜单');
 insert into sys_menu values('113',  '缓存监控',     '2',   '5', 'cache',            'monitor/cache/index',          '', 1, 0, 'C', '0', '0', 'monitor:cache:list',          'redis',         103, 1, sysdate(), null, null, '缓存监控菜单');
 insert into sys_menu values('115',  '代码生成',     '3',   '2', 'gen',              'tool/gen/index',               '', 1, 0, 'C', '0', '0', 'tool:gen:list',               'code',          103, 1, sysdate(), null, null, '代码生成菜单');
-insert into sys_menu values('121',  '租户管理',     '6',   '1', 'tenant',           'system/tenant/index',          '', 1, 0, 'C', '0', '0', 'system:tenant:list',          'list',          103, 1, sysdate(), null, null, '租户管理菜单');
-insert into sys_menu values('122',  '租户套餐管理',  '6',   '2', 'tenantPackage',    'system/tenantPackage/index',   '', 1, 0, 'C', '0', '0', 'system:tenantPackage:list',   'form',          103, 1, sysdate(), null, null, '租户套餐管理菜单');
 insert into sys_menu values('123',  '客户端管理',   '1',   '11', 'client',           'system/client/index',          '', 1, 0, 'C', '0', '0', 'system:client:list',          'international', 103, 1, sysdate(), null, null, '客户端管理菜单');
 
 -- oss菜单
@@ -343,6 +341,19 @@ insert into sys_menu values('1062', '客户端管理新增', '123', '2',  '#', '
 insert into sys_menu values('1063', '客户端管理修改', '123', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:edit',         '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('1064', '客户端管理删除', '123', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:remove',       '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('1065', '客户端管理导出', '123', '5',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:export',       '#', 103, 1, sysdate(), null, null, '');
+
+-- IM-用户管理
+insert into sys_menu values('4', '用户管理', '0', '1', 'im/user',           'im/user/index', '', 1, 0, 'C', '0', '0', 'im:user:list', 'user',     103, 1, sysdate(), null, null, 'IM用户管理');
+insert into sys_menu values('4001', '用户查询', '4', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:user:query',        '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('4002', '用户封禁', '4', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:user:ban',          '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('4003', '用户导出', '4', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:user:export',         '#', 103, 1, sysdate(), null, null, '');
+
+-- IM-群聊管理
+insert into sys_menu values('5', '群聊管理', '0', '2', 'im/group',          'im/group/index', '', 1, 0, 'C', '0', '0', 'im:group:list', 'user',     103, 1, sysdate(), null, null, 'IM群聊管理');
+insert into sys_menu values('5001', '群聊查询', '5', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:query',        '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('5002', '群聊封禁', '5', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:ban',          '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('5003', '群聊导出', '5', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:export',         '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('5004', '群聊成员', '5', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:member',         '#', 103, 1, sysdate(), null, null, '');
 
 
 -- ----------------------------
@@ -450,6 +461,8 @@ insert into sys_dict_type values(9, '000000', '操作类型', 'sys_oper_type',  
 insert into sys_dict_type values(10, '000000', '系统状态', 'sys_common_status',  103, 1, sysdate(), null, null, '登录状态列表');
 insert into sys_dict_type values(11, '000000', '授权类型', 'sys_grant_type',     103, 1, sysdate(), null, null, '认证授权类型');
 insert into sys_dict_type values(12, '000000', '设备类型', 'sys_device_type',    103, 1, sysdate(), null, null, '客户端设备类型');
+insert into sys_dict_type values(13, '000000', '布尔值', 'sys_bool',     103, 1, sysdate(), null, null, '布尔值, true 或 false');
+insert into sys_dict_type values(14, '000000', '用户状态', 'im_user_status',    103, 1, sysdate(), null, null, 'IM用户状态');
 
 
 -- ----------------------------
@@ -509,6 +522,10 @@ insert into sys_dict_data values(35, '000000', 0,  'PC',    'pc',         'sys_d
 insert into sys_dict_data values(36, '000000', 0,  '安卓', 'android',     'sys_device_type',     '',   'default', 'N', 103, 1, sysdate(), null, null, '安卓');
 insert into sys_dict_data values(37, '000000', 0,  'iOS', 'ios',          'sys_device_type',     '',   'default', 'N', 103, 1, sysdate(), null, null, 'iOS');
 insert into sys_dict_data values(38, '000000', 0,  '小程序', 'xcx',       'sys_device_type',     '',   'default', 'N', 103, 1, sysdate(), null, null, '小程序');
+insert into sys_dict_data values(39, '000000', 0,  '否',    'false',         'sys_bool',     '',   'danger', 'N', 103, 1, sysdate(), null, null, 'PC');
+insert into sys_dict_data values(40, '000000', 0,  '是', 'true',     'sys_bool',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '安卓');
+insert into sys_dict_data values(41, '000000', 0,  '正常', '0',          'im_user_status',     '',   'primary', 'N', 103, 1, sysdate(), null, null, 'iOS');
+insert into sys_dict_data values(42, '000000', 0,  '已注销', '1',       'im_user_status',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '小程序');
 
 
 -- ----------------------------

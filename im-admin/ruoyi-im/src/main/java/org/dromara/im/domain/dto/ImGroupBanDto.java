@@ -11,14 +11,14 @@ import org.hibernate.validator.constraints.Length;
  * @version: 1.0
  */
 @Data
-@Schema(description = "用户锁定")
-public class ImUserBanDTO {
+@Schema(description = "群组封禁")
+public class ImGroupBanDto {
 
-    @NotNull(message = "用户id不可为空")
-    @Schema(description = "用户id")
+    @NotNull(message = "群组id不可为空")
+    @Schema(description = "群组id")
     private Long id;
 
     @Length(max = 128, message = "封禁原因长度不能超过128")
-    @Schema(description = "锁定原因")
+    @Schema(description = "封禁原因")
     private String reason;
 }

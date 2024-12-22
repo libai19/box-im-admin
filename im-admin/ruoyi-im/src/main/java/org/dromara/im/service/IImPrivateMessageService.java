@@ -1,9 +1,9 @@
 package org.dromara.im.service;
 
-import org.dromara.im.domain.vo.ImPrivateMessageVo;
-import org.dromara.im.domain.bo.ImPrivateMessageBo;
-import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.common.mybatis.core.page.PageQuery;
+import org.dromara.common.mybatis.core.page.TableDataInfo;
+import org.dromara.im.domain.bo.ImPrivateMessageBo;
+import org.dromara.im.domain.vo.ImPrivateMessageVo;
 
 import java.util.Collection;
 import java.util.List;

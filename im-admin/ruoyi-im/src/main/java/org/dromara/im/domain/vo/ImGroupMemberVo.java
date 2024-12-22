@@ -1,19 +1,17 @@
 package org.dromara.im.domain.vo;
 
-import org.dromara.common.translation.annotation.Translation;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.dromara.common.translation.constant.TransConstant;
-import org.dromara.im.domain.ImGroupMember;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import org.dromara.common.excel.annotation.ExcelDictFormat;
-import org.dromara.common.excel.convert.ExcelDictConvert;
+import com.fhs.core.trans.anno.Trans;
+import com.fhs.core.trans.constant.TransType;
+import com.fhs.core.trans.vo.TransPojo;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
+import org.dromara.im.constant.ImConstant;
+import org.dromara.im.domain.ImGroupMember;
+import org.dromara.im.domain.ImUser;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 
 
@@ -27,7 +25,7 @@ import java.util.Date;
 @Data
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ImGroupMember.class)
-public class ImGroupMemberVo implements Serializable {
+public class ImGroupMemberVo implements TransPojo {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -47,8 +45,14 @@ public class ImGroupMemberVo implements Serializable {
     /**
      * 用户id
      */
-    @ExcelProperty(value = "用户id")
+    @Trans(type = TransType.SIMPLE,dataSource = ImConstant.DS_IM_PLATFORM,target = ImUser.class, fields = "userName", ref = "userName")
     private Long userId;
+
+    /**
+     * 用户名
+     */
+    @ExcelProperty(value = "用户名")
+    private String userName;
 
     /**
      * 组内显示名称
@@ -92,5 +96,10 @@ public class ImGroupMemberVo implements Serializable {
     @ExcelProperty(value = "用户昵称")
     private String userNickName;
 
+    /**
+     * 群内显示昵称
+     */
+    @ExcelProperty(value = "群内显示昵称")
+    private String showNickName;
 
 }

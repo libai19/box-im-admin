@@ -1,16 +1,12 @@
 package org.dromara.im.domain.vo;
 
-import org.dromara.common.translation.annotation.Translation;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.dromara.common.translation.constant.TransConstant;
-import org.dromara.im.domain.ImUser;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import org.dromara.common.excel.annotation.ExcelDictFormat;
-import org.dromara.common.excel.convert.ExcelDictConvert;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
+import org.dromara.common.excel.annotation.ExcelDictFormat;
+import org.dromara.common.excel.convert.ExcelDictConvert;
+import org.dromara.im.domain.ImUser;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -100,7 +96,7 @@ public class ImUserVo implements Serializable {
      * 是否被封禁 0:否 1:是
      */
     @ExcelProperty(value = "是否被封禁", converter = ExcelDictConvert.class)
-    @ExcelDictFormat(readConverterExp = "0=否,1=是")
+    @ExcelDictFormat(readConverterExp = "false=否,true=是")
     private Boolean isBanned;
 
     /**

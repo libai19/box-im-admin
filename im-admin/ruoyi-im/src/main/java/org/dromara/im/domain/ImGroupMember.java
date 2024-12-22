@@ -1,15 +1,11 @@
 package org.dromara.im.domain;
 
-import org.dromara.common.mybatis.core.domain.BaseEntity;
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fhs.core.trans.vo.TransPojo;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.dromara.common.translation.annotation.Translation;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.dromara.common.translation.constant.TransConstant;
 
-import java.io.Serial;
+import java.util.Date;
 
 /**
  * 群成员对象 im_group_member
@@ -19,10 +15,7 @@ import java.io.Serial;
  */
 @Data
 @TableName("im_group_member")
-public class ImGroupMember {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class ImGroupMember implements TransPojo {
 
     /**
      * id

@@ -1,16 +1,13 @@
 package org.dromara.im.domain.vo;
 
-import org.dromara.im.domain.ImSystemMessage;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import org.dromara.common.excel.annotation.ExcelDictFormat;
-import org.dromara.common.excel.convert.ExcelDictConvert;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
+import org.dromara.im.domain.ImSystemMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 
 

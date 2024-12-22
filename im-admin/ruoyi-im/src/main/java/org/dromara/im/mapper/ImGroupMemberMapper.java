@@ -1,8 +1,8 @@
 package org.dromara.im.mapper;
 
+import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
 import org.dromara.im.domain.ImGroupMember;
 import org.dromara.im.domain.vo.ImGroupMemberVo;
-import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
 
 /**
  * 群成员Mapper接口

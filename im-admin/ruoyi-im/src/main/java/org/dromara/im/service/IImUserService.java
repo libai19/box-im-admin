@@ -1,13 +1,12 @@
 package org.dromara.im.service;
 
-import org.dromara.im.domain.dto.ImUserBanDTO;
-import org.dromara.im.domain.dto.ImUserUnbanDTO;
-import org.dromara.im.domain.vo.ImUserVo;
-import org.dromara.im.domain.bo.ImUserBo;
-import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.common.mybatis.core.page.PageQuery;
+import org.dromara.common.mybatis.core.page.TableDataInfo;
+import org.dromara.im.domain.bo.ImUserBo;
+import org.dromara.im.domain.dto.ImUserBanDto;
+import org.dromara.im.domain.dto.ImUserUnbanDto;
+import org.dromara.im.domain.vo.ImUserVo;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -48,13 +47,20 @@ public interface IImUserService {
      *
      * @param dto dto
      */
-    void ban(ImUserBanDTO dto);
+    void ban(ImUserBanDto dto);
 
     /**
      *  解封用户
      *
      * @param dto dto
      */
-    void unban(ImUserUnbanDTO dto);
+    void unban(ImUserUnbanDto dto);
+
+    /**
+     * 根据用户名查找
+     *
+     * @param name 用户名
+     */
+    List<ImUserVo> findByName(String name);
 
 }
