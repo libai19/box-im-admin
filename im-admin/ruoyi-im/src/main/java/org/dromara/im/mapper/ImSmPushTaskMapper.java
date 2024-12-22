@@ -1,0 +1,15 @@
+package org.dromara.im.mapper;
+
+import org.dromara.im.domain.ImSmPushTask;
+import org.dromara.im.domain.vo.ImSmPushTaskVo;
+import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
+
+/**
+ * 系统消息推送任务Mapper接口
+ *
+ * @author Blue
+ * @date 2024-12-22
+ */
+public interface ImSmPushTaskMapper extends BaseMapperPlus<ImSmPushTask, ImSmPushTaskVo> {
+
+}

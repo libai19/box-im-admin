@@ -310,7 +310,11 @@
                 <artifactId>ruoyi-system</artifactId>
                 <version>${revision}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.dromara</groupId>
+                <artifactId>ruoyi-im</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <dependency>
                 <groupId>org.dromara</groupId>
                 <artifactId>ruoyi-job</artifactId>
@@ -343,6 +347,7 @@
         <module>ruoyi-admin</module>
         <module>ruoyi-common</module>
         <module>ruoyi-modules</module>
+        <module>ruoyi-im</module>
     </modules>
     <packaging>pom</packaging>
 

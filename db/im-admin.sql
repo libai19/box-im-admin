@@ -3,7 +3,7 @@
 -- ----------------------------
 create table sys_social
 (
-    id                 bigint           not null        comment '主键',
+    id                 bigint           not null        auto_increment   comment '主键',
     user_id            bigint           not null        comment '用户ID',
     tenant_id          varchar(20)      default null    comment '租户id',
     auth_id            varchar(255)     not null        comment '平台+平台唯一id',
@@ -41,7 +41,7 @@ create table sys_social
 -- ----------------------------
 create table sys_tenant
 (
-    id                bigint(20)    not null        comment 'id',
+    id                bigint(20)    not null        auto_increment comment 'id',
     tenant_id         varchar(20)   not null        comment '租户编号',
     contact_user_name varchar(20)                   comment '联系人',
     contact_phone     varchar(20)                   comment '联系电话',
@@ -69,7 +69,7 @@ create table sys_tenant
 -- 租户套餐表
 -- ----------------------------
 create table sys_tenant_package (
-    package_id              bigint(20)     not null    comment '租户套餐id',
+    package_id              bigint(20)     not null    auto_increment comment '租户套餐id',
     package_name            varchar(20)                comment '套餐名称',
     menu_ids                varchar(3000)              comment '关联菜单id',
     remark                  varchar(200)               comment '备注',
@@ -89,7 +89,7 @@ create table sys_tenant_package (
 -- 1、部门表
 -- ----------------------------
 create table sys_dept (
-    dept_id           bigint(20)      not null                   comment '部门id',
+    dept_id           bigint(20)      not null                   auto_increment comment '部门id',
     tenant_id         varchar(20)     default '000000'           comment '租户编号',
     parent_id         bigint(20)      default 0                  comment '父部门id',
     ancestors         varchar(500)    default ''                 comment '祖级列表',
@@ -121,7 +121,7 @@ insert into sys_dept values(100, '000000', 0,   '0',    '盒子科技',   null,0
 -- 2、用户信息表
 -- ----------------------------
 create table sys_user (
-    user_id           bigint(20)      not null                   comment '用户ID',
+    user_id           bigint(20)      not null                   auto_increment comment '用户ID',
     tenant_id         varchar(20)     default '000000'           comment '租户编号',
     dept_id           bigint(20)      default null               comment '部门ID',
     user_name         varchar(30)     not null                   comment '用户账号',
@@ -155,7 +155,7 @@ insert into sys_user values(1, '000000', 100, 'admin', 'admin', 'sys_user', 'xxx
 -- ----------------------------
 create table sys_post
 (
-    post_id       bigint(20)      not null                   comment '岗位ID',
+    post_id       bigint(20)      not null                   auto_increment comment '岗位ID',
     tenant_id     varchar(20)     default '000000'           comment '租户编号',
     dept_id       bigint(20)      not null                   comment '部门id',
     post_code     varchar(64)     not null                   comment '岗位编码',
@@ -178,7 +178,7 @@ create table sys_post
 -- 4、角色信息表
 -- ----------------------------
 create table sys_role (
-    role_id              bigint(20)      not null                   comment '角色ID',
+    role_id              bigint(20)      not null                   auto_increment comment '角色ID',
     tenant_id            varchar(20)     default '000000'           comment '租户编号',
     role_name            varchar(30)     not null                   comment '角色名称',
     role_key             varchar(100)    not null                   comment '角色权限字符串',
@@ -206,7 +206,7 @@ insert into sys_role values(1, '000000', '超级管理员',  'superadmin',  1, 1
 -- 5、菜单权限表
 -- ----------------------------
 create table sys_menu (
-    menu_id           bigint(20)      not null                   comment '菜单ID',
+    menu_id           bigint(20)      not null                   auto_increment comment '菜单ID',
     menu_name         varchar(50)     not null                   comment '菜单名称',
     parent_id         bigint(20)      default 0                  comment '父菜单ID',
     order_num         int(4)          default 0                  comment '显示顺序',
@@ -349,7 +349,7 @@ insert into sys_menu values('1065', '客户端管理导出', '123', '5',  '#', '
 -- 6、用户和角色关联表  用户N-1角色
 -- ----------------------------
 create table sys_user_role (
-    user_id   bigint(20) not null comment '用户ID',
+    user_id   bigint(20) not null auto_increment comment '用户ID',
     role_id   bigint(20) not null comment '角色ID',
     primary key(user_id, role_id)
 ) engine=innodb comment = '用户和角色关联表';
@@ -363,7 +363,7 @@ insert into sys_user_role values ('1', '1');
 -- 7、角色和菜单关联表  角色1-N菜单
 -- ----------------------------
 create table sys_role_menu (
-    role_id   bigint(20) not null comment '角色ID',
+    role_id   bigint(20) not null auto_increment comment '角色ID',
     menu_id   bigint(20) not null comment '菜单ID',
     primary key(role_id, menu_id)
 ) engine=innodb comment = '角色和菜单关联表';
@@ -372,7 +372,7 @@ create table sys_role_menu (
 -- 8、角色和部门关联表  角色1-N部门
 -- ----------------------------
 create table sys_role_dept (
-    role_id   bigint(20) not null comment '角色ID',
+    role_id   bigint(20) not null auto_increment comment '角色ID',
     dept_id   bigint(20) not null comment '部门ID',
     primary key(role_id, dept_id)
 ) engine=innodb comment = '角色和部门关联表';
@@ -382,7 +382,7 @@ create table sys_role_dept (
 -- ----------------------------
 create table sys_user_post
 (
-    user_id   bigint(20) not null comment '用户ID',
+    user_id   bigint(20) not null auto_increment comment '用户ID',
     post_id   bigint(20) not null comment '岗位ID',
     primary key (user_id, post_id)
 ) engine=innodb comment = '用户与岗位关联表';
@@ -396,7 +396,7 @@ insert into sys_user_post values ('1', '1');
 -- 10、操作日志记录
 -- ----------------------------
 create table sys_oper_log (
-    oper_id           bigint(20)      not null                   comment '日志主键',
+    oper_id           bigint(20)      not null                   auto_increment comment '日志主键',
     tenant_id         varchar(20)     default '000000'           comment '租户编号',
     title             varchar(50)     default ''                 comment '模块标题',
     business_type     int(2)          default 0                  comment '业务类型（0其它 1新增 2修改 3删除）',
@@ -426,7 +426,7 @@ create table sys_oper_log (
 -- ----------------------------
 create table sys_dict_type
 (
-    dict_id          bigint(20)      not null                   comment '字典主键',
+    dict_id          bigint(20)      not null                   auto_increment  comment '字典主键',
     tenant_id        varchar(20)     default '000000'           comment '租户编号',
     dict_name        varchar(100)    default ''                 comment '字典名称',
     dict_type        varchar(100)    default ''                 comment '字典类型',
@@ -457,7 +457,7 @@ insert into sys_dict_type values(12, '000000', '设备类型', 'sys_device_type'
 -- ----------------------------
 create table sys_dict_data
 (
-    dict_code        bigint(20)      not null                   comment '字典编码',
+    dict_code        bigint(20)      not null                   auto_increment  comment '字典编码',
     tenant_id        varchar(20)     default '000000'           comment '租户编号',
     dict_sort        int(4)          default 0                  comment '字典排序',
     dict_label       varchar(100)    default ''                 comment '字典标签',
@@ -515,7 +515,7 @@ insert into sys_dict_data values(38, '000000', 0,  '小程序', 'xcx',       'sy
 -- 13、参数配置表
 -- ----------------------------
 create table sys_config (
-    config_id         bigint(20)      not null                   comment '参数主键',
+    config_id         bigint(20)      not null                   auto_increment comment '参数主键',
     tenant_id         varchar(20)     default '000000'           comment '租户编号',
     config_name       varchar(100)    default ''                 comment '参数名称',
     config_key        varchar(100)    default ''                 comment '参数键名',
@@ -541,7 +541,7 @@ insert into sys_config values(11, '000000', 'OSS预览列表资源开关',      
 -- 14、系统访问记录
 -- ----------------------------
 create table sys_logininfor (
-    info_id        bigint(20)     not null                  comment '访问ID',
+    info_id        bigint(20)     not null                  auto_increment  comment '访问ID',
     tenant_id      varchar(20)    default '000000'          comment '租户编号',
     user_name      varchar(50)    default ''                comment '用户账号',
     client_key     varchar(32)    default ''                comment '客户端',
@@ -563,7 +563,7 @@ create table sys_logininfor (
 -- 17、通知公告表
 -- ----------------------------
 create table sys_notice (
-    notice_id         bigint(20)      not null                   comment '公告ID',
+    notice_id         bigint(20)      not null                   auto_increment comment '公告ID',
     tenant_id         varchar(20)     default '000000'           comment '租户编号',
     notice_title      varchar(50)     not null                   comment '公告标题',
     notice_type       char(1)         not null                   comment '公告类型（1通知 2公告）',
@@ -583,7 +583,7 @@ create table sys_notice (
 -- 18、代码生成业务表
 -- ----------------------------
 create table gen_table (
-    table_id          bigint(20)      not null                   comment '编号',
+    table_id          bigint(20)      not null                   auto_increment   comment '编号',
     data_name         varchar(200)    default ''                 comment '数据源名称',
     table_name        varchar(200)    default ''                 comment '表名称',
     table_comment     varchar(500)    default ''                 comment '表描述',
@@ -613,7 +613,7 @@ create table gen_table (
 -- 19、代码生成业务表字段
 -- ----------------------------
 create table gen_table_column (
-    column_id         bigint(20)      not null                   comment '编号',
+    column_id         bigint(20)      not null                   auto_increment   comment '编号',
     table_id          bigint(20)                                 comment '归属表编号',
     column_name       varchar(200)                               comment '列名称',
     column_comment    varchar(500)                               comment '列描述',
@@ -643,7 +643,7 @@ create table gen_table_column (
 -- OSS对象存储表
 -- ----------------------------
 create table sys_oss (
-    oss_id          bigint(20)   not null                   comment '对象存储主键',
+    oss_id          bigint(20)   not null                   auto_increment    comment '对象存储主键',
     tenant_id       varchar(20)           default '000000'  comment '租户编号',
     file_name       varchar(255) not null default ''        comment '文件名',
     original_name   varchar(255) not null default ''        comment '原名',
@@ -662,7 +662,7 @@ create table sys_oss (
 -- OSS对象存储动态配置表
 -- ----------------------------
 create table sys_oss_config (
-    oss_config_id   bigint(20)    not null                  comment '主键',
+    oss_config_id   bigint(20)    not null                  auto_increment    comment '主键',
     tenant_id       varchar(20)             default '000000'comment '租户编号',
     config_key      varchar(20)   not null  default ''      comment '配置key',
     access_key      varchar(255)            default ''      comment 'accessKey',
@@ -691,7 +691,7 @@ insert into sys_oss_config values (1, '000000', 'minio',  'ruoyi',            'r
 -- 系统授权表
 -- ----------------------------
 create table sys_client (
-    id                  bigint(20)    not null            comment 'id',
+    id                  bigint(20)    not null            auto_increment    comment 'id',
     client_id           varchar(64)   default null        comment '客户端id',
     client_key          varchar(32)   default null        comment '客户端key',
     client_secret       varchar(255)  default null        comment '客户端秘钥',

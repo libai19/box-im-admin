@@ -67,7 +67,7 @@ const show = (dataName: string) => {
   if (dataName) {
     queryParams.dataName = dataName;
   } else {
-    queryParams.dataName = 'master';
+    queryParams.dataName = 'admin';
   }
   getList();
   visible.value = true;
