@@ -14,6 +14,8 @@
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+              <el-button type="warning" plain icon="Download" @click="handleExport"
+              v-hasPermi="['im:user:export']">导出</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -21,19 +23,7 @@
     </transition>
 
     <el-card shadow="never">
-      <template #header>
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button type="warning" plain icon="Download" @click="handleExport"
-              v-hasPermi="['im:user:export']">导出</el-button>
-          </el-col>
-          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
-        </el-row>
-      </template>
-
       <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" />
-
         <el-table-column label="用户名" align="center" prop="userName" />
         <el-table-column label="用户昵称" align="center" prop="nickName" />
         <el-table-column label="用户头像" align="center" prop="headImageThumb" width="100">
@@ -48,7 +38,7 @@
         </el-table-column>
         <el-table-column label="是否被封禁" align="center" prop="isBanned">
           <template #default="scope">
-            <dict-tag :options="sys_bool" :value="scope.row.isBanned" />
+            <dict-tag :options="im_bool" :value="scope.row.isBanned" />
           </template>
         </el-table-column>
         <el-table-column label="状态" align="center" prop="status">
@@ -114,7 +104,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="是否被封禁" prop="isBanned">
-          <dict-tag :options="sys_bool" :value="form.isBanned" />
+          <dict-tag :options="im_bool" :value="form.isBanned" />
         </el-form-item>
         <el-form-item v-if="form.isBanned" label="被封禁原因" prop="reason">
           <el-input v-model="form.reason" placeholder="请输入被封禁原因" />
@@ -184,7 +174,7 @@ const data = reactive<PageData<UserForm, UserQuery>>({
 });
 const { queryParams, form, rules } = toRefs(data);
 
-const { sys_bool } = toRefs<any>(proxy?.useDict('sys_bool'));
+const { im_bool } = toRefs<any>(proxy?.useDict('im_bool'));
 const { im_user_status } = toRefs<any>(proxy?.useDict('im_user_status'));
 const { sys_user_sex } = toRefs<any>(proxy?.useDict('sys_user_sex'));
 

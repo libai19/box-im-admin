@@ -406,7 +406,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
      * @return 结果
      */
     @Override
-    public boolean updateUserAvatar(Long userId, Long avatar) {
+    public boolean updateUserAvatar(Long userId, String avatar) {
         return baseMapper.update(null,
             new LambdaUpdateWrapper<SysUser>()
                 .set(SysUser::getAvatar, avatar)

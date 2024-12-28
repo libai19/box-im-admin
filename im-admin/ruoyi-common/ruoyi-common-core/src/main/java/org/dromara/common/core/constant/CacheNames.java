@@ -55,15 +55,6 @@ public interface CacheNames {
      */
     String SYS_DEPT = "sys_dept#30d";
 
-    /**
-     * OSS内容
-     */
-    String SYS_OSS = "sys_oss#30d";
-
-    /**
-     * OSS配置
-     */
-    String SYS_OSS_CONFIG = GlobalConstants.GLOBAL_REDIS_KEY + "sys_oss_config";
 
     /**
      * 在线用户

@@ -25,6 +25,7 @@
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+              <el-button type="warning" plain icon="Download" @click="handleExport" v-hasPermi="['im:group:export']">导出</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -32,25 +33,14 @@
     </transition>
 
     <el-card shadow="never">
-      <template #header>
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button type="warning" plain icon="Download" @click="handleExport"
-              v-hasPermi="['im:group:export']">导出</el-button>
-          </el-col>
-          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
-        </el-row>
-      </template>
-
       <el-table v-loading="loading" :data="groupList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="群名" align="center" prop="name" />
         <el-table-column label="群头像" align="center" prop="headImage" width="100">
           <template #default="scope">
             <image-preview :src="scope.row.headImageThumb" :full-src="scope.row.headImage" :width="40" :height="40" />
           </template>
         </el-table-column>
-        <el-table-column label="群名" align="center" prop="name" />
-        <el-table-column label="群主" align="center" prop="ownerUserName" /> 
+        <el-table-column label="群主" align="center" prop="ownerUserName" />
         <el-table-column label="成员数量" align="center" prop="memberCount" />
         <el-table-column label="创建时间" align="center" prop="createdTime" width="180">
           <template #default="scope">
@@ -59,12 +49,12 @@
         </el-table-column>
         <el-table-column label="是否解散" align="center" prop="dissolve">
           <template #default="scope">
-            <dict-tag :options="sys_bool" :value="scope.row.dissolve" />
+            <dict-tag :options="im_bool" :value="scope.row.dissolve" />
           </template>
         </el-table-column>
         <el-table-column label="是否封禁" align="center" prop="isBanned">
           <template #default="scope">
-            <dict-tag :options="sys_bool" :value="scope.row.isBanned" />
+            <dict-tag :options="im_bool" :value="scope.row.isBanned" />
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -106,10 +96,10 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="是否已解散" prop="dissolve">
-          <dict-tag :options="sys_bool" :value="form.dissolve" />
+          <dict-tag :options="im_bool" :value="form.dissolve" />
         </el-form-item>
         <el-form-item label="是否被封禁" prop="isBanned">
-          <dict-tag :options="sys_bool" :value="form.isBanned" />
+          <dict-tag :options="im_bool" :value="form.isBanned" />
         </el-form-item>
         <el-form-item v-if="form.isBanned" label="被封禁原因" prop="reason">
           <el-input v-model="form.reason" placeholder="请输入被封禁原因" />
@@ -192,7 +182,7 @@ const data = reactive<PageData<GroupForm, GroupQuery>>({
 });
 
 const { queryParams, form } = toRefs(data);
-const { sys_bool } = toRefs<any>(proxy?.useDict('sys_bool'));
+const { im_bool } = toRefs<any>(proxy?.useDict('im_bool'));
 
 /** 查询群列表 */
 const getList = async () => {

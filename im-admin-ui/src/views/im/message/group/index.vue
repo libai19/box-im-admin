@@ -53,7 +53,7 @@
         </el-table-column>
         <el-table-column label="是否撤回" align="center" prop="status" >
           <template #default="scope">
-            <dict-tag :options="sys_bool" :value="''+(scope.row.status == 2)" />
+            <dict-tag :options="im_bool" :value="''+(scope.row.status == 2)" />
           </template>
         </el-table-column>
         <el-table-column label="发送时间" align="center" prop="sendTime" width="180">
@@ -90,13 +90,13 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item v-if="form.receipt" label="是否撤回" prop="status">
-          <dict-tag :options="sys_bool" :value="'' + (form.status == 2)" />
+          <dict-tag :options="im_bool" :value="'' + (form.status == 2)" />
         </el-form-item>
         <el-form-item label="是否回执消息" prop="receipt">
           <el-input v-model="form.receipt" placeholder="请输入是否回执消息" />
         </el-form-item>
         <el-form-item v-if="form.receipt" label="回执消息是否完成" prop="receiptOk">
-          <dict-tag :options="sys_bool" :value="form.receiptOk" />
+          <dict-tag :options="im_bool" :value="form.receiptOk" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -169,7 +169,7 @@ const data = reactive<PageData<GroupMessageForm, GroupMessageQuery>>({
 });
 
 const { queryParams, form, rules } = toRefs(data);
-const { im_message_type,sys_bool } = toRefs<any>(proxy?.useDict('im_message_type','sys_bool'));
+const { im_message_type,im_bool } = toRefs<any>(proxy?.useDict('im_message_type','im_bool'));
 
 /** 查询群消息列表 */
 const getList = async () => {

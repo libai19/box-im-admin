@@ -3,6 +3,8 @@ package org.dromara.system.controller.system;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
+import org.dromara.common.minio.service.FileService;
+import org.dromara.common.minio.vo.UploadImageVO;
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.core.domain.R;
 import org.dromara.common.core.utils.StringUtils;
@@ -19,9 +21,7 @@ import org.dromara.system.domain.bo.SysUserPasswordBo;
 import org.dromara.system.domain.bo.SysUserProfileBo;
 import org.dromara.system.domain.vo.AvatarVo;
 import org.dromara.system.domain.vo.ProfileVo;
-import org.dromara.system.domain.vo.SysOssVo;
 import org.dromara.system.domain.vo.SysUserVo;
-import org.dromara.system.service.ISysOssService;
 import org.dromara.system.service.ISysUserService;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -42,7 +42,8 @@ import java.util.Arrays;
 public class SysProfileController extends BaseController {
 
     private final ISysUserService userService;
-    private final ISysOssService ossService;
+
+    private final FileService fileService;
 
     /**
      * 个人信息
@@ -119,9 +120,9 @@ public class SysProfileController extends BaseController {
             if (!StringUtils.equalsAnyIgnoreCase(extension, MimeTypeUtils.IMAGE_EXTENSION)) {
                 return R.fail("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtils.IMAGE_EXTENSION) + "格式");
             }
-            SysOssVo oss = ossService.upload(avatarfile);
-            String avatar = oss.getUrl();
-            if (userService.updateUserAvatar(LoginHelper.getUserId(), oss.getOssId())) {
+            UploadImageVO vo = fileService.uploadImage(avatarfile,false);
+            String avatar = vo.getOriginUrl();
+            if (userService.updateUserAvatar(LoginHelper.getUserId(), avatar)) {
                 AvatarVo avatarVo = new AvatarVo();
                 avatarVo.setImgUrl(avatar);
                 return R.ok(avatarVo);

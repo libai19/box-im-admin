@@ -38,9 +38,6 @@
         <!-- 离线IP地址定位库 -->
         <ip2region.version>2.7.0</ip2region.version>
 
-        <!-- OSS 配置 -->
-        <aws.sdk.version>2.28.22</aws.sdk.version>
-        <aws.crt.version>0.31.3</aws.crt.version>
         <!-- SMS 配置 -->
         <sms4j.version>3.3.3</sms4j.version>
         <!-- 限制框架中的fastjson版本 -->
@@ -210,25 +207,6 @@
                 <artifactId>p6spy</artifactId>
                 <version>${p6spy.version}</version>
             </dependency>
-
-            <!--  AWS SDK for Java 2.x  -->
-            <dependency>
-                <groupId>software.amazon.awssdk</groupId>
-                <artifactId>s3</artifactId>
-                <version>${aws.sdk.version}</version>
-            </dependency>
-            <!-- 使用AWS基于 CRT 的 S3 客户端 -->
-            <dependency>
-                <groupId>software.amazon.awssdk.crt</groupId>
-                <artifactId>aws-crt</artifactId>
-                <version>${aws.crt.version}</version>
-            </dependency>
-            <!-- 基于 AWS CRT 的 S3 客户端的性能增强的 S3 传输管理器 -->
-            <dependency>
-                <groupId>software.amazon.awssdk</groupId>
-                <artifactId>s3-transfer-manager</artifactId>
-                <version>${aws.sdk.version}</version>
-            </dependency>
             <!--短信sms4j-->
             <dependency>
                 <groupId>org.dromara.sms4j</groupId>
@@ -322,6 +300,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.dromara</groupId>
+                <artifactId>ruoyi-common-minio</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.fhs-opensource</groupId>
                 <artifactId>easy-trans-spring-boot-starter</artifactId>
                 <version>${easytrans.version}</version>
@@ -339,6 +323,7 @@
         <module>ruoyi-common</module>
         <module>ruoyi-modules</module>
         <module>ruoyi-im</module>
+        <module>ruoyi-common/ruoyi-common-minio</module>
     </modules>
     <packaging>pom</packaging>
 
