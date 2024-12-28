@@ -349,12 +349,16 @@ insert into sys_menu values('4002', '用户封禁', '4', '2',  '#', '', '', 1, 0
 insert into sys_menu values('4003', '用户导出', '4', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:user:export',         '#', 103, 1, sysdate(), null, null, '');
 
 -- IM-群聊管理
-insert into sys_menu values('5', '群聊管理', '0', '2', 'im/group',          'im/group/index', '', 1, 0, 'C', '0', '0', 'im:group:list', 'user',     103, 1, sysdate(), null, null, 'IM群聊管理');
+insert into sys_menu values('5', '群聊管理', '0', '2', 'im/group',          'im/group/index', '', 1, 0, 'C', '0', '0', 'im:group:list', 'peoples',     103, 1, sysdate(), null, null, 'IM群聊管理');
 insert into sys_menu values('5001', '群聊查询', '5', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:query',        '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('5002', '群聊封禁', '5', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:ban',          '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('5003', '群聊导出', '5', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:export',         '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('5004', '群聊成员', '5', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:member',         '#', 103, 1, sysdate(), null, null, '');
 
+-- IM-私聊管理
+insert into sys_menu values('6', '消息管理', '0', '3', 'message', null, '', 1, 0, 'M', '0', '0', '', 'message',     103, 1, sysdate(), null, null, 'IM消息管理');
+insert into sys_menu values('60', '私聊消息', '6', '1', 'private',          'im/message/private/index', '', 1, 0, 'C', '0', '0', 'im:privateMessage:list', 'education,     103, 1, sysdate(), null, null, 'IM私聊消息');
+insert into sys_menu values('6001', '私聊消息查询', '60', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:privateMessage:query',        '#', 103, 1, sysdate(), null, null, '');
 
 -- ----------------------------
 -- 6、用户和角色关联表  用户N-1角色
@@ -463,6 +467,8 @@ insert into sys_dict_type values(11, '000000', '授权类型', 'sys_grant_type',
 insert into sys_dict_type values(12, '000000', '设备类型', 'sys_device_type',    103, 1, sysdate(), null, null, '客户端设备类型');
 insert into sys_dict_type values(13, '000000', '布尔值', 'sys_bool',     103, 1, sysdate(), null, null, '布尔值, true 或 false');
 insert into sys_dict_type values(14, '000000', '用户状态', 'im_user_status',    103, 1, sysdate(), null, null, 'IM用户状态');
+insert into sys_dict_type values(15, '000000', '消息状态', 'im_message_status',    103, 1, sysdate(), null, null, 'IM消息状态');
+insert into sys_dict_type values(16, '000000', '消息类型', 'im_message_type',    103, 1, sysdate(), null, null, 'IM消息类型');
 
 
 -- ----------------------------
@@ -522,10 +528,22 @@ insert into sys_dict_data values(35, '000000', 0,  'PC',    'pc',         'sys_d
 insert into sys_dict_data values(36, '000000', 0,  '安卓', 'android',     'sys_device_type',     '',   'default', 'N', 103, 1, sysdate(), null, null, '安卓');
 insert into sys_dict_data values(37, '000000', 0,  'iOS', 'ios',          'sys_device_type',     '',   'default', 'N', 103, 1, sysdate(), null, null, 'iOS');
 insert into sys_dict_data values(38, '000000', 0,  '小程序', 'xcx',       'sys_device_type',     '',   'default', 'N', 103, 1, sysdate(), null, null, '小程序');
-insert into sys_dict_data values(39, '000000', 0,  '否',    'false',         'sys_bool',     '',   'danger', 'N', 103, 1, sysdate(), null, null, 'PC');
-insert into sys_dict_data values(40, '000000', 0,  '是', 'true',     'sys_bool',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '安卓');
-insert into sys_dict_data values(41, '000000', 0,  '正常', '0',          'im_user_status',     '',   'primary', 'N', 103, 1, sysdate(), null, null, 'iOS');
-insert into sys_dict_data values(42, '000000', 0,  '已注销', '1',       'im_user_status',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '小程序');
+insert into sys_dict_data values(39, '000000', 0,  '否',    'false',         'sys_bool',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(40, '000000', 0,  '是', 'true',     'sys_bool',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(41, '000000', 0,  '正常', '0',          'im_user_status',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(42, '000000', 0,  '已注销', '1',       'im_user_status',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(43, '000000', 1,  '未发送', '0',      'im_message_status',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(44, '000000', 2,  '送达', '1',       'im_message_status',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(45, '000000', 3,  '撤回', '2',       'im_message_status',     '',   'warning', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(46, '000000', 4,  '已读', '3',       'im_message_status',     '',   'success', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(47, '000000', 1,  '文字', '0',      'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(48, '000000', 2,  '图片', '1',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(49, '000000', 3,  '文件', '2',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(50, '000000', 4,  '语音', '3',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(51, '000000', 5,  '视频', '4',      'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(52, '000000', 6,  '文字提示', '21',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(53, '000000', 7,  '语音通话', '40',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(54, '000000', 8,  '视频通话', '41',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
 
 
 -- ----------------------------

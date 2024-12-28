@@ -1,7 +1,5 @@
 package org.dromara.im.domain.bo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import org.dromara.im.domain.ImGroup;
@@ -73,8 +71,6 @@ public class ImGroupBo {
     /**
      * 请求参数
      */
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();
 
 

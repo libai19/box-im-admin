@@ -152,6 +152,7 @@ mybatis-encryptor:
   publicKey:
   privateKey:
 
+# 【bug】ruoyi的这个文档配置似乎没有生效，跟代码也对不上
 springdoc:
   api-docs:
     # 是否开启接口文档

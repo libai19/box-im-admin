@@ -5,7 +5,6 @@ import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.domain.bo.ImPrivateMessageBo;
 import org.dromara.im.domain.vo.ImPrivateMessageVo;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,28 +40,5 @@ public interface IImPrivateMessageService {
      */
     List<ImPrivateMessageVo> queryList(ImPrivateMessageBo bo);
 
-    /**
-     * 新增私聊消息
-     *
-     * @param bo 私聊消息
-     * @return 是否新增成功
-     */
-    Boolean insertByBo(ImPrivateMessageBo bo);
 
-    /**
-     * 修改私聊消息
-     *
-     * @param bo 私聊消息
-     * @return 是否修改成功
-     */
-    Boolean updateByBo(ImPrivateMessageBo bo);
-
-    /**
-     * 校验并批量删除私聊消息信息
-     *
-     * @param ids     待删除的主键集合
-     * @param isValid 是否进行有效性校验
-     * @return 是否删除成功
-     */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 }

@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
-import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
@@ -17,7 +16,6 @@ import org.dromara.im.mapper.ImPrivateMessageMapper;
 import org.dromara.im.service.IImPrivateMessageService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +39,7 @@ public class ImPrivateMessageServiceImpl implements IImPrivateMessageService {
      * @return 私聊消息
      */
     @Override
-    public ImPrivateMessageVo queryById(Long id){
+    public ImPrivateMessageVo queryById(Long id) {
         return baseMapper.selectVoById(id);
     }
 
@@ -76,62 +74,13 @@ public class ImPrivateMessageServiceImpl implements IImPrivateMessageService {
         LambdaQueryWrapper<ImPrivateMessage> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getSendId() != null, ImPrivateMessage::getSendId, bo.getSendId());
         lqw.eq(bo.getRecvId() != null, ImPrivateMessage::getRecvId, bo.getRecvId());
-        lqw.eq(StringUtils.isNotBlank(bo.getContent()), ImPrivateMessage::getContent, bo.getContent());
+        lqw.like(StringUtils.isNotBlank(bo.getContent()), ImPrivateMessage::getContent, bo.getContent());
         lqw.eq(bo.getType() != null, ImPrivateMessage::getType, bo.getType());
         lqw.eq(bo.getStatus() != null, ImPrivateMessage::getStatus, bo.getStatus());
-        lqw.eq(bo.getSendTime() != null, ImPrivateMessage::getSendTime, bo.getSendTime());
+        lqw.between(params.get("beginTime") != null && params.get("endTime") != null, ImPrivateMessage::getSendTime,
+            params.get("beginTime"), params.get("endTime"));
+        lqw.orderByDesc(ImPrivateMessage::getId);
         return lqw;
     }
 
-    /**
-     * 新增私聊消息
-     *
-     * @param bo 私聊消息
-     * @return 是否新增成功
-     */
-    @Override
-    public Boolean insertByBo(ImPrivateMessageBo bo) {
-        ImPrivateMessage add = MapstructUtils.convert(bo, ImPrivateMessage.class);
-        validEntityBeforeSave(add);
-        boolean flag = baseMapper.insert(add) > 0;
-        if (flag) {
-            bo.setId(add.getId());
-        }
-        return flag;
-    }
-
-    /**
-     * 修改私聊消息
-     *
-     * @param bo 私聊消息
-     * @return 是否修改成功
-     */
-    @Override
-    public Boolean updateByBo(ImPrivateMessageBo bo) {
-        ImPrivateMessage update = MapstructUtils.convert(bo, ImPrivateMessage.class);
-        validEntityBeforeSave(update);
-        return baseMapper.updateById(update) > 0;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(ImPrivateMessage entity){
-        //TODO 做一些数据校验,如唯一约束
-    }
-
-    /**
-     * 校验并批量删除私聊消息信息
-     *
-     * @param ids     待删除的主键集合
-     * @param isValid 是否进行有效性校验
-     * @return 是否删除成功
-     */
-    @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
-        return baseMapper.deleteByIds(ids) > 0;
-    }
 }
