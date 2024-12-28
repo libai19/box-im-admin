@@ -7,12 +7,23 @@ export interface GroupMessageVO {
   /**
    * 群id
    */
-  groupId: string | number;
+  groupId: number;
+
+  /**
+ * 群名
+ */
+  groupName: string,
 
   /**
    * 发送用户id
    */
-  sendId: string | number;
+  sendId: number;
+
+  /**
+ * 发送用户
+ */
+  sendUserName: string;
+
 
   /**
    * 发送用户昵称
@@ -73,10 +84,19 @@ export interface GroupMessageForm extends BaseEntity {
   groupId?: string | number;
 
   /**
+* 群名
+*/
+  groupName: string,
+
+  /**
    * 发送用户id
    */
   sendId?: string | number;
 
+  /**
+   * 发送用户
+   */
+  sendUserName: string;
   /**
    * 发送用户昵称
    */
@@ -181,10 +201,10 @@ export interface GroupMessageQuery extends PageQuery {
    */
   recvIds?: string | number;
 
-    /**
-     * 日期范围参数
-     */
-    params?: any;
+  /**
+   * 日期范围参数
+   */
+  params?: any;
 }
 
 

@@ -26,7 +26,7 @@ const props = defineProps({
 
 const loading = ref(false)
 const options = ref()
-const model = defineModel<number | Array<Number>>()
+const model = defineModel<number | Array<Number> | string | Array<String>>()
 const messageIds = computed({
 	get() {
         if(model.value != undefined){

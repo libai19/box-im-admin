@@ -54,8 +54,8 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
      */
     @Override
     public TableDataInfo<ImSystemMessageVo> queryPageList(ImSystemMessageBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ImSystemMessage> lqw = buildQueryWrapper(bo);
-        Page<ImSystemMessageVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        LambdaQueryWrapper<ImSystemMessage> wrapper = buildQueryWrapper(bo);
+        Page<ImSystemMessageVo> result = baseMapper.selectVoPage(pageQuery.build(), wrapper);
         return TableDataInfo.build(result);
     }
 
@@ -67,23 +67,23 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
      */
     @Override
     public List<ImSystemMessageVo> queryList(ImSystemMessageBo bo) {
-        LambdaQueryWrapper<ImSystemMessage> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        LambdaQueryWrapper<ImSystemMessage> wrapper = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(wrapper);
     }
 
     private LambdaQueryWrapper<ImSystemMessage> buildQueryWrapper(ImSystemMessageBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<ImSystemMessage> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getTitle()), ImSystemMessage::getTitle, bo.getTitle());
-        lqw.eq(StringUtils.isNotBlank(bo.getCoverUrl()), ImSystemMessage::getCoverUrl, bo.getCoverUrl());
-        lqw.eq(StringUtils.isNotBlank(bo.getIntro()), ImSystemMessage::getIntro, bo.getIntro());
-        lqw.eq(bo.getContentType() != null, ImSystemMessage::getContentType, bo.getContentType());
-        lqw.eq(StringUtils.isNotBlank(bo.getRichText()), ImSystemMessage::getRichText, bo.getRichText());
-        lqw.eq(StringUtils.isNotBlank(bo.getExternLink()), ImSystemMessage::getExternLink, bo.getExternLink());
-        lqw.eq(bo.getDeleted() != null, ImSystemMessage::getDeleted, bo.getDeleted());
-        lqw.eq(bo.getCreator() != null, ImSystemMessage::getCreator, bo.getCreator());
-        lqw.eq(bo.getUpdater() != null, ImSystemMessage::getUpdater, bo.getUpdater());
-        return lqw;
+        LambdaQueryWrapper<ImSystemMessage> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(StringUtils.isNotBlank(bo.getTitle()), ImSystemMessage::getTitle, bo.getTitle());
+        wrapper.eq(StringUtils.isNotBlank(bo.getCoverUrl()), ImSystemMessage::getCoverUrl, bo.getCoverUrl());
+        wrapper.eq(StringUtils.isNotBlank(bo.getIntro()), ImSystemMessage::getIntro, bo.getIntro());
+        wrapper.eq(bo.getContentType() != null, ImSystemMessage::getContentType, bo.getContentType());
+        wrapper.eq(StringUtils.isNotBlank(bo.getRichText()), ImSystemMessage::getRichText, bo.getRichText());
+        wrapper.eq(StringUtils.isNotBlank(bo.getExternLink()), ImSystemMessage::getExternLink, bo.getExternLink());
+        wrapper.eq(bo.getDeleted() != null, ImSystemMessage::getDeleted, bo.getDeleted());
+        wrapper.eq(bo.getCreator() != null, ImSystemMessage::getCreator, bo.getCreator());
+        wrapper.eq(bo.getUpdater() != null, ImSystemMessage::getUpdater, bo.getUpdater());
+        return wrapper;
     }
 
     /**

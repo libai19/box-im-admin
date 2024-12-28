@@ -41,28 +41,6 @@ public interface IImGroupMessageService {
      */
     List<ImGroupMessageVo> queryList(ImGroupMessageBo bo);
 
-    /**
-     * 新增群消息
-     *
-     * @param bo 群消息
-     * @return 是否新增成功
-     */
-    Boolean insertByBo(ImGroupMessageBo bo);
 
-    /**
-     * 修改群消息
-     *
-     * @param bo 群消息
-     * @return 是否修改成功
-     */
-    Boolean updateByBo(ImGroupMessageBo bo);
 
-    /**
-     * 校验并批量删除群消息信息
-     *
-     * @param ids     待删除的主键集合
-     * @param isValid 是否进行有效性校验
-     * @return 是否删除成功
-     */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 }

@@ -17,9 +17,8 @@ import java.util.Map;
  * @date 2024-12-22
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = ImPrivateMessage.class, reverseConvertGenerate = false)
-public class ImPrivateMessageBo extends BaseEntity {
+public class ImPrivateMessageBo {
 
     /**
      * id

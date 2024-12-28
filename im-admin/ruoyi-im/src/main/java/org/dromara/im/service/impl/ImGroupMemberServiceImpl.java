@@ -53,8 +53,8 @@ public class ImGroupMemberServiceImpl implements IImGroupMemberService {
      */
     @Override
     public TableDataInfo<ImGroupMemberVo> queryPageList(ImGroupMemberBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ImGroupMember> lqw = buildQueryWrapper(bo);
-        Page<ImGroupMemberVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        LambdaQueryWrapper<ImGroupMember> wrapper = buildQueryWrapper(bo);
+        Page<ImGroupMemberVo> result = baseMapper.selectVoPage(pageQuery.build(), wrapper);
         // 填充显示昵称
         result.getRecords().forEach(m -> {
             m.setShowNickName(StrUtil.isEmpty(m.getRemarkNickName()) ? m.getUserNickName() : m.getRemarkNickName());
@@ -70,8 +70,8 @@ public class ImGroupMemberServiceImpl implements IImGroupMemberService {
      */
     @Override
     public List<ImGroupMemberVo> queryList(ImGroupMemberBo bo) {
-        LambdaQueryWrapper<ImGroupMember> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        LambdaQueryWrapper<ImGroupMember> wrapper = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(wrapper);
     }
 
 
@@ -84,16 +84,15 @@ public class ImGroupMemberServiceImpl implements IImGroupMemberService {
     }
 
     private LambdaQueryWrapper<ImGroupMember> buildQueryWrapper(ImGroupMemberBo bo) {
-        Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<ImGroupMember> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getGroupId() != null, ImGroupMember::getGroupId, bo.getGroupId());
-        lqw.eq(bo.getUserId() != null, ImGroupMember::getUserId, bo.getUserId());
-        lqw.like(StringUtils.isNotBlank(bo.getRemarkNickName()), ImGroupMember::getRemarkNickName, bo.getRemarkNickName());
-        lqw.like(StringUtils.isNotBlank(bo.getRemarkGroupName()), ImGroupMember::getRemarkGroupName, bo.getRemarkGroupName());
-        lqw.like(StringUtils.isNotBlank(bo.getUserNickName()), ImGroupMember::getUserNickName, bo.getUserNickName());
-        lqw.eq(ImGroupMember::getQuit, false);
-        lqw.orderByDesc(ImGroupMember::getCreatedTime);
-        return lqw;
+        LambdaQueryWrapper<ImGroupMember> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(bo.getGroupId() != null, ImGroupMember::getGroupId, bo.getGroupId());
+        wrapper.eq(bo.getUserId() != null, ImGroupMember::getUserId, bo.getUserId());
+        wrapper.like(StringUtils.isNotBlank(bo.getRemarkNickName()), ImGroupMember::getRemarkNickName, bo.getRemarkNickName());
+        wrapper.like(StringUtils.isNotBlank(bo.getRemarkGroupName()), ImGroupMember::getRemarkGroupName, bo.getRemarkGroupName());
+        wrapper.like(StringUtils.isNotBlank(bo.getUserNickName()), ImGroupMember::getUserNickName, bo.getUserNickName());
+        wrapper.eq(ImGroupMember::getQuit, false);
+        wrapper.orderByDesc(ImGroupMember::getCreatedTime);
+        return wrapper;
     }
 
 

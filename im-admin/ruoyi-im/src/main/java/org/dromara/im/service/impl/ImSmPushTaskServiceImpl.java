@@ -54,8 +54,8 @@ public class ImSmPushTaskServiceImpl implements IImSmPushTaskService {
      */
     @Override
     public TableDataInfo<ImSmPushTaskVo> queryPageList(ImSmPushTaskBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ImSmPushTask> lqw = buildQueryWrapper(bo);
-        Page<ImSmPushTaskVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        LambdaQueryWrapper<ImSmPushTask> wrapper = buildQueryWrapper(bo);
+        Page<ImSmPushTaskVo> result = baseMapper.selectVoPage(pageQuery.build(), wrapper);
         return TableDataInfo.build(result);
     }
 
@@ -67,23 +67,23 @@ public class ImSmPushTaskServiceImpl implements IImSmPushTaskService {
      */
     @Override
     public List<ImSmPushTaskVo> queryList(ImSmPushTaskBo bo) {
-        LambdaQueryWrapper<ImSmPushTask> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        LambdaQueryWrapper<ImSmPushTask> wrapper = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(wrapper);
     }
 
     private LambdaQueryWrapper<ImSmPushTask> buildQueryWrapper(ImSmPushTaskBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<ImSmPushTask> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getMessageId() != null, ImSmPushTask::getMessageId, bo.getMessageId());
-        lqw.eq(bo.getSeqNo() != null, ImSmPushTask::getSeqNo, bo.getSeqNo());
-        lqw.eq(bo.getSendTime() != null, ImSmPushTask::getSendTime, bo.getSendTime());
-        lqw.eq(bo.getStatus() != null, ImSmPushTask::getStatus, bo.getStatus());
-        lqw.eq(bo.getSendToAll() != null, ImSmPushTask::getSendToAll, bo.getSendToAll());
-        lqw.eq(StringUtils.isNotBlank(bo.getRecvIds()), ImSmPushTask::getRecvIds, bo.getRecvIds());
-        lqw.eq(bo.getDeleted() != null, ImSmPushTask::getDeleted, bo.getDeleted());
-        lqw.eq(bo.getCreator() != null, ImSmPushTask::getCreator, bo.getCreator());
-        lqw.eq(bo.getUpdater() != null, ImSmPushTask::getUpdater, bo.getUpdater());
-        return lqw;
+        LambdaQueryWrapper<ImSmPushTask> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(bo.getMessageId() != null, ImSmPushTask::getMessageId, bo.getMessageId());
+        wrapper.eq(bo.getSeqNo() != null, ImSmPushTask::getSeqNo, bo.getSeqNo());
+        wrapper.eq(bo.getSendTime() != null, ImSmPushTask::getSendTime, bo.getSendTime());
+        wrapper.eq(bo.getStatus() != null, ImSmPushTask::getStatus, bo.getStatus());
+        wrapper.eq(bo.getSendToAll() != null, ImSmPushTask::getSendToAll, bo.getSendToAll());
+        wrapper.eq(StringUtils.isNotBlank(bo.getRecvIds()), ImSmPushTask::getRecvIds, bo.getRecvIds());
+        wrapper.eq(bo.getDeleted() != null, ImSmPushTask::getDeleted, bo.getDeleted());
+        wrapper.eq(bo.getCreator() != null, ImSmPushTask::getCreator, bo.getCreator());
+        wrapper.eq(bo.getUpdater() != null, ImSmPushTask::getUpdater, bo.getUpdater());
+        return wrapper;
     }
 
     /**

@@ -59,8 +59,8 @@ public class ImUserServiceImpl implements IImUserService {
      */
     @Override
     public TableDataInfo<ImUserVo> queryPageList(ImUserBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ImUser> lqw = buildQueryWrapper(bo);
-        Page<ImUserVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        LambdaQueryWrapper<ImUser> wrapper = buildQueryWrapper(bo);
+        Page<ImUserVo> result = baseMapper.selectVoPage(pageQuery.build(), wrapper);
         return TableDataInfo.build(result);
     }
 
@@ -72,8 +72,8 @@ public class ImUserServiceImpl implements IImUserService {
      */
     @Override
     public List<ImUserVo> queryList(ImUserBo bo) {
-        LambdaQueryWrapper<ImUser> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        LambdaQueryWrapper<ImUser> wrapper = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(wrapper);
     }
 
 
@@ -98,11 +98,11 @@ public class ImUserServiceImpl implements IImUserService {
     }
 
     private LambdaQueryWrapper<ImUser> buildQueryWrapper(ImUserBo bo) {
-        LambdaQueryWrapper<ImUser> lqw = Wrappers.lambdaQuery();
-        lqw.like(StringUtils.isNotBlank(bo.getUserName()), ImUser::getUserName, bo.getUserName());
-        lqw.like(StringUtils.isNotBlank(bo.getNickName()), ImUser::getNickName, bo.getNickName());
-        lqw.orderByDesc(ImUser::getCreatedTime);
-        return lqw;
+        LambdaQueryWrapper<ImUser> wrapper = Wrappers.lambdaQuery();
+        wrapper.like(StringUtils.isNotBlank(bo.getUserName()), ImUser::getUserName, bo.getUserName());
+        wrapper.like(StringUtils.isNotBlank(bo.getNickName()), ImUser::getNickName, bo.getNickName());
+        wrapper.orderByDesc(ImUser::getCreatedTime);
+        return wrapper;
     }
 
     @Override

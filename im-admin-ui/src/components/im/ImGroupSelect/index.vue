@@ -27,7 +27,7 @@ const props = defineProps({
 
 const loading = ref(false)
 const options = ref()
-const model = defineModel<number | Array<Number>>()
+const model = defineModel<number | Array<Number> | string | Array<String>>()
 const groupIds = computed({
 	get() {
         if(model.value != undefined){
@@ -43,7 +43,7 @@ const groupIds = computed({
 
 const handleRemote = (name: String)=>{
 	loading.value = true
-    findGroupByName().then((res) => {
+    findGroupByName(name).then((res) => {
       loading.value = false;
       options.value = res.data;
 	}); 

@@ -2,9 +2,16 @@ package org.dromara.im.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.fhs.core.trans.anno.Trans;
+import com.fhs.core.trans.constant.TransType;
+import com.fhs.core.trans.vo.TransPojo;
 import io.github.linpeilie.annotations.AutoMapper;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.dromara.im.constant.ImConstant;
+import org.dromara.im.domain.ImGroup;
 import org.dromara.im.domain.ImGroupMessage;
+import org.dromara.im.domain.ImUser;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,7 +28,7 @@ import java.util.Date;
 @Data
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ImGroupMessage.class)
-public class ImGroupMessageVo implements Serializable {
+public class ImGroupMessageVo implements TransPojo {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -35,14 +42,21 @@ public class ImGroupMessageVo implements Serializable {
     /**
      * 群id
      */
-    @ExcelProperty(value = "群id")
+    @Trans(type = TransType.SIMPLE,dataSource = ImConstant.DS_IM_PLATFORM,target = ImGroup.class, fields = "name", ref = "groupName")
     private Long groupId;
+
+    @ExcelProperty(value = "群名称")
+    private String groupName;
 
     /**
      * 发送用户id
      */
-    @ExcelProperty(value = "发送用户id")
+    @Trans(type = TransType.SIMPLE,dataSource = ImConstant.DS_IM_PLATFORM,target = ImUser.class, fields = "userName", ref = "sendUserName")
     private Long sendId;
+
+    @ExcelProperty(value = "发送用户")
+    private String sendUserName;
+
 
     /**
      * 发送用户昵称
@@ -84,13 +98,13 @@ public class ImGroupMessageVo implements Serializable {
      * 回执消息是否完成
      */
     @ExcelProperty(value = "回执消息是否完成")
-    private Long receiptOk;
+    private Boolean receiptOk;
 
     /**
      * 是否回执消息
      */
     @ExcelProperty(value = "是否回执消息")
-    private Long receipt;
+    private Boolean receipt;
 
     /**
      * 接收用户id,逗号分隔，为空表示发给所有成员

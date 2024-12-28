@@ -44,7 +44,7 @@
     </transition>
 
     <el-card shadow="never">
-      <el-table v-loading="loading" :data="privateMessageList" @selection-change="handleSelectionChange">
+      <el-table v-loading="loading" :data="privateMessageList" >
         <el-table-column label="发送用户" align="center" prop="sendUserName" />
         <el-table-column label="接收用户" align="center" prop="recvUserName" />
         <el-table-column label="发送内容" align="center" prop="content" >
@@ -70,7 +70,7 @@
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="详情" placement="top">
-              <el-button link type="primary"  @click="handleUpdate(scope.row)" v-hasPermi="['im:privateMessage:query']">详情</el-button>
+              <el-button link type="primary"  @click="handleDetail(scope.row)" v-hasPermi="['im:privateMessage:query']">详情</el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -88,7 +88,7 @@
           <el-input v-model="form.recvUserName"  />
         </el-form-item>
         <el-form-item label="发送内容">
-          <el-input v-model="form.content" :min-height="192"/>
+          <im-message-content :message="form" ></im-message-content>
         </el-form-item>
         <el-form-item label="发送时间" prop="sendTime">
           <el-date-picker clearable
@@ -124,9 +124,6 @@ const privateMessageList = ref<PrivateMessageVO[]>([]);
 const buttonLoading = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
-const ids = ref<Array<string | number>>([]);
-const single = ref(true);
-const multiple = ref(true);
 const total = ref(0);
 
 const queryFormRef = ref<ElFormInstance>();
@@ -201,30 +198,15 @@ const resetQuery = () => {
   handleQuery();
 }
 
-/** 多选框选中数据 */
-const handleSelectionChange = (selection: PrivateMessageVO[]) => {
-  ids.value = selection.map(item => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
 /** 修改按钮操作 */
-const handleUpdate = async (row?: PrivateMessageVO) => {
+const handleDetail = async (row?: PrivateMessageVO) => {
   reset();
-  const _id = row?.id || ids.value[0]
+  const _id = row?.id
   const res = await getPrivateMessage(_id);
   Object.assign(form.value, res.data);
   dialog.visible = true;
   dialog.title = "消息详情";
 }
-
-/** 导出按钮操作 */
-const handleExport = () => {
-  proxy?.download('im/privateMessage/export', {
-    ...queryParams.value
-  }, `privateMessage_${new Date().getTime()}.xlsx`)
-}
-
 onMounted(() => {
   getList();
 });

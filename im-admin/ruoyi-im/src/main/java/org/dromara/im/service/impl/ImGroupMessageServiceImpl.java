@@ -11,6 +11,7 @@ import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.constant.ImConstant;
 import org.dromara.im.domain.ImGroupMessage;
+import org.dromara.im.domain.ImPrivateMessage;
 import org.dromara.im.domain.bo.ImGroupMessageBo;
 import org.dromara.im.domain.vo.ImGroupMessageVo;
 import org.dromara.im.mapper.ImGroupMessageMapper;
@@ -54,8 +55,8 @@ public class ImGroupMessageServiceImpl implements IImGroupMessageService {
      */
     @Override
     public TableDataInfo<ImGroupMessageVo> queryPageList(ImGroupMessageBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ImGroupMessage> lqw = buildQueryWrapper(bo);
-        Page<ImGroupMessageVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        LambdaQueryWrapper<ImGroupMessage> wrapper = buildQueryWrapper(bo);
+        Page<ImGroupMessageVo> result = baseMapper.selectVoPage(pageQuery.build(), wrapper);
         return TableDataInfo.build(result);
     }
 
@@ -67,76 +68,22 @@ public class ImGroupMessageServiceImpl implements IImGroupMessageService {
      */
     @Override
     public List<ImGroupMessageVo> queryList(ImGroupMessageBo bo) {
-        LambdaQueryWrapper<ImGroupMessage> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        LambdaQueryWrapper<ImGroupMessage> wrapper = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(wrapper);
     }
 
     private LambdaQueryWrapper<ImGroupMessage> buildQueryWrapper(ImGroupMessageBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<ImGroupMessage> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getGroupId() != null, ImGroupMessage::getGroupId, bo.getGroupId());
-        lqw.eq(bo.getSendId() != null, ImGroupMessage::getSendId, bo.getSendId());
-        lqw.like(StringUtils.isNotBlank(bo.getSendNickName()), ImGroupMessage::getSendNickName, bo.getSendNickName());
-        lqw.eq(StringUtils.isNotBlank(bo.getAtUserIds()), ImGroupMessage::getAtUserIds, bo.getAtUserIds());
-        lqw.eq(StringUtils.isNotBlank(bo.getContent()), ImGroupMessage::getContent, bo.getContent());
-        lqw.eq(bo.getStatus() != null, ImGroupMessage::getStatus, bo.getStatus());
-        lqw.eq(bo.getType() != null, ImGroupMessage::getType, bo.getType());
-        lqw.eq(bo.getSendTime() != null, ImGroupMessage::getSendTime, bo.getSendTime());
-        lqw.eq(bo.getReceiptOk() != null, ImGroupMessage::getReceiptOk, bo.getReceiptOk());
-        lqw.eq(bo.getReceipt() != null, ImGroupMessage::getReceipt, bo.getReceipt());
-        lqw.eq(StringUtils.isNotBlank(bo.getRecvIds()), ImGroupMessage::getRecvIds, bo.getRecvIds());
-        return lqw;
+        LambdaQueryWrapper<ImGroupMessage> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(bo.getGroupId() != null, ImGroupMessage::getGroupId, bo.getGroupId());
+        wrapper.eq(bo.getSendId() != null, ImGroupMessage::getSendId, bo.getSendId());
+        wrapper.like(StringUtils.isNotBlank(bo.getContent()), ImGroupMessage::getContent, bo.getContent());
+        wrapper.eq(bo.getStatus() != null, ImGroupMessage::getStatus, bo.getStatus());
+        wrapper.eq(bo.getType() != null, ImGroupMessage::getType, bo.getType());
+        wrapper.between(params.get("beginTime") != null && params.get("endTime") != null, ImGroupMessage::getSendTime,
+            params.get("beginTime"), params.get("endTime"));
+        wrapper.orderByDesc(ImGroupMessage::getId);
+        return wrapper;
     }
 
-    /**
-     * 新增群消息
-     *
-     * @param bo 群消息
-     * @return 是否新增成功
-     */
-    @Override
-    public Boolean insertByBo(ImGroupMessageBo bo) {
-        ImGroupMessage add = MapstructUtils.convert(bo, ImGroupMessage.class);
-        validEntityBeforeSave(add);
-        boolean flag = baseMapper.insert(add) > 0;
-        if (flag) {
-            bo.setId(add.getId());
-        }
-        return flag;
-    }
-
-    /**
-     * 修改群消息
-     *
-     * @param bo 群消息
-     * @return 是否修改成功
-     */
-    @Override
-    public Boolean updateByBo(ImGroupMessageBo bo) {
-        ImGroupMessage update = MapstructUtils.convert(bo, ImGroupMessage.class);
-        validEntityBeforeSave(update);
-        return baseMapper.updateById(update) > 0;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(ImGroupMessage entity){
-        //TODO 做一些数据校验,如唯一约束
-    }
-
-    /**
-     * 校验并批量删除群消息信息
-     *
-     * @param ids     待删除的主键集合
-     * @param isValid 是否进行有效性校验
-     * @return 是否删除成功
-     */
-    @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
-        return baseMapper.deleteByIds(ids) > 0;
-    }
 }

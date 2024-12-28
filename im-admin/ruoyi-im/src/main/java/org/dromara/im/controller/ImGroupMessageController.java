@@ -47,17 +47,6 @@ public class ImGroupMessageController extends BaseController {
     }
 
     /**
-     * 导出群消息列表
-     */
-    @SaCheckPermission("im:groupMessage:export")
-    @Log(title = "群消息", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(ImGroupMessageBo bo, HttpServletResponse response) {
-        List<ImGroupMessageVo> list = imGroupMessageService.queryList(bo);
-        ExcelUtil.exportExcel(list, "群消息", ImGroupMessageVo.class, response);
-    }
-
-    /**
      * 获取群消息详细信息
      *
      * @param id 主键
@@ -69,38 +58,5 @@ public class ImGroupMessageController extends BaseController {
         return R.ok(imGroupMessageService.queryById(id));
     }
 
-    /**
-     * 新增群消息
-     */
-    @SaCheckPermission("im:groupMessage:add")
-    @Log(title = "群消息", businessType = BusinessType.INSERT)
-    @RepeatSubmit()
-    @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ImGroupMessageBo bo) {
-        return toAjax(imGroupMessageService.insertByBo(bo));
-    }
 
-    /**
-     * 修改群消息
-     */
-    @SaCheckPermission("im:groupMessage:edit")
-    @Log(title = "群消息", businessType = BusinessType.UPDATE)
-    @RepeatSubmit()
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ImGroupMessageBo bo) {
-        return toAjax(imGroupMessageService.updateByBo(bo));
-    }
-
-    /**
-     * 删除群消息
-     *
-     * @param ids 主键串
-     */
-    @SaCheckPermission("im:groupMessage:remove")
-    @Log(title = "群消息", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空")
-                          @PathVariable Long[] ids) {
-        return toAjax(imGroupMessageService.deleteWithValidByIds(List.of(ids), true));
-    }
 }

@@ -54,8 +54,8 @@ public class ImSensitiveWordServiceImpl implements IImSensitiveWordService {
      */
     @Override
     public TableDataInfo<ImSensitiveWordVo> queryPageList(ImSensitiveWordBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ImSensitiveWord> lqw = buildQueryWrapper(bo);
-        Page<ImSensitiveWordVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        LambdaQueryWrapper<ImSensitiveWord> wrapper = buildQueryWrapper(bo);
+        Page<ImSensitiveWordVo> result = baseMapper.selectVoPage(pageQuery.build(), wrapper);
         return TableDataInfo.build(result);
     }
 
@@ -67,17 +67,17 @@ public class ImSensitiveWordServiceImpl implements IImSensitiveWordService {
      */
     @Override
     public List<ImSensitiveWordVo> queryList(ImSensitiveWordBo bo) {
-        LambdaQueryWrapper<ImSensitiveWord> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        LambdaQueryWrapper<ImSensitiveWord> wrapper = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(wrapper);
     }
 
     private LambdaQueryWrapper<ImSensitiveWord> buildQueryWrapper(ImSensitiveWordBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<ImSensitiveWord> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getContent()), ImSensitiveWord::getContent, bo.getContent());
-        lqw.eq(bo.getEnabled() != null, ImSensitiveWord::getEnabled, bo.getEnabled());
-        lqw.eq(bo.getCreator() != null, ImSensitiveWord::getCreator, bo.getCreator());
-        return lqw;
+        LambdaQueryWrapper<ImSensitiveWord> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(StringUtils.isNotBlank(bo.getContent()), ImSensitiveWord::getContent, bo.getContent());
+        wrapper.eq(bo.getEnabled() != null, ImSensitiveWord::getEnabled, bo.getEnabled());
+        wrapper.eq(bo.getCreator() != null, ImSensitiveWord::getCreator, bo.getCreator());
+        return wrapper;
     }
 
     /**

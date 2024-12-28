@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
-import { GroupMessageVO, GroupMessageForm, GroupMessageQuery } from '@/api/im/groupMessage/types';
+import { GroupMessageVO, GroupMessageQuery } from '@/api/im/groupMessage/types';
 
 /**
  * 查询群消息列表
@@ -27,37 +27,3 @@ export const getGroupMessage = (id: string | number): AxiosPromise<GroupMessageV
   });
 };
 
-/**
- * 新增群消息
- * @param data
- */
-export const addGroupMessage = (data: GroupMessageForm) => {
-  return request({
-    url: '/im/groupMessage',
-    method: 'post',
-    data: data
-  });
-};
-
-/**
- * 修改群消息
- * @param data
- */
-export const updateGroupMessage = (data: GroupMessageForm) => {
-  return request({
-    url: '/im/groupMessage',
-    method: 'put',
-    data: data
-  });
-};
-
-/**
- * 删除群消息
- * @param id
- */
-export const delGroupMessage = (id: string | number | Array<string | number>) => {
-  return request({
-    url: '/im/groupMessage/' + id,
-    method: 'delete'
-  });
-};

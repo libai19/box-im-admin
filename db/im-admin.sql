@@ -360,6 +360,10 @@ insert into sys_menu values('6', '消息管理', '0', '3', 'message', null, '', 
 insert into sys_menu values('60', '私聊消息', '6', '1', 'private',          'im/message/private/index', '', 1, 0, 'C', '0', '0', 'im:privateMessage:list', 'education,     103, 1, sysdate(), null, null, 'IM私聊消息');
 insert into sys_menu values('6001', '私聊消息查询', '60', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:privateMessage:query',        '#', 103, 1, sysdate(), null, null, '');
 
+-- IM-群聊管理
+insert into sys_menu values('61', '群聊消息', '6', '2', 'group',          'im/message/group/index', '', 1, 0, 'C', '0', '0', 'im:groupMessage:list', 'category',     103, 1, sysdate(), null, null, 'IM群聊消息');
+insert into sys_menu values('6101', '群聊消息查询', '61', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:groupMessage:query',        '#', 103, 1, sysdate(), null, null, '');
+
 -- ----------------------------
 -- 6、用户和角色关联表  用户N-1角色
 -- ----------------------------

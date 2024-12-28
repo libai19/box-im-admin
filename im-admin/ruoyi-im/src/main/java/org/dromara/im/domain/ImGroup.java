@@ -2,6 +2,7 @@ package org.dromara.im.domain;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fhs.core.trans.vo.TransPojo;
 import lombok.Data;
 
 import java.io.Serial;
@@ -15,7 +16,7 @@ import java.util.Date;
  */
 @Data
 @TableName("im_group")
-public class ImGroup  {
+public class ImGroup implements TransPojo {
 
     @Serial
     private static final long serialVersionUID = 1L;

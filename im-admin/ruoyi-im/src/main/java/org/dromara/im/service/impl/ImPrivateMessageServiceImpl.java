@@ -52,8 +52,8 @@ public class ImPrivateMessageServiceImpl implements IImPrivateMessageService {
      */
     @Override
     public TableDataInfo<ImPrivateMessageVo> queryPageList(ImPrivateMessageBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ImPrivateMessage> lqw = buildQueryWrapper(bo);
-        Page<ImPrivateMessageVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        LambdaQueryWrapper<ImPrivateMessage> wrapper = buildQueryWrapper(bo);
+        Page<ImPrivateMessageVo> result = baseMapper.selectVoPage(pageQuery.build(), wrapper);
         return TableDataInfo.build(result);
     }
 
@@ -65,22 +65,22 @@ public class ImPrivateMessageServiceImpl implements IImPrivateMessageService {
      */
     @Override
     public List<ImPrivateMessageVo> queryList(ImPrivateMessageBo bo) {
-        LambdaQueryWrapper<ImPrivateMessage> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        LambdaQueryWrapper<ImPrivateMessage> wrapper = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(wrapper);
     }
 
     private LambdaQueryWrapper<ImPrivateMessage> buildQueryWrapper(ImPrivateMessageBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<ImPrivateMessage> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getSendId() != null, ImPrivateMessage::getSendId, bo.getSendId());
-        lqw.eq(bo.getRecvId() != null, ImPrivateMessage::getRecvId, bo.getRecvId());
-        lqw.like(StringUtils.isNotBlank(bo.getContent()), ImPrivateMessage::getContent, bo.getContent());
-        lqw.eq(bo.getType() != null, ImPrivateMessage::getType, bo.getType());
-        lqw.eq(bo.getStatus() != null, ImPrivateMessage::getStatus, bo.getStatus());
-        lqw.between(params.get("beginTime") != null && params.get("endTime") != null, ImPrivateMessage::getSendTime,
+        LambdaQueryWrapper<ImPrivateMessage> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(bo.getSendId() != null, ImPrivateMessage::getSendId, bo.getSendId());
+        wrapper.eq(bo.getRecvId() != null, ImPrivateMessage::getRecvId, bo.getRecvId());
+        wrapper.like(StringUtils.isNotBlank(bo.getContent()), ImPrivateMessage::getContent, bo.getContent());
+        wrapper.eq(bo.getType() != null, ImPrivateMessage::getType, bo.getType());
+        wrapper.eq(bo.getStatus() != null, ImPrivateMessage::getStatus, bo.getStatus());
+        wrapper.between(params.get("beginTime") != null && params.get("endTime") != null, ImPrivateMessage::getSendTime,
             params.get("beginTime"), params.get("endTime"));
-        lqw.orderByDesc(ImPrivateMessage::getId);
-        return lqw;
+        wrapper.orderByDesc(ImPrivateMessage::getId);
+        return wrapper;
     }
 
 }

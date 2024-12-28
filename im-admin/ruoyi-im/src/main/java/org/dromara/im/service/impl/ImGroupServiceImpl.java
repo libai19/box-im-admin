@@ -69,8 +69,8 @@ public class ImGroupServiceImpl implements IImGroupService {
      */
     @Override
     public TableDataInfo<ImGroupVo> queryPageList(ImGroupBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ImGroup> lqw = buildQueryWrapper(bo);
-        Page<ImGroupVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        LambdaQueryWrapper<ImGroup> wrapper = buildQueryWrapper(bo);
+        Page<ImGroupVo> result = baseMapper.selectVoPage(pageQuery.build(), wrapper);
         // 填充成员数量
         result.getRecords().forEach(vo -> vo.setMemberCount(groupMemberService.findCountByGroupId(vo.getId())));
         return TableDataInfo.build(result);
@@ -85,8 +85,8 @@ public class ImGroupServiceImpl implements IImGroupService {
     @TransMethodResult
     @Override
     public List<ImGroupVo> queryList(ImGroupBo bo) {
-        LambdaQueryWrapper<ImGroup> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        LambdaQueryWrapper<ImGroup> wrapper = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(wrapper);
     }
 
 
@@ -130,17 +130,17 @@ public class ImGroupServiceImpl implements IImGroupService {
 
     private LambdaQueryWrapper<ImGroup> buildQueryWrapper(ImGroupBo bo) {;
         Map<String, Object> params =  bo.getParams();
-        LambdaQueryWrapper<ImGroup> lqw = Wrappers.lambdaQuery();
-        lqw.like(StringUtils.isNotBlank(bo.getName()), ImGroup::getName, bo.getName());
-        lqw.eq(bo.getOwnerId() != null, ImGroup::getOwnerId, bo.getOwnerId());
-        lqw.eq(bo.getDissolve() != null, ImGroup::getDissolve, bo.getDissolve());
-        lqw.eq(bo.getCreatedTime() != null, ImGroup::getCreatedTime, bo.getCreatedTime());
-        lqw.eq(bo.getIsBanned() != null, ImGroup::getIsBanned, bo.getIsBanned());
-        lqw.eq(StringUtils.isNotBlank(bo.getReason()), ImGroup::getReason, bo.getReason());
-        lqw.between(params.get("beginTime") != null && params.get("endTime") != null,
+        LambdaQueryWrapper<ImGroup> wrapper = Wrappers.lambdaQuery();
+        wrapper.like(StringUtils.isNotBlank(bo.getName()), ImGroup::getName, bo.getName());
+        wrapper.eq(bo.getOwnerId() != null, ImGroup::getOwnerId, bo.getOwnerId());
+        wrapper.eq(bo.getDissolve() != null, ImGroup::getDissolve, bo.getDissolve());
+        wrapper.eq(bo.getCreatedTime() != null, ImGroup::getCreatedTime, bo.getCreatedTime());
+        wrapper.eq(bo.getIsBanned() != null, ImGroup::getIsBanned, bo.getIsBanned());
+        wrapper.eq(StringUtils.isNotBlank(bo.getReason()), ImGroup::getReason, bo.getReason());
+        wrapper.between(params.get("beginTime") != null && params.get("endTime") != null,
             ImGroup::getCreatedTime, params.get("beginTime"), params.get("endTime"));
-        lqw.orderByDesc(ImGroup::getCreatedTime);
-        return lqw;
+        wrapper.orderByDesc(ImGroup::getCreatedTime);
+        return wrapper;
     }
 
 }

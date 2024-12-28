@@ -69,12 +69,12 @@ public class ImGroupMessage {
     /**
      * 回执消息是否完成
      */
-    private Long receiptOk;
+    private Boolean receiptOk;
 
     /**
      * 是否回执消息
      */
-    private Long receipt;
+    private Boolean receipt;
 
     /**
      * 接收用户id,逗号分隔，为空表示发给所有成员
