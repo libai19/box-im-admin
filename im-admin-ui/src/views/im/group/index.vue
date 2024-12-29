@@ -12,20 +12,15 @@
               <im-user-select v-model="queryParams.ownerId"></im-user-select>
             </el-form-item>
             <el-form-item label="创建时间" prop="createdTime">
-              <el-date-picker
-                    v-model="dateRange"
-                    value-format="YYYY-MM-DD HH:mm:ss"
-                    type="daterange"
-                    range-separator="-"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
-                  ></el-date-picker>
+              <el-date-picker v-model="dateRange" value-format="YYYY-MM-DD HH:mm:ss" type="daterange"
+                range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
+                :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-              <el-button type="warning" plain icon="Download" @click="handleExport" v-hasPermi="['im:group:export']">导出</el-button>
+              <el-button type="warning" plain icon="Download" @click="handleExport"
+                v-hasPermi="['im:group:export']">导出</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -59,19 +54,11 @@
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
-            <el-tooltip content="详情" placement="top">
-              <el-button link type="primary" v-hasPermi="['im:group:query']"
-                @click="handleDetail(scope.row)">详情</el-button>
-            </el-tooltip>
-            <el-tooltip v-if="scope.row.isBanned"  placement="top">
-              <el-button link type="danger" v-hasPermi="['im:group:ban']" @click="handleUnban(scope.row)">解封</el-button>
-            </el-tooltip>
-            <el-tooltip v-else placement="top">
-              <el-button link type="danger" v-hasPermi="['im:group:ban']" @click="handleBan(scope.row)">封禁</el-button>
-            </el-tooltip>
-            <el-tooltip placement="top">
-              <el-button link type="primary"   @click="handleShowMember(scope.row.id)">查看成员</el-button>
-            </el-tooltip>
+            <el-button link type="primary" v-hasPermi="['im:group:query']"
+              @click="handleDetail(scope.row)">详情</el-button>
+            <el-button link type="danger" v-hasPermi="['im:group:ban']" @click="handleUnban(scope.row)">解封</el-button>
+            <el-button link type="danger" v-hasPermi="['im:group:ban']" @click="handleBan(scope.row)">封禁</el-button>
+            <el-button link type="primary" @click="handleShowMember(scope.row.id)">查看成员</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -114,9 +101,10 @@
         </div>
       </template>
     </el-dialog>
-    <el-drawer v-model="memberVisible" title="成员列表" :size="900" :close-on-press-escape="false" :close-on-click-modal="true">
-			<member ref="memberRef"></member>
-		</el-drawer>
+    <el-drawer v-model="memberVisible" title="成员列表" :size="900" :close-on-press-escape="false"
+      :close-on-click-modal="true">
+      <member ref="memberRef"></member>
+    </el-drawer>
   </div>
 </template>
 
@@ -260,8 +248,8 @@ const handleUnban = (group: any) => {
 }
 
 const handleShowMember = (id: number) => {
-	memberVisible.value = true;
-	nextTick(() => memberRef.value.init(id));
+  memberVisible.value = true;
+  nextTick(() => memberRef.value.init(id));
 }
 
 /** 提交按钮 */

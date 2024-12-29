@@ -4,11 +4,14 @@
       <div v-show="showSearch" class="mb-[10px]">
         <el-card shadow="hover">
           <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-            <el-form-item label="是否启用 0:未启用 1:启用" prop="enabled">
-              <el-input v-model="queryParams.enabled" placeholder="请输入是否启用 0:未启用 1:启用" clearable @keyup.enter="handleQuery" />
+            <el-form-item label="内容" prop="content">
+              <el-input v-model="queryParams.content" placeholder="内容" clearable @keyup.enter="handleQuery" />
             </el-form-item>
-            <el-form-item label="创建者" prop="creator">
-              <el-input v-model="queryParams.creator" placeholder="请输入创建者" clearable @keyup.enter="handleQuery" />
+            <el-form-item label="状态" prop="enabled">
+              <el-select v-model="queryParams.enabled"  clearable>
+                <el-option  key="1" label="开启" :value="true" />
+                <el-option  key="2" label="关闭" :value="false" />
+              </el-select>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -40,18 +43,18 @@
 
       <el-table v-loading="loading" :data="sensitiveWordList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="id" align="center" prop="id" v-if="true" />
-        <el-table-column label="敏感词内容" align="center" prop="content" />
-        <el-table-column label="是否启用 0:未启用 1:启用" align="center" prop="enabled" />
-        <el-table-column label="创建者" align="center" prop="creator" />
+        <el-table-column label="内容" align="center" prop="content" />
+        <el-table-column label="状态" align="center" prop="enabled" >
+          <template #default="scope">
+					  <el-switch v-model="scope.row.enabled" @change="switchEnabled(scope.row)" />
+				  </template>
+        </el-table-column>
+        <el-table-column label="创建者" align="center" prop="creatorName" />
+        <el-table-column label="创建时间" align="center" prop="createTime" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
-            <el-tooltip content="修改" placement="top">
-              <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['im:sensitiveWord:edit']"></el-button>
-            </el-tooltip>
-            <el-tooltip content="删除" placement="top">
-              <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['im:sensitiveWord:remove']"></el-button>
-            </el-tooltip>
+              <el-button link type="primary"  @click="handleUpdate(scope.row)" v-hasPermi="['im:sensitiveWord:edit']">修改</el-button>
+              <el-button link type="danger"  @click="handleDelete(scope.row)" v-hasPermi="['im:sensitiveWord:remove']">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -59,16 +62,13 @@
       <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
     </el-card>
     <!-- 添加或修改敏感词对话框 -->
-    <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
+    <el-dialog :title="dialog.title" v-model="dialog.visible" width="800px" append-to-body>
       <el-form ref="sensitiveWordFormRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="敏感词内容">
-          <editor v-model="form.content" :min-height="192"/>
+        <el-form-item label="内容">
+          <el-input v-model="form.content" :min-height="192"/>
         </el-form-item>
-        <el-form-item label="是否启用 0:未启用 1:启用" prop="enabled">
-          <el-input v-model="form.enabled" placeholder="请输入是否启用 0:未启用 1:启用" />
-        </el-form-item>
-        <el-form-item label="创建者" prop="creator">
-          <el-input v-model="form.creator" placeholder="请输入创建者" />
+        <el-form-item label="是否启用" prop="enabled">
+          <el-switch v-model="form.enabled"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -82,7 +82,7 @@
 </template>
 
 <script setup name="SensitiveWord" lang="ts">
-import { listSensitiveWord, getSensitiveWord, delSensitiveWord, addSensitiveWord, updateSensitiveWord } from '@/api/im/sensitiveWord';
+import { listSensitiveWord, getSensitiveWord, delSensitiveWord, addSensitiveWord, updateSensitiveWord,enableSensitiveWord } from '@/api/im/sensitiveWord';
 import { SensitiveWordVO, SensitiveWordQuery, SensitiveWordForm } from '@/api/im/sensitiveWord/types';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
@@ -122,18 +122,9 @@ const data = reactive<PageData<SensitiveWordForm, SensitiveWordQuery>>({
     }
   },
   rules: {
-    id: [
-      { required: true, message: "id不能为空", trigger: "blur" }
-    ],
     content: [
-      { required: true, message: "敏感词内容不能为空", trigger: "blur" }
-    ],
-    enabled: [
-      { required: true, message: "是否启用 0:未启用 1:启用不能为空", trigger: "blur" }
-    ],
-    creator: [
-      { required: true, message: "创建者不能为空", trigger: "blur" }
-    ],
+      { required: true, message: "内容不能为空", trigger: "blur" }
+    ]
   }
 });
 
@@ -182,6 +173,7 @@ const handleSelectionChange = (selection: SensitiveWordVO[]) => {
 /** 新增按钮操作 */
 const handleAdd = () => {
   reset();
+  form.value.enabled = true;
   dialog.visible = true;
   dialog.title = "添加敏感词";
 }
@@ -216,7 +208,7 @@ const submitForm = () => {
 /** 删除按钮操作 */
 const handleDelete = async (row?: SensitiveWordVO) => {
   const _ids = row?.id || ids.value;
-  await proxy?.$modal.confirm('是否确认删除敏感词编号为"' + _ids + '"的数据项？').finally(() => loading.value = false);
+  await proxy?.$modal.confirm('是否确认删除？').finally(() => loading.value = false);
   await delSensitiveWord(_ids);
   proxy?.$modal.msgSuccess("删除成功");
   await getList();
@@ -227,6 +219,11 @@ const handleExport = () => {
   proxy?.download('im/sensitiveWord/export', {
     ...queryParams.value
   }, `sensitiveWord_${new Date().getTime()}.xlsx`)
+}
+
+
+const switchEnabled = (row: any) => {
+    enableSensitiveWord(row)
 }
 
 onMounted(() => {

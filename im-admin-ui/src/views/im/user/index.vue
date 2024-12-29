@@ -15,7 +15,7 @@
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
               <el-button type="warning" plain icon="Download" @click="handleExport"
-              v-hasPermi="['im:user:export']">导出</el-button>
+                v-hasPermi="['im:user:export']">导出</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -58,16 +58,10 @@
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
-            <el-tooltip content="详情" placement="top">
-              <el-button link type="primary" v-hasPermi="['im:user:query']"
-                @click="handleDetail(scope.row)">详情</el-button>
-            </el-tooltip>
-            <el-tooltip v-if="scope.row.isBanned" content="解封" placement="top">
-              <el-button link type="danger" v-hasPermi="['im:user:ban']" @click="unbanHandle(scope.row)">解封</el-button>
-            </el-tooltip>
-            <el-tooltip v-else content="封禁" placement="top">
-              <el-button link type="danger" v-hasPermi="['im:user:ban']" @click="banHandle(scope.row)">封禁</el-button>
-            </el-tooltip>
+            <el-button link type="primary" v-hasPermi="['im:user:query']"
+              @click="handleDetail(scope.row)">详情</el-button>
+            <el-button link type="danger" v-hasPermi="['im:user:ban']" @click="unbanHandle(scope.row)">解封</el-button>
+            <el-button link type="danger" v-hasPermi="['im:user:ban']" @click="banHandle(scope.row)">封禁</el-button>
           </template>
         </el-table-column>
       </el-table>

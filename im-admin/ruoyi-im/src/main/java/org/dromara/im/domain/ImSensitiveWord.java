@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serial;
+import java.util.Date;
 
 /**
  * 敏感词对象 im_sensitive_word
@@ -31,14 +32,19 @@ public class ImSensitiveWord {
     private String content;
 
     /**
-     * 是否启用 0:未启用 1:启用
+     * 是否启用
      */
-    private Long enabled;
+    private Boolean enabled;
 
     /**
      * 创建者
      */
     private Long creator;
 
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
 }

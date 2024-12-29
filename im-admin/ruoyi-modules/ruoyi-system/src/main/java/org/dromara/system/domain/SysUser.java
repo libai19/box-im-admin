@@ -1,6 +1,7 @@
 package org.dromara.system.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fhs.core.trans.vo.TransPojo;
 import org.dromara.common.core.constant.UserConstants;
 import org.dromara.common.tenant.core.TenantEntity;
 import lombok.Data;
@@ -19,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_user")
-public class SysUser extends TenantEntity {
+public class SysUser extends TenantEntity implements TransPojo {
 
     /**
      * 用户ID

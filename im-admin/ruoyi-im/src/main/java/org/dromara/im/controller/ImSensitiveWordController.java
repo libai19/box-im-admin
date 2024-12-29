@@ -103,4 +103,12 @@ public class ImSensitiveWordController extends BaseController {
                           @PathVariable Long[] ids) {
         return toAjax(imSensitiveWordService.deleteWithValidByIds(List.of(ids), true));
     }
+
+    @PutMapping("enable")
+    @Log(title = "敏感词", businessType = BusinessType.UPDATE)
+    @SaCheckPermission("im:sensitiveWord:edit")
+    public  R<Void> switchEnabled(@Validated(EditGroup.class) @RequestBody ImSensitiveWordBo bo){
+        return toAjax(imSensitiveWordService.setEnable(bo));
+
+    }
 }

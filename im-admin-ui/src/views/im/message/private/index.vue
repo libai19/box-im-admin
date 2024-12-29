@@ -69,9 +69,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
-            <el-tooltip content="详情" placement="top">
               <el-button link type="primary"  @click="handleDetail(scope.row)" v-hasPermi="['im:privateMessage:query']">详情</el-button>
-            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>

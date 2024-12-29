@@ -1,10 +1,12 @@
 <template>
   <div class="login">
+
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
       <h3 class="title">盒子IM后台管理</h3>
       <el-form-item v-if="tenantEnabled" prop="tenantId">
         <el-select v-model="loginForm.tenantId" filterable placeholder="请选择/输入公司名称" style="width: 100%">
-          <el-option v-for="item in tenantList" :key="item.tenantId" :label="item.companyName" :value="item.tenantId"></el-option>
+          <el-option v-for="item in tenantList" :key="item.tenantId" :label="item.companyName"
+            :value="item.tenantId"></el-option>
           <template #prefix><svg-icon icon-class="company" class="el-input__icon input-icon" /></template>
         </el-select>
       </el-form-item>
@@ -14,12 +16,14 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="loginForm.password" type="password" size="large" auto-complete="off" placeholder="密码" @keyup.enter="handleLogin">
+        <el-input v-model="loginForm.password" type="password" size="large" auto-complete="off" placeholder="密码"
+          @keyup.enter="handleLogin">
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
       <el-form-item v-if="captchaEnabled" prop="code">
-        <el-input v-model="loginForm.code" size="large" auto-complete="off" placeholder="验证码" style="width: 63%" @keyup.enter="handleLogin">
+        <el-input v-model="loginForm.code" size="large" auto-complete="off" placeholder="验证码" style="width: 63%"
+          @keyup.enter="handleLogin">
           <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template>
         </el-input>
         <div class="login-code">
@@ -42,11 +46,10 @@
 
 <script setup lang="ts">
 import { getCodeImg, getTenantList } from '@/api/login';
-import { authBinding } from '@/api/system/social/auth';
 import { useUserStore } from '@/store/modules/user';
 import { LoginData, TenantVO } from '@/api/types';
 import { to } from 'await-to-js';
-import { HttpStatus } from '@/enums/RespEnum';
+import logo from '@/assets/logo/logo.png';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -177,17 +180,21 @@ onMounted(() => {
 <style lang="scss" scoped>
 .login {
   display: flex;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
   height: 100%;
   background-image: url('../assets/images/login-background.jpg');
-  background-size: cover;
+  background-size: 100% 100%;
+
 }
+
+
 
 .title {
   margin: 0px auto 30px auto;
   text-align: center;
-  color: #707070;
+  color: var(--el-color-primary);
+  font-weight: 600;
 }
 
 .login-form {
@@ -195,7 +202,8 @@ onMounted(() => {
   background: #ffffff;
   width: 400px;
   padding: 25px 25px 5px 25px;
-
+  
+  margin-right: 12%;
   .el-input {
     height: 40px;
 

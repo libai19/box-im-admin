@@ -3,8 +3,7 @@
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>盒子IM 后台管理系统</h2>
-       
-      
+        <h4>盒子IM是一个仿微信的聊天系统，支持私聊、群聊、离线消息、发送图片、文件、语音、emoji表情、音视频通话等功能</h4>
       </el-col>
     </el-row>
     <el-divider />

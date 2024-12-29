@@ -1,5 +1,6 @@
 package org.dromara.im.domain.bo;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,8 @@ import org.dromara.common.core.validate.EditGroup;
 import org.dromara.common.mybatis.core.domain.BaseEntity;
 import org.dromara.im.domain.ImSensitiveWord;
 
+import java.util.Date;
+
 /**
  * 敏感词业务对象 im_sensitive_word
  *
@@ -17,9 +20,8 @@ import org.dromara.im.domain.ImSensitiveWord;
  * @date 2024-12-22
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = ImSensitiveWord.class, reverseConvertGenerate = false)
-public class ImSensitiveWordBo extends BaseEntity {
+public class ImSensitiveWordBo {
 
     /**
      * id
@@ -34,16 +36,20 @@ public class ImSensitiveWordBo extends BaseEntity {
     private String content;
 
     /**
-     * 是否启用 0:未启用 1:启用
+     * 是否启用
      */
-    @NotNull(message = "是否启用 0:未启用 1:启用不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long enabled;
+    @NotNull(message = "是否启用", groups = { EditGroup.class })
+    private Boolean enabled;
 
     /**
      * 创建者
      */
-    @NotNull(message = "创建者不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long creator;
 
+    /**
+     * 创建时间
+     */
+    @ExcelProperty(value = "创建时间")
+    private Date createTime;
 
 }

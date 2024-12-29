@@ -63,9 +63,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
-            <el-tooltip  placement="top">
-              <el-button link type="primary"  @click="handleDetail(scope.row)" v-hasPermi="['im:groupMessage:edit']">详情</el-button>
-            </el-tooltip>
+              <el-button link type="primary"  @click="handleDetail(scope.row)" v-hasPermi="['im:groupMessage:query']">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -109,7 +107,7 @@
 </template>
 
 <script setup name="GroupMessage" lang="ts">
-import { listGroupMessage, getGroupMessage, delGroupMessage, addGroupMessage, updateGroupMessage } from '@/api/im/groupMessage';
+import { listGroupMessage, getGroupMessage } from '@/api/im/groupMessage';
 import { GroupMessageVO, GroupMessageQuery, GroupMessageForm } from '@/api/im/groupMessage/types';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;

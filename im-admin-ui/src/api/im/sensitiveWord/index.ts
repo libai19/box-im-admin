@@ -61,3 +61,16 @@ export const delSensitiveWord = (id: string | number | Array<string | number>) =
     method: 'delete'
   });
 };
+
+
+/**
+ * 开启/关闭敏感词
+ * @param id
+ */
+export const enableSensitiveWord = (data: SensitiveWordForm) => {
+  return request({
+    url: '/im/sensitiveWord/enable',
+    method: 'put',
+    data: data
+  });
+};

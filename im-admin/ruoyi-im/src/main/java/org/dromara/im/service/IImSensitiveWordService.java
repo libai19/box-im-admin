@@ -65,4 +65,11 @@ public interface IImSensitiveWordService {
      * @return 是否删除成功
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    /**
+     * 设置敏感词开关
+     * @param bo 敏感词
+     * @return
+     */
+    Boolean setEnable(ImSensitiveWordBo bo);
 }

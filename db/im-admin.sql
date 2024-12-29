@@ -353,6 +353,14 @@ insert into sys_menu values('6001', '私聊消息查询', '60', '1',  '#', '', '
 insert into sys_menu values('61', '群聊消息', '6', '2', 'group',          'im/message/group/index', '', 1, 0, 'C', '0', '0', 'im:groupMessage:list', 'category',     103, 1, sysdate(), null, null, 'IM群聊消息');
 insert into sys_menu values('6101', '群聊消息查询', '61', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:groupMessage:query',        '#', 103, 1, sysdate(), null, null, '');
 
+-- IM-敏感词管理
+insert into sys_menu values('7', '敏感词管理', '0', '2', 'im/sensitiveWord',          'im/sensitiveWord/index', '', 1, 0, 'C', '0', '0', 'im:sensitiveWord:list', 'documentation',     103, 1, sysdate(), null, null, 'IM敏感词管理');
+insert into sys_menu values('7001', '敏感词查询', '7', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:query',        '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('7002', '敏感词添加', '7', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:add',          '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('7003', '敏感词删除', '7', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:remove',         '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('7004', '敏感词修改', '7', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:edit',         '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('7005', '敏感词导出', '7', '5',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:export',         '#', 103, 1, sysdate(), null, null, '');
+
 -- ----------------------------
 -- 6、用户和角色关联表  用户N-1角色
 -- ----------------------------

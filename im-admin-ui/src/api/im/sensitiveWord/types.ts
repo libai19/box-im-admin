@@ -12,7 +12,7 @@ export interface SensitiveWordVO {
   /**
    * 是否启用 0:未启用 1:启用
    */
-  enabled: number;
+  enabled: boolean;
 
   /**
    * 创建者
@@ -33,9 +33,9 @@ export interface SensitiveWordForm extends BaseEntity {
   content?: string;
 
   /**
-   * 是否启用 0:未启用 1:启用
+   * 是否启用
    */
-  enabled?: number;
+  enabled?: boolean;
 
   /**
    * 创建者
@@ -54,7 +54,7 @@ export interface SensitiveWordQuery extends PageQuery {
   /**
    * 是否启用 0:未启用 1:启用
    */
-  enabled?: number;
+  enabled?: boolean;
 
   /**
    * 创建者
