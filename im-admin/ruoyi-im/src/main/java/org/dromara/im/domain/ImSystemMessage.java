@@ -1,13 +1,8 @@
 package org.dromara.im.domain;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.dromara.common.mybatis.core.domain.BaseEntity;
-
-import java.io.Serial;
 
 /**
  * 系统消息对象 im_system_message
@@ -18,16 +13,7 @@ import java.io.Serial;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("im_system_message")
-public class ImSystemMessage extends BaseEntity {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * id
-     */
-    @TableId(value = "id")
-    private Long id;
+public class ImSystemMessage extends ImBaseEntity {
 
     /**
      * 标题
@@ -58,27 +44,6 @@ public class ImSystemMessage extends BaseEntity {
      * 外部链接
      */
     private String externLink;
-
-    /**
-     * 版本号
-     */
-    @Version
-    private Long version;
-
-    /**
-     * 删除标识  0：正常   1：已删除
-     */
-    private Long deleted;
-
-    /**
-     * 创建者
-     */
-    private Long creator;
-
-    /**
-     * 更新者
-     */
-    private Long updater;
 
 
 }

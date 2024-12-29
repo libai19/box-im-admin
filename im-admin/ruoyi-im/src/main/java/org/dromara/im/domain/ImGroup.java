@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fhs.core.trans.vo.TransPojo;
 import lombok.Data;
 
-import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -18,8 +17,6 @@ import java.util.Date;
 @TableName("im_group")
 public class ImGroup implements TransPojo {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * id

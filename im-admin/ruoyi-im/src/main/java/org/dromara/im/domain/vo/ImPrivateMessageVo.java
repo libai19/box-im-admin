@@ -11,7 +11,6 @@ import org.dromara.im.constant.ImConstant;
 import org.dromara.im.domain.ImPrivateMessage;
 import org.dromara.im.domain.ImUser;
 
-import java.io.Serial;
 import java.util.Date;
 
 
@@ -26,9 +25,6 @@ import java.util.Date;
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ImPrivateMessage.class)
 public class ImPrivateMessageVo implements TransPojo {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * id

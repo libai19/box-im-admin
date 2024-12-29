@@ -8,8 +8,6 @@ import org.dromara.common.excel.annotation.ExcelDictFormat;
 import org.dromara.common.excel.convert.ExcelDictConvert;
 import org.dromara.im.domain.ImUser;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 
 
@@ -23,10 +21,8 @@ import java.util.Date;
 @Data
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ImUser.class)
-public class ImUserVo implements Serializable {
+public class ImUserVo {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * id

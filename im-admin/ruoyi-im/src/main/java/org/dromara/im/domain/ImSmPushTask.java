@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
-import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -18,8 +17,6 @@ import java.util.Date;
 @TableName("im_sm_push_task")
 public class ImSmPushTask {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * id

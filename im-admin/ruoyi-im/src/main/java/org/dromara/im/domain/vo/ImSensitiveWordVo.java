@@ -11,7 +11,6 @@ import org.dromara.common.excel.annotation.ExcelDictFormat;
 import org.dromara.im.domain.ImSensitiveWord;
 import org.dromara.system.domain.SysUser;
 
-import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -24,9 +23,6 @@ import java.util.Date;
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ImSensitiveWord.class)
 public class ImSensitiveWordVo implements TransPojo {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * id

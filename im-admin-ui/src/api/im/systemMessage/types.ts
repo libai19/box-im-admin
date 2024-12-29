@@ -35,19 +35,14 @@ export interface SystemMessageVO {
   externLink: string;
 
   /**
-   * 删除标识  0：正常   1：已删除
-   */
-  deleted: number;
-
-  /**
    * 创建者
    */
   creator: number;
-
+  
   /**
-   * 更新者
+   * 创建者
    */
-  updater: number;
+  creatorName: string
 
 }
 

@@ -344,14 +344,21 @@ insert into sys_menu values('5002', '群聊封禁', '5', '2',  '#', '', '', 1, 0
 insert into sys_menu values('5003', '群聊导出', '5', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:export',         '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('5004', '群聊成员', '5', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:group:member',         '#', 103, 1, sysdate(), null, null, '');
 
--- IM-私聊管理
+-- IM-私聊消息
 insert into sys_menu values('6', '消息管理', '0', '3', 'message', null, '', 1, 0, 'M', '0', '0', '', 'message',     103, 1, sysdate(), null, null, 'IM消息管理');
 insert into sys_menu values('60', '私聊消息', '6', '1', 'private','im/message/private/index', '', 1, 0, 'C', '0', '0', 'im:privateMessage:list', 'education',     103, 1, sysdate(), null, null, 'IM私聊消息');
 insert into sys_menu values('6001', '私聊消息查询', '60', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:privateMessage:query',        '#', 103, 1, sysdate(), null, null, '');
 
--- IM-群聊管理
+-- IM-群聊消息
 insert into sys_menu values('61', '群聊消息', '6', '2', 'group',          'im/message/group/index', '', 1, 0, 'C', '0', '0', 'im:groupMessage:list', 'category',     103, 1, sysdate(), null, null, 'IM群聊消息');
 insert into sys_menu values('6101', '群聊消息查询', '61', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:groupMessage:query',        '#', 103, 1, sysdate(), null, null, '');
+
+-- IM-系统消息
+insert into sys_menu values('62', '系统消息', '6', '4', 'system',          'im/message/system/index', '', 1, 0, 'C', '0', '0', 'im:systemMessage:list', 'category',     103, 1, sysdate(), null, null, 'IM系统消息');
+insert into sys_menu values('6201', '系统消息查询', '6', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:query',        '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6202', '系统消息添加', '6', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:add',          '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6203', '系统消息删除', '6', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:remove',         '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6204', '系统消息修改', '6', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:edit',         '#', 103, 1, sysdate(), null, null, '');
 
 -- IM-敏感词管理
 insert into sys_menu values('7', '敏感词管理', '0', '2', 'im/sensitiveWord',          'im/sensitiveWord/index', '', 1, 0, 'C', '0', '0', 'im:sensitiveWord:list', 'documentation',     103, 1, sysdate(), null, null, 'IM敏感词管理');
@@ -360,6 +367,8 @@ insert into sys_menu values('7002', '敏感词添加', '7', '2',  '#', '', '', 1
 insert into sys_menu values('7003', '敏感词删除', '7', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:remove',         '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('7004', '敏感词修改', '7', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:edit',         '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('7005', '敏感词导出', '7', '5',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:export',         '#', 103, 1, sysdate(), null, null, '');
+
+
 
 -- ----------------------------
 -- 6、用户和角色关联表  用户N-1角色
@@ -470,6 +479,8 @@ insert into sys_dict_type values(13, '000000', '布尔值', 'im_bool',     103, 
 insert into sys_dict_type values(14, '000000', '用户状态', 'im_user_status',    103, 1, sysdate(), null, null, 'IM用户状态');
 insert into sys_dict_type values(15, '000000', '消息状态', 'im_message_status',    103, 1, sysdate(), null, null, 'IM消息状态');
 insert into sys_dict_type values(16, '000000', '消息类型', 'im_message_type',    103, 1, sysdate(), null, null, 'IM消息类型');
+insert into sys_dict_type values(17, '000000', '系统消息内容类型', 'im_sm_content_type',    103, 1, sysdate(), null, null, 'IM系统消息内容类型');
+insert into sys_dict_type values(18, '000000', '系统消息推送状态', 'im_sm_push_status',    103, 1, sysdate(), null, null, 'IM系统消息推送状态');
 
 
 -- ----------------------------
@@ -545,6 +556,12 @@ insert into sys_dict_data values(51, '000000', 5,  '视频', '4',      'im_messa
 insert into sys_dict_data values(52, '000000', 6,  '文字提示', '21',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(53, '000000', 7,  '语音通话', '40',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(54, '000000', 8,  '视频通话', '41',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(55, '000000', 1,  '富文本', '0',       'im_sm_content_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(56, '000000', 2,  '外部链接', '1',      'im_sm_content_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(57, '000000', 1,  '待发送', '1',       'im_sm_push_status',     '',   'warn', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(58, '000000', 2,  '发送中', '2',      'im_sm_push_status',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(59, '000000', 3,  '已发送', '3',      'im_sm_push_status',     '',   'success', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(60, '000000', 4,  '已取消', '4',      'im_sm_push_status',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
 
 
 -- ----------------------------

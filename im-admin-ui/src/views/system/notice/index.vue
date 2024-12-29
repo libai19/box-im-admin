@@ -184,7 +184,7 @@ const cancel = () => {
 /** 表单重置 */
 const reset = () => {
   form.value = { ...initFormData };
-  noticeFormRef.value?.resetFields();
+  //noticeFormRef.value?.resetFields();
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {

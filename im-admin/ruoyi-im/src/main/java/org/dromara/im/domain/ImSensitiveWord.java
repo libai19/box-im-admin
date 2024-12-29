@@ -1,10 +1,11 @@
 package org.dromara.im.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -16,9 +17,6 @@ import java.util.Date;
 @Data
 @TableName("im_sensitive_word")
 public class ImSensitiveWord {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * id
@@ -39,12 +37,14 @@ public class ImSensitiveWord {
     /**
      * 创建者
      */
+    @TableField(fill = FieldFill.INSERT)
     private Long creator;
 
 
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
 }

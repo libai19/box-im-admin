@@ -1,13 +1,14 @@
 package org.dromara.im.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
-import com.alibaba.excel.annotation.ExcelProperty;
+import com.fhs.core.trans.anno.Trans;
+import com.fhs.core.trans.constant.TransType;
+import com.fhs.core.trans.vo.TransPojo;
 import io.github.linpeilie.annotations.AutoMapper;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.dromara.im.domain.ImSystemMessage;
-
-import java.io.Serial;
-import java.io.Serializable;
+import org.dromara.system.domain.SysUser;
 
 
 
@@ -20,70 +21,50 @@ import java.io.Serializable;
 @Data
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ImSystemMessage.class)
-public class ImSystemMessageVo implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class ImSystemMessageVo implements TransPojo {
 
     /**
      * id
      */
-    @ExcelProperty(value = "id")
     private Long id;
 
     /**
      * 标题
      */
-    @ExcelProperty(value = "标题")
     private String title;
 
     /**
      * 封面
      */
-    @ExcelProperty(value = "封面")
     private String coverUrl;
 
     /**
      * 简介
      */
-    @ExcelProperty(value = "简介")
     private String intro;
 
     /**
-     * 内容类型 0:富文本  1:外部链接
+     * 内容类型
      */
-    @ExcelProperty(value = "内容类型 0:富文本  1:外部链接")
     private Long contentType;
 
     /**
      * 富文本内容，base64编码
      */
-    @ExcelProperty(value = "富文本内容，base64编码")
     private String richText;
 
     /**
      * 外部链接
      */
-    @ExcelProperty(value = "外部链接")
     private String externLink;
-
-    /**
-     * 删除标识  0：正常   1：已删除
-     */
-    @ExcelProperty(value = "删除标识  0：正常   1：已删除")
-    private Long deleted;
 
     /**
      * 创建者
      */
-    @ExcelProperty(value = "创建者")
+    @Trans(type = TransType.SIMPLE, target = SysUser.class, fields = "userName", ref = "creatorName")
     private Long creator;
 
-    /**
-     * 更新者
-     */
-    @ExcelProperty(value = "更新者")
-    private Long updater;
-
+    @Schema(description = "创建者名称")
+    private String creatorName;
 
 }

@@ -1,5 +1,6 @@
 package org.dromara.im.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 系统消息Service业务层处理
@@ -72,17 +72,10 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
     }
 
     private LambdaQueryWrapper<ImSystemMessage> buildQueryWrapper(ImSystemMessageBo bo) {
-        Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<ImSystemMessage> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(StringUtils.isNotBlank(bo.getTitle()), ImSystemMessage::getTitle, bo.getTitle());
-        wrapper.eq(StringUtils.isNotBlank(bo.getCoverUrl()), ImSystemMessage::getCoverUrl, bo.getCoverUrl());
-        wrapper.eq(StringUtils.isNotBlank(bo.getIntro()), ImSystemMessage::getIntro, bo.getIntro());
         wrapper.eq(bo.getContentType() != null, ImSystemMessage::getContentType, bo.getContentType());
-        wrapper.eq(StringUtils.isNotBlank(bo.getRichText()), ImSystemMessage::getRichText, bo.getRichText());
-        wrapper.eq(StringUtils.isNotBlank(bo.getExternLink()), ImSystemMessage::getExternLink, bo.getExternLink());
-        wrapper.eq(bo.getDeleted() != null, ImSystemMessage::getDeleted, bo.getDeleted());
-        wrapper.eq(bo.getCreator() != null, ImSystemMessage::getCreator, bo.getCreator());
-        wrapper.eq(bo.getUpdater() != null, ImSystemMessage::getUpdater, bo.getUpdater());
+        wrapper.orderByDesc(ImSystemMessage::getId);
         return wrapper;
     }
 
@@ -95,12 +88,7 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
     @Override
     public Boolean insertByBo(ImSystemMessageBo bo) {
         ImSystemMessage add = MapstructUtils.convert(bo, ImSystemMessage.class);
-        validEntityBeforeSave(add);
-        boolean flag = baseMapper.insert(add) > 0;
-        if (flag) {
-            bo.setId(add.getId());
-        }
-        return flag;
+        return  baseMapper.insert(add) > 0;
     }
 
     /**
@@ -112,16 +100,9 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
     @Override
     public Boolean updateByBo(ImSystemMessageBo bo) {
         ImSystemMessage update = MapstructUtils.convert(bo, ImSystemMessage.class);
-        validEntityBeforeSave(update);
         return baseMapper.updateById(update) > 0;
     }
 
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(ImSystemMessage entity){
-        //TODO 做一些数据校验,如唯一约束
-    }
 
     /**
      * 校验并批量删除系统消息信息
@@ -132,9 +113,20 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
         return baseMapper.deleteByIds(ids) > 0;
+    }
+
+    @Override
+    public List<ImSystemMessageVo> findByTitle(String title) {
+        // 取出标题匹配的前10条
+        LambdaQueryWrapper<ImSystemMessage> wrapper = Wrappers.lambdaQuery();
+        if(StrUtil.isNotEmpty(title)){
+            wrapper.like(ImSystemMessage::getTitle, title);
+        }
+        wrapper.select(ImSystemMessage::getId, ImSystemMessage::getTitle);
+        wrapper.orderByDesc(ImSystemMessage::getId);
+        wrapper.last("limit 10");
+        return baseMapper.selectVoList(wrapper);
+
     }
 }

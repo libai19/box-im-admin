@@ -14,7 +14,6 @@ import org.dromara.im.constant.ImConstant;
 import org.dromara.im.domain.ImGroup;
 import org.dromara.im.domain.ImUser;
 
-import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -27,9 +26,6 @@ import java.util.Date;
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ImGroup.class)
 public class ImGroupVo implements TransPojo {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * id
