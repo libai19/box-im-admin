@@ -2,8 +2,6 @@ package org.dromara.im.domain.bo;
 
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.dromara.common.mybatis.core.domain.BaseEntity;
 import org.dromara.im.domain.ImPrivateMessage;
 
 import java.util.Date;

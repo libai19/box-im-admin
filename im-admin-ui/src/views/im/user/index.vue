@@ -60,8 +60,8 @@
           <template #default="scope">
             <el-button link type="primary" v-hasPermi="['im:user:query']"
               @click="handleDetail(scope.row)">详情</el-button>
-            <el-button link type="danger" v-hasPermi="['im:user:ban']" @click="unbanHandle(scope.row)">解封</el-button>
-            <el-button link type="danger" v-hasPermi="['im:user:ban']" @click="banHandle(scope.row)">封禁</el-button>
+            <el-button v-if="scope.row.isBanned" link type="danger" v-hasPermi="['im:user:ban']" @click="unbanHandle(scope.row)">解封</el-button>
+            <el-button v-else link type="danger" v-hasPermi="['im:user:ban']" @click="banHandle(scope.row)">封禁</el-button>
           </template>
         </el-table-column>
       </el-table>

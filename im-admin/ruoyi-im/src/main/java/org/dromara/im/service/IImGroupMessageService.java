@@ -5,7 +5,6 @@ import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.domain.bo.ImGroupMessageBo;
 import org.dromara.im.domain.vo.ImGroupMessageVo;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

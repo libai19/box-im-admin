@@ -6,7 +6,6 @@ import com.fhs.core.trans.anno.Trans;
 import com.fhs.core.trans.constant.TransType;
 import com.fhs.core.trans.vo.TransPojo;
 import io.github.linpeilie.annotations.AutoMapper;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.dromara.im.constant.ImConstant;
 import org.dromara.im.domain.ImGroup;
@@ -14,7 +13,6 @@ import org.dromara.im.domain.ImGroupMessage;
 import org.dromara.im.domain.ImUser;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 
 

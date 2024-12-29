@@ -12,6 +12,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
+import org.dromara.im.config.ImCacheConfig;
 import org.dromara.im.constant.ImConstant;
 import org.dromara.im.constant.ImRedisKey;
 import org.dromara.im.domain.ImGroup;
@@ -35,10 +36,9 @@ import java.util.Map;
  * 群Service业务层处理
  *
  * @author Blue
- * @date 2024-12-22
  */
 @DS(ImConstant.DS_IM_PLATFORM)
-@CacheConfig(cacheNames = ImRedisKey.IM_CACHE_GROUP)
+@CacheConfig(cacheManager = ImCacheConfig.REDIS_CACHE_MANAGER ,cacheNames = ImRedisKey.IM_CACHE_GROUP)
 @RequiredArgsConstructor
 @Service
 public class ImGroupServiceImpl implements IImGroupService {
@@ -128,7 +128,7 @@ public class ImGroupServiceImpl implements IImGroupService {
         return  baseMapper.selectVoList(queryWrapper);
     }
 
-    private LambdaQueryWrapper<ImGroup> buildQueryWrapper(ImGroupBo bo) {;
+    private LambdaQueryWrapper<ImGroup> buildQueryWrapper(ImGroupBo bo) {
         Map<String, Object> params =  bo.getParams();
         LambdaQueryWrapper<ImGroup> wrapper = Wrappers.lambdaQuery();
         wrapper.like(StringUtils.isNotBlank(bo.getName()), ImGroup::getName, bo.getName());

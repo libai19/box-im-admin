@@ -5,20 +5,17 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
-import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.constant.ImConstant;
 import org.dromara.im.domain.ImGroupMessage;
-import org.dromara.im.domain.ImPrivateMessage;
 import org.dromara.im.domain.bo.ImGroupMessageBo;
 import org.dromara.im.domain.vo.ImGroupMessageVo;
 import org.dromara.im.mapper.ImGroupMessageMapper;
 import org.dromara.im.service.IImGroupMessageService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

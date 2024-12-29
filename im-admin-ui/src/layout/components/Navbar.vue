@@ -272,8 +272,8 @@ watch(
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
+          width: 35px;
+          height: 35px;
           border-radius: 10px;
           margin-top: 10px;
         }

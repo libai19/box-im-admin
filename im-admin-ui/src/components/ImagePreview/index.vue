@@ -57,8 +57,7 @@ const realHeight = computed(() => (typeof props.height == 'string' ? props.heigh
 .el-image {
   border-radius: 5px;
   background-color: #ebeef5;
-  box-shadow: 0 0 5px 1px #ccc;
-
+  
   :deep(.el-image__inner) {
     transition: all 0.3s;
     cursor: pointer;

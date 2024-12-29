@@ -56,8 +56,8 @@
           <template #default="scope">
             <el-button link type="primary" v-hasPermi="['im:group:query']"
               @click="handleDetail(scope.row)">详情</el-button>
-            <el-button link type="danger" v-hasPermi="['im:group:ban']" @click="handleUnban(scope.row)">解封</el-button>
-            <el-button link type="danger" v-hasPermi="['im:group:ban']" @click="handleBan(scope.row)">封禁</el-button>
+            <el-button v-if="scope.row.isBanned" link type="danger" v-hasPermi="['im:group:ban']" @click="handleUnban(scope.row)">解封</el-button>
+            <el-button v-else link type="danger" v-hasPermi="['im:group:ban']" @click="handleBan(scope.row)">封禁</el-button>
             <el-button link type="primary" @click="handleShowMember(scope.row.id)">查看成员</el-button>
           </template>
         </el-table-column>

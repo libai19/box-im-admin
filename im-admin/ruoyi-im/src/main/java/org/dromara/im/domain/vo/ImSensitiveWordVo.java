@@ -8,14 +8,10 @@ import com.fhs.core.trans.vo.TransPojo;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import org.dromara.common.excel.annotation.ExcelDictFormat;
-import org.dromara.common.translation.annotation.Translation;
-import org.dromara.common.translation.constant.TransConstant;
 import org.dromara.im.domain.ImSensitiveWord;
 import org.dromara.system.domain.SysUser;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
