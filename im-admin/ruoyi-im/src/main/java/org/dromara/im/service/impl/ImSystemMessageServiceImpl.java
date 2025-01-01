@@ -6,19 +6,23 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
+import org.dromara.common.core.exception.ServiceException;
 import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
+import org.dromara.common.satoken.utils.LoginHelper;
 import org.dromara.im.constant.ImConstant;
 import org.dromara.im.domain.ImSystemMessage;
 import org.dromara.im.domain.bo.ImSystemMessageBo;
 import org.dromara.im.domain.vo.ImSystemMessageVo;
 import org.dromara.im.mapper.ImSystemMessageMapper;
+import org.dromara.im.service.IImSmPushTaskService;
 import org.dromara.im.service.IImSystemMessageService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +38,7 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
 
     private final ImSystemMessageMapper baseMapper;
 
+    private final IImSmPushTaskService smPushTaskService;
     /**
      * 查询系统消息
      *
@@ -59,17 +64,6 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
         return TableDataInfo.build(result);
     }
 
-    /**
-     * 查询符合条件的系统消息列表
-     *
-     * @param bo 查询条件
-     * @return 系统消息列表
-     */
-    @Override
-    public List<ImSystemMessageVo> queryList(ImSystemMessageBo bo) {
-        LambdaQueryWrapper<ImSystemMessage> wrapper = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(wrapper);
-    }
 
     private LambdaQueryWrapper<ImSystemMessage> buildQueryWrapper(ImSystemMessageBo bo) {
         LambdaQueryWrapper<ImSystemMessage> wrapper = Wrappers.lambdaQuery();
@@ -87,8 +81,11 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
      */
     @Override
     public Boolean insertByBo(ImSystemMessageBo bo) {
-        ImSystemMessage add = MapstructUtils.convert(bo, ImSystemMessage.class);
-        return  baseMapper.insert(add) > 0;
+        ImSystemMessage message = MapstructUtils.convert(bo, ImSystemMessage.class);
+        message.setDeleted(false);
+        message.setCreator(LoginHelper.getUserId());
+        message.setCreateTime(new Date());
+        return  baseMapper.insert(message) > 0;
     }
 
     /**
@@ -99,8 +96,8 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
      */
     @Override
     public Boolean updateByBo(ImSystemMessageBo bo) {
-        ImSystemMessage update = MapstructUtils.convert(bo, ImSystemMessage.class);
-        return baseMapper.updateById(update) > 0;
+        ImSystemMessage message = MapstructUtils.convert(bo, ImSystemMessage.class);
+        return baseMapper.updateById(message) > 0;
     }
 
 
@@ -113,6 +110,9 @@ public class ImSystemMessageServiceImpl implements IImSystemMessageService {
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
+        if(smPushTaskService.isExistTask(ids)){
+            throw new ServiceException("部分消息存在关联任务，删除失败");
+        }
         return baseMapper.deleteByIds(ids) > 0;
     }
 

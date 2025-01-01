@@ -5,8 +5,6 @@ import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.domain.bo.ImGroupMessageBo;
 import org.dromara.im.domain.vo.ImGroupMessageVo;
 
-import java.util.List;
-
 /**
  * 群消息Service接口
  *
@@ -31,14 +29,6 @@ public interface IImGroupMessageService {
      * @return 群消息分页列表
      */
     TableDataInfo<ImGroupMessageVo> queryPageList(ImGroupMessageBo bo, PageQuery pageQuery);
-
-    /**
-     * 查询符合条件的群消息列表
-     *
-     * @param bo 查询条件
-     * @return 群消息列表
-     */
-    List<ImGroupMessageVo> queryList(ImGroupMessageBo bo);
 
 
 

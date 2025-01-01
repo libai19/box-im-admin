@@ -87,8 +87,8 @@ public class ImSensitiveWordServiceImpl implements IImSensitiveWordService {
      */
     @Override
     public Boolean insertByBo(ImSensitiveWordBo bo) {
-        ImSensitiveWord add = MapstructUtils.convert(bo, ImSensitiveWord.class);
-        return baseMapper.insert(add) > 0;
+        ImSensitiveWord word = MapstructUtils.convert(bo, ImSensitiveWord.class);
+        return baseMapper.insert(word) > 0;
     }
 
     /**
@@ -99,8 +99,8 @@ public class ImSensitiveWordServiceImpl implements IImSensitiveWordService {
      */
     @Override
     public Boolean updateByBo(ImSensitiveWordBo bo) {
-        ImSensitiveWord update = MapstructUtils.convert(bo, ImSensitiveWord.class);
-        return baseMapper.updateById(update) > 0;
+        ImSensitiveWord word = MapstructUtils.convert(bo, ImSensitiveWord.class);
+        return baseMapper.updateById(word) > 0;
     }
 
 

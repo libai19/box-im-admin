@@ -2,12 +2,12 @@ export interface SmPushTaskVO {
   /**
    * id
    */
-  id: string | number;
+  id: number;
 
   /**
    * 系统消息id
    */
-  messageId: string | number;
+  messageId:  number;
 
   /**
    * 发送序列号
@@ -27,12 +27,12 @@ export interface SmPushTaskVO {
   /**
    * 是否发送给全体用户
    */
-  sendToAll: number;
+  sendToAll: boolean;
 
   /**
    * 接收用户id,逗号分隔,send_to_all为false时有效
    */
-  recvIds: string | number;
+  recvIds: string;
 
   /**
    * 删除标识  0：正常   1：已删除
@@ -55,12 +55,12 @@ export interface SmPushTaskForm extends BaseEntity {
   /**
    * id
    */
-  id?: string | number;
+  id?:  number;
 
   /**
    * 系统消息id
    */
-  messageId?: string | number;
+  messageId?: number;
 
   /**
    * 发送序列号
@@ -80,12 +80,12 @@ export interface SmPushTaskForm extends BaseEntity {
   /**
    * 是否发送给全体用户
    */
-  sendToAll?: number;
+  sendToAll?: boolean;
 
   /**
    * 接收用户id,逗号分隔,send_to_all为false时有效
    */
-  recvIds?: string | number;
+  recvIds?: string;
 
   /**
    * 删除标识  0：正常   1：已删除
@@ -109,7 +109,7 @@ export interface SmPushTaskQuery extends PageQuery {
   /**
    * 系统消息id
    */
-  messageId?: string | number;
+  messageId?: number;
 
   /**
    * 发送序列号
@@ -129,12 +129,12 @@ export interface SmPushTaskQuery extends PageQuery {
   /**
    * 是否发送给全体用户
    */
-  sendToAll?: number;
+  sendToAll?: boolean;
 
   /**
    * 接收用户id,逗号分隔,send_to_all为false时有效
    */
-  recvIds?: string | number;
+  recvIds?: string;
 
   /**
    * 删除标识  0：正常   1：已删除

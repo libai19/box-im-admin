@@ -63,4 +63,11 @@ public interface IImUserService {
      */
     List<ImUserVo> findByName(String name);
 
+    /**
+     * 根据用户id查找
+     *
+     * @param ids 用户id
+     */
+    List<ImUserVo> findByIds(List<Long> ids);
+
 }

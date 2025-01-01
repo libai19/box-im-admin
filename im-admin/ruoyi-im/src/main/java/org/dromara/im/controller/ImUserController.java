@@ -18,10 +18,12 @@ import org.dromara.im.domain.dto.ImUserBanDto;
 import org.dromara.im.domain.dto.ImUserUnbanDto;
 import org.dromara.im.domain.vo.ImUserVo;
 import org.dromara.im.service.IImUserService;
+import org.dromara.im.util.CommaTextUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户
@@ -85,11 +87,18 @@ public class ImUserController extends BaseController {
 
     @GetMapping("/findByName")
     @Operation(summary = "根据用户名查找用户",description = "用于下拉框选择用户")
-    @SaCheckPermission("im:user:info")
+    @SaCheckPermission("im:user:list")
     public R<List<ImUserVo>> findByName(@RequestParam String name){
         List<ImUserVo> vos = userService.findByName(name);
         return R.ok(vos);
     }
 
-
+    @GetMapping("/findByIds")
+    @Operation(summary = "根据id列表查找用户")
+    @SaCheckPermission("im:user:list")
+    public R<List<ImUserVo>> findByIds(@RequestParam String ids){
+        List<Long> arrIds = CommaTextUtils.asList(ids).stream().map(Long::parseLong).collect(Collectors.toList());
+        List<ImUserVo> vos = userService.findByIds(arrIds);
+        return R.ok(vos);
+    }
 }

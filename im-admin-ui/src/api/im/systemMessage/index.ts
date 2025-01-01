@@ -61,3 +61,15 @@ export const delSystemMessage = (id: string | number | Array<string | number>) =
     method: 'delete'
   });
 };
+
+/**
+ * 根据标题模糊查询系统消息
+ * @param title
+ */
+export const findSystemMessageByTitle = (title?: String): AxiosPromise<SystemMessageVO[]> => {
+  return request({
+    url: '/im/systemMessage/findByTitle?title=' + title,
+    method: 'get'
+  });
+};
+

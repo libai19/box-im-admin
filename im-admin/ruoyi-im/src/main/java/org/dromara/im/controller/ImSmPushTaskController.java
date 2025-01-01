@@ -1,14 +1,12 @@
 package org.dromara.im.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.core.domain.R;
 import org.dromara.common.core.validate.AddGroup;
 import org.dromara.common.core.validate.EditGroup;
-import org.dromara.common.excel.utils.ExcelUtil;
 import org.dromara.common.idempotent.annotation.RepeatSubmit;
 import org.dromara.common.log.annotation.Log;
 import org.dromara.common.log.enums.BusinessType;
@@ -47,25 +45,13 @@ public class ImSmPushTaskController extends BaseController {
     }
 
     /**
-     * 导出系统消息推送任务列表
-     */
-    @SaCheckPermission("im:smPushTask:export")
-    @Log(title = "系统消息推送任务", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(ImSmPushTaskBo bo, HttpServletResponse response) {
-        List<ImSmPushTaskVo> list = imSmPushTaskService.queryList(bo);
-        ExcelUtil.exportExcel(list, "系统消息推送任务", ImSmPushTaskVo.class, response);
-    }
-
-    /**
      * 获取系统消息推送任务详细信息
      *
      * @param id 主键
      */
     @SaCheckPermission("im:smPushTask:query")
     @GetMapping("/{id}")
-    public R<ImSmPushTaskVo> getInfo(@NotNull(message = "主键不能为空")
-                                     @PathVariable Long id) {
+    public R<ImSmPushTaskVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(imSmPushTaskService.queryById(id));
     }
 
@@ -99,8 +85,23 @@ public class ImSmPushTaskController extends BaseController {
     @SaCheckPermission("im:smPushTask:remove")
     @Log(title = "系统消息推送任务", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空")
-                          @PathVariable Long[] ids) {
-        return toAjax(imSmPushTaskService.deleteWithValidByIds(List.of(ids), true));
+    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+        return toAjax(imSmPushTaskService.deleteByIds(List.of(ids), true));
+    }
+
+    @PutMapping("cancel")
+    @Log(title = "取消推送任务", businessType = BusinessType.UPDATE)
+    @SaCheckPermission("im:smPushTask:edit")
+    public R<Void> cancel(@RequestParam("id") Long id) {
+        imSmPushTaskService.cancel(id);
+        return R.ok();
+    }
+
+    @PutMapping("open")
+    @Log(title = "开启推送任务", businessType = BusinessType.UPDATE)
+    @SaCheckPermission("im:smPushTask:edit")
+    public R<Void> open(@RequestParam("id") Long id) {
+        imSmPushTaskService.open(id);
+        return R.ok();
     }
 }

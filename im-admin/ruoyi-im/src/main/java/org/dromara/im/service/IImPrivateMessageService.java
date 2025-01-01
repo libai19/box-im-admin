@@ -5,8 +5,6 @@ import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.domain.bo.ImPrivateMessageBo;
 import org.dromara.im.domain.vo.ImPrivateMessageVo;
 
-import java.util.List;
-
 /**
  * 私聊消息Service接口
  *
@@ -32,13 +30,7 @@ public interface IImPrivateMessageService {
      */
     TableDataInfo<ImPrivateMessageVo> queryPageList(ImPrivateMessageBo bo, PageQuery pageQuery);
 
-    /**
-     * 查询符合条件的私聊消息列表
-     *
-     * @param bo 查询条件
-     * @return 私聊消息列表
-     */
-    List<ImPrivateMessageVo> queryList(ImPrivateMessageBo bo);
+
 
 
 }

@@ -16,7 +16,6 @@ import org.dromara.im.mapper.ImGroupMessageMapper;
 import org.dromara.im.service.IImGroupMessageService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,17 +56,6 @@ public class ImGroupMessageServiceImpl implements IImGroupMessageService {
         return TableDataInfo.build(result);
     }
 
-    /**
-     * 查询符合条件的群消息列表
-     *
-     * @param bo 查询条件
-     * @return 群消息列表
-     */
-    @Override
-    public List<ImGroupMessageVo> queryList(ImGroupMessageBo bo) {
-        LambdaQueryWrapper<ImGroupMessage> wrapper = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(wrapper);
-    }
 
     private LambdaQueryWrapper<ImGroupMessage> buildQueryWrapper(ImGroupMessageBo bo) {
         Map<String, Object> params = bo.getParams();

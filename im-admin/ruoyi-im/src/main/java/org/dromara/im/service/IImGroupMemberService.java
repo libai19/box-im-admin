@@ -5,8 +5,6 @@ import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.domain.bo.ImGroupMemberBo;
 import org.dromara.im.domain.vo.ImGroupMemberVo;
 
-import java.util.List;
-
 /**
  * 群成员Service接口
  *
@@ -32,13 +30,6 @@ public interface IImGroupMemberService {
      */
     TableDataInfo<ImGroupMemberVo> queryPageList(ImGroupMemberBo bo, PageQuery pageQuery);
 
-    /**
-     * 查询符合条件的群成员列表
-     *
-     * @param bo 查询条件
-     * @return 群成员列表
-     */
-    List<ImGroupMemberVo> queryList(ImGroupMemberBo bo);
 
 
     /**

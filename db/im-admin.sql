@@ -31,7 +31,7 @@ create table sys_social
     create_time        datetime                         comment '创建时间',
     update_by          bigint(20)                       comment '更新者',
     update_time        datetime                         comment '更新时间',
-    del_flag           char(1)          default '0'     comment '删除标志（0代表存在 2代表删除）',
+    del_flag           char(1)          default '0'     comment '删除标志（0代表存在 1代表删除）',
     PRIMARY KEY (id)
 ) engine=innodb comment = '社会化关系表';
 
@@ -55,7 +55,7 @@ create table sys_tenant
     expire_time       datetime                      comment '过期时间',
     account_count     int           default -1      comment '用户数量（-1不限制）',
     status            char(1)       default '0'     comment '租户状态（0正常 1停用）',
-    del_flag          char(1)       default '0'     comment '删除标志（0代表存在 2代表删除）',
+    del_flag          char(1)       default '0'     comment '删除标志（0代表存在 1代表删除）',
     create_dept       bigint(20)                    comment '创建部门',
     create_by         bigint(20)                    comment '创建者',
     create_time       datetime                      comment '创建时间',
@@ -75,7 +75,7 @@ create table sys_tenant_package (
     remark                  varchar(200)               comment '备注',
     menu_check_strictly     tinyint(1)     default 1   comment '菜单树选择项是否关联显示',
     status                  char(1)        default '0' comment '状态（0正常 1停用）',
-    del_flag                char(1)        default '0' comment '删除标志（0代表存在 2代表删除）',
+    del_flag                char(1)        default '0' comment '删除标志（0代表存在 1代表删除）',
     create_dept             bigint(20)                 comment '创建部门',
     create_by               bigint(20)                 comment '创建者',
     create_time             datetime                   comment '创建时间',
@@ -100,7 +100,7 @@ create table sys_dept (
     phone             varchar(11)     default null               comment '联系电话',
     email             varchar(50)     default null               comment '邮箱',
     status            char(1)         default '0'                comment '部门状态（0正常 1停用）',
-    del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+    del_flag          char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
     create_dept       bigint(20)      default null               comment '创建部门',
     create_by         bigint(20)      default null               comment '创建者',
     create_time       datetime                                   comment '创建时间',
@@ -133,7 +133,7 @@ create table sys_user (
     avatar            varchar(256)                               comment '头像地址',
     password          varchar(100)    default ''                 comment '密码',
     status            char(1)         default '0'                comment '帐号状态（0正常 1停用）',
-    del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+    del_flag          char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
     login_ip          varchar(128)    default ''                 comment '最后登录IP',
     login_date        datetime                                   comment '最后登录时间',
     create_dept       bigint(20)      default null               comment '创建部门',
@@ -187,7 +187,7 @@ create table sys_role (
     menu_check_strictly  tinyint(1)      default 1                  comment '菜单树选择项是否关联显示',
     dept_check_strictly  tinyint(1)      default 1                  comment '部门树选择项是否关联显示',
     status               char(1)         not null                   comment '角色状态（0正常 1停用）',
-    del_flag             char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+    del_flag             char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
     create_dept          bigint(20)      default null               comment '创建部门',
     create_by            bigint(20)      default null               comment '创建者',
     create_time          datetime                                   comment '创建时间',
@@ -238,7 +238,7 @@ insert into sys_menu values('2', '系统监控', '0', '13', 'monitor',          
 insert into sys_menu values('3', '系统工具', '0', '14', 'tool',             null, '', 1, 0, 'M', '0', '0', '', 'tool',     103, 1, sysdate(), null, null, '系统工具目录');
 
 -- 二级菜单
-insert into sys_menu values('100',  '用户管理',     '1',   '1', 'user',             'system/user/index',            '', 1, 0, 'C', '0', '0', 'system:user:list',            'user',          103, 1, sysdate(), null, null, '用户管理菜单');
+insert into sys_menu values('100',  '系统用户',     '1',   '1', 'user',             'system/user/index',            '', 1, 0, 'C', '0', '0', 'system:user:list',            'user',          103, 1, sysdate(), null, null, '用户管理菜单');
 insert into sys_menu values('101',  '角色管理',     '1',   '2', 'role',             'system/role/index',            '', 1, 0, 'C', '0', '0', 'system:role:list',            'peoples',       103, 1, sysdate(), null, null, '角色管理菜单');
 insert into sys_menu values('102',  '菜单管理',     '1',   '3', 'menu',             'system/menu/index',            '', 1, 0, 'C', '0', '0', 'system:menu:list',            'tree-table',    103, 1, sysdate(), null, null, '菜单管理菜单');
 insert into sys_menu values('103',  '部门管理',     '1',   '4', 'dept',             'system/dept/index',            '', 1, 0, 'C', '0', '0', 'system:dept:list',            'tree',          103, 1, sysdate(), null, null, '部门管理菜单');
@@ -354,11 +354,19 @@ insert into sys_menu values('61', '群聊消息', '6', '2', 'group',          'i
 insert into sys_menu values('6101', '群聊消息查询', '61', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:groupMessage:query',        '#', 103, 1, sysdate(), null, null, '');
 
 -- IM-系统消息
-insert into sys_menu values('62', '系统消息', '6', '4', 'system',          'im/message/system/index', '', 1, 0, 'C', '0', '0', 'im:systemMessage:list', 'category',     103, 1, sysdate(), null, null, 'IM系统消息');
-insert into sys_menu values('6201', '系统消息查询', '6', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:query',        '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('6202', '系统消息添加', '6', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:add',          '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('6203', '系统消息删除', '6', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:remove',         '#', 103, 1, sysdate(), null, null, '');
-insert into sys_menu values('6204', '系统消息修改', '6', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:edit',         '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('62', '系统消息', '6', '4', 'system',          'im/message/system/index', '', 1, 0, 'C', '0', '0', 'im:systemMessage:list', 'druid',     103, 1, sysdate(), null, null, 'IM系统消息');
+insert into sys_menu values('6201', '系统消息查询', '62', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:query',        '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6202', '系统消息添加', '62', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:add',          '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6203', '系统消息删除', '62', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:remove',         '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6204', '系统消息修改', '62', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:edit',         '#', 103, 1, sysdate(), null, null, '');
+
+-- IM-推送任务
+insert into sys_menu values('63', '推送任务', '6', '4', 'task',          'im/message/task/index', '', 1, 0, 'C', '0', '0', 'im:smPushTask:list', 'my-task',     103, 1, sysdate(), null, null, 'IM推送任务');
+insert into sys_menu values('6301', '推送任务查询', '63', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:smPushTask:query',        '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6302', '推送任务添加', '63', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:smPushTask:add',          '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6303', '推送任务删除', '63', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:smPushTask:remove',        '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6304', '推送任务修改', '63', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:smPushTask:edit',        '#', 103, 1, sysdate(), null, null, '');
+
 
 -- IM-敏感词管理
 insert into sys_menu values('7', '敏感词管理', '0', '2', 'im/sensitiveWord',          'im/sensitiveWord/index', '', 1, 0, 'C', '0', '0', 'im:sensitiveWord:list', 'documentation',     103, 1, sysdate(), null, null, 'IM敏感词管理');
@@ -705,7 +713,7 @@ create table sys_client (
     active_timeout      int(11)       default 1800        comment 'token活跃超时时间',
     timeout             int(11)       default 604800      comment 'token固定超时',
     status              char(1)       default '0'         comment '状态（0正常 1停用）',
-    del_flag            char(1)       default '0'         comment '删除标志（0代表存在 2代表删除）',
+    del_flag            char(1)       default '0'         comment '删除标志（0代表存在 1代表删除）',
     create_dept         bigint(20)    default null        comment '创建部门',
     create_by           bigint(20)    default null        comment '创建者',
     create_time         datetime      default null        comment '创建时间',

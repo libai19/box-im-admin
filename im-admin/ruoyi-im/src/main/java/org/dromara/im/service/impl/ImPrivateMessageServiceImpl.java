@@ -16,7 +16,6 @@ import org.dromara.im.mapper.ImPrivateMessageMapper;
 import org.dromara.im.service.IImPrivateMessageService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,17 +56,6 @@ public class ImPrivateMessageServiceImpl implements IImPrivateMessageService {
         return TableDataInfo.build(result);
     }
 
-    /**
-     * 查询符合条件的私聊消息列表
-     *
-     * @param bo 查询条件
-     * @return 私聊消息列表
-     */
-    @Override
-    public List<ImPrivateMessageVo> queryList(ImPrivateMessageBo bo) {
-        LambdaQueryWrapper<ImPrivateMessage> wrapper = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(wrapper);
-    }
 
     private LambdaQueryWrapper<ImPrivateMessage> buildQueryWrapper(ImPrivateMessageBo bo) {
         Map<String, Object> params = bo.getParams();

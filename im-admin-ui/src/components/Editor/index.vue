@@ -55,7 +55,7 @@ const editorConfig: Partial<IEditorConfig> = {
 				console.log(file)
 				const fd = new FormData()
 				fd.append('file', file)
-				let url = import.meta.env.VITE_APP_BASE_API + '/image/upload';
+				let url = import.meta.env.VITE_APP_BASE_API + '/system/image/upload';
 				let headers = globalHeaders();
 				headers['Content-Type'] = 'multipart/form-data';
 				let res = await axios.post(url, fd, { headers })
@@ -72,7 +72,6 @@ onBeforeUnmount(() => {
 	if (editor == null) {
 		return
 	}
-	console.log("onBeforeUnmount")
 	editor.destroy()
 })
 

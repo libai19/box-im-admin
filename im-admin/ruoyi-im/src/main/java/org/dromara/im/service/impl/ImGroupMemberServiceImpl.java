@@ -17,8 +17,6 @@ import org.dromara.im.mapper.ImGroupMemberMapper;
 import org.dromara.im.service.IImGroupMemberService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * 群成员Service业务层处理
  *
@@ -59,18 +57,6 @@ public class ImGroupMemberServiceImpl implements IImGroupMemberService {
             m.setShowNickName(StrUtil.isEmpty(m.getRemarkNickName()) ? m.getUserNickName() : m.getRemarkNickName());
         });
         return TableDataInfo.build(result);
-    }
-
-    /**
-     * 查询符合条件的群成员列表
-     *
-     * @param bo 查询条件
-     * @return 群成员列表
-     */
-    @Override
-    public List<ImGroupMemberVo> queryList(ImGroupMemberBo bo) {
-        LambdaQueryWrapper<ImGroupMember> wrapper = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(wrapper);
     }
 
 

@@ -33,13 +33,7 @@ public interface IImSystemMessageService {
      */
     TableDataInfo<ImSystemMessageVo> queryPageList(ImSystemMessageBo bo, PageQuery pageQuery);
 
-    /**
-     * 查询符合条件的系统消息列表
-     *
-     * @param bo 查询条件
-     * @return 系统消息列表
-     */
-    List<ImSystemMessageVo> queryList(ImSystemMessageBo bo);
+
 
     /**
      * 新增系统消息

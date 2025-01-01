@@ -6,7 +6,6 @@ import org.dromara.im.domain.bo.ImSmPushTaskBo;
 import org.dromara.im.domain.vo.ImSmPushTaskVo;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 系统消息推送任务Service接口
@@ -33,13 +32,6 @@ public interface IImSmPushTaskService {
      */
     TableDataInfo<ImSmPushTaskVo> queryPageList(ImSmPushTaskBo bo, PageQuery pageQuery);
 
-    /**
-     * 查询符合条件的系统消息推送任务列表
-     *
-     * @param bo 查询条件
-     * @return 系统消息推送任务列表
-     */
-    List<ImSmPushTaskVo> queryList(ImSmPushTaskBo bo);
 
     /**
      * 新增系统消息推送任务
@@ -64,5 +56,12 @@ public interface IImSmPushTaskService {
      * @param isValid 是否进行有效性校验
      * @return 是否删除成功
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    Boolean deleteByIds(Collection<Long> ids, Boolean isValid);
+
+
+    void cancel(Long id);
+
+    void open(Long id);
+
+    boolean isExistTask(Collection<Long> messageIds);
 }

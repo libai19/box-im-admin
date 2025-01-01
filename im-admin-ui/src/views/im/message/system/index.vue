@@ -26,10 +26,6 @@
               v-hasPermi="['im:systemMessage:add']">新增</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()"
-              v-hasPermi="['im:systemMessage:edit']">修改</el-button>
-          </el-col>
-          <el-col :span="1.5">
             <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()"
               v-hasPermi="['im:systemMessage:remove']">删除</el-button>
           </el-col>
@@ -57,14 +53,12 @@
         <el-table-column label="创建者" align="center" prop="creatorName" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
-            <el-tooltip content="修改" placement="top">
-              <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                v-hasPermi="['im:systemMessage:edit']"></el-button>
-            </el-tooltip>
-            <el-tooltip content="删除" placement="top">
-              <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                v-hasPermi="['im:systemMessage:remove']"></el-button>
-            </el-tooltip>
+            <el-button link type="primary"  @click="handleSend(scope.row)"
+              v-hasPermi="['im:smPushTask:add']">推送</el-button>
+              <el-button link type="primary" @click="handleUpdate(scope.row)"
+              v-hasPermi="['im:systemMessage:edit']">修改</el-button>
+            <el-button link type="danger"  @click="handleDelete(scope.row)"
+              v-hasPermi="['im:systemMessage:remove']">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -79,18 +73,19 @@
           <el-input v-model="form.title" placeholder="请输入标题" />
         </el-form-item>
         <el-form-item label="封面" prop="coverUrl">
-          <image-upload v-model="form.coverUrl" width="200" height="150"></image-upload>
+          <image-upload v-model="form.coverUrl" :width="200" :height="150"></image-upload>
         </el-form-item>
         <el-form-item label="简介" prop="intro">
           <el-input v-model="form.intro" placeholder="请输入简介" />
         </el-form-item>
         <el-form-item label="类型" prop="contentType">
           <el-radio-group v-model="form.contentType">
-            <el-radio v-for="dict in im_sm_content_type" :key="dict.value" :value="parseInt(dict.value)">{{ dict.label }}</el-radio>
+            <el-radio v-for="dict in im_sm_content_type" :key="dict.value" :value="parseInt(dict.value)">{{ dict.label
+              }}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="form.contentType==0" label="富文本内容" prop="richText">
-            <editor v-model="richText" placeholder="请输入内容"  />
+        <el-form-item v-if="form.contentType == 0" label="富文本内容" prop="richText">
+          <editor v-model="richText" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item v-else label="外部链接" prop="externLink">
           <el-input v-model="form.externLink" placeholder="请输入外部链接" />
@@ -103,13 +98,16 @@
         </div>
       </template>
     </el-dialog>
+    <sm-task-info ref="taskInfoRef"></sm-task-info>
   </div>
+
 </template>
 
 <script setup name="SystemMessage" lang="ts">
 import { listSystemMessage, getSystemMessage, delSystemMessage, addSystemMessage, updateSystemMessage } from '@/api/im/systemMessage';
 import { SystemMessageVO, SystemMessageQuery, SystemMessageForm } from '@/api/im/systemMessage/types';
 import { Base64 } from 'js-base64';
+import SmTaskInfo from '../task/SmTaskInfo.vue';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
@@ -124,6 +122,7 @@ const total = ref(0);
 
 const queryFormRef = ref<ElFormInstance>();
 const systemMessageFormRef = ref<ElFormInstance>();
+const taskInfoRef = ref();
 
 const dialog = reactive<DialogOption>({
   visible: false,
@@ -263,6 +262,11 @@ const handleExport = () => {
   proxy?.download('im/systemMessage/export', {
     ...queryParams.value
   }, `systemMessage_${new Date().getTime()}.xlsx`)
+}
+
+
+const handleSend = (row?: SystemMessageVO) =>{
+  taskInfoRef.value.initByMessage(row.id);
 }
 
 onMounted(() => {

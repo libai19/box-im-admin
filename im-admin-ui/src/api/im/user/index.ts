@@ -56,7 +56,7 @@ export const unban = (data: UserUnbanDTO) => {
 
 export const findUserByName = (name?: String): AxiosPromise<UserVO[]> => {
   return request({
-    url: '/im/user/findByName?name='+name,
+    url: '/im/user/findByName?name=' + name,
     method: 'get'
   });
 };

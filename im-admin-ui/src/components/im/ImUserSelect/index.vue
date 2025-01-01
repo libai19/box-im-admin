@@ -9,7 +9,7 @@
 
 import { computed } from 'vue'
 import { ref } from 'vue'
-import { findUserByName } from '@/api/im/user'
+import { findUserByName,findUserByIds } from '@/api/im/user'
 
 const props = defineProps({
 	multiple: {
@@ -26,7 +26,7 @@ const props = defineProps({
 
 const loading = ref(false)
 const options = ref()
-const model = defineModel<number | Array<Number> | string | Array<String>>()
+const model = defineModel<number | Array<Number>>()
 const userIds = computed({
 	get() {
         if(model.value != undefined){

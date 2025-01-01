@@ -118,4 +118,11 @@ public class ImUserServiceImpl implements IImUserService {
         return baseMapper.selectVoList(queryWrapper);
     }
 
+    @Override
+    public List<ImUserVo> findByIds(List<Long> ids) {
+        // 取出用户名或昵称匹配的前10条
+        LambdaQueryWrapper<ImUser> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.in(ImUser::getId, ids);
+        return baseMapper.selectVoList(queryWrapper);
+    }
 }

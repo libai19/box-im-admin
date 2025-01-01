@@ -20,7 +20,7 @@ export const listSmPushTask = (query?: SmPushTaskQuery): AxiosPromise<SmPushTask
  * 查询系统消息推送任务详细
  * @param id
  */
-export const getSmPushTask = (id: string | number): AxiosPromise<SmPushTaskVO> => {
+export const getSmPushTask = (id: number): AxiosPromise<SmPushTaskVO> => {
   return request({
     url: '/im/smPushTask/' + id,
     method: 'get'
@@ -55,9 +55,33 @@ export const updateSmPushTask = (data: SmPushTaskForm) => {
  * 删除系统消息推送任务
  * @param id
  */
-export const delSmPushTask = (id: string | number | Array<string | number>) => {
+export const delSmPushTask = (id:  number | Array< number>) => {
   return request({
     url: '/im/smPushTask/' + id,
     method: 'delete'
   });
 };
+
+
+/**
+ * 取消任务
+ * @param id
+ */
+export const cancelSmPushTask = (id: number) => {
+  return request({
+    url: '/im/smPushTask/cancel?id=' + id,
+    method: 'put'
+  });
+};
+
+/**
+ * 开启任务
+ * @param id
+ */
+export const openSmPushTask = (id: number) => {
+  return request({
+    url: '/im/smPushTask/open?id=' + id,
+    method: 'put'
+  });
+};
+

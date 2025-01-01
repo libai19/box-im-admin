@@ -1,8 +1,12 @@
 package org.dromara.im.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fhs.core.trans.vo.TransPojo;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 /**
  * 系统消息对象 im_system_message
@@ -11,10 +15,14 @@ import lombok.EqualsAndHashCode;
  * @date 2024-12-22
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("im_system_message")
-public class ImSystemMessage extends ImBaseEntity {
+public class ImSystemMessage implements TransPojo {
 
+    /**
+     * id
+     */
+    @TableId
+    private Long id;
     /**
      * 标题
      */
@@ -45,5 +53,19 @@ public class ImSystemMessage extends ImBaseEntity {
      */
     private String externLink;
 
+    /**
+     * 创建者
+     */
+    private Long creator;
 
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 删除标记
+     */
+    @TableLogic
+    private Boolean deleted;
 }
