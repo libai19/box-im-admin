@@ -1,77 +1,30 @@
---- # 数据源配置
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 1
   datasource:
     dynamic:
-      # 性能分析插件(有性能损耗 不建议生产环境使用)
-      p6spy: true
-      # 设置默认的数据源或者数据源组,默认值即为 master
+      hikari: # Hikari 连接池全局配置
+        connection-timeout: 30000     # 等待连接池分配链接的最大时长（毫秒），超过这个时长还没有可用的连接则发生 SQLException，默认：30 秒
+        minimum-idle: 2               # 最小空闲连接数
+        maximum-pool-size: 10         # 最大连接数
+        idle-timeout: 600000          # 连接超时的最大时长（毫秒），超时则被释放（retired），默认：10 分钟
+        max-lifetime: 1800000         # 连接的生命时长（毫秒），超时而且没被使用则被释放（retired），默认： 30 分钟
+        connection-test-query: SELECT 1
       primary: admin
-      # 严格模式 匹配不到数据源则报错
-      strict: true
       datasource:
-        # 后台数据源
         admin:
-          type: com.zaxxer.hikari.HikariDataSource
-          driverClassName: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/im_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
           username: root
           password: root
-        # im-platform数据源
         platform:
-          lazy: true
-          type: com.zaxxer.hikari.HikariDataSource
-          driverClassName: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/im_platform?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/im_platform?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
           username: root
           password: root
-      hikari:
-        # 最大连接池数量
-        maxPoolSize: 20
-        # 最小空闲线程数量
-        minIdle: 10
-        # 配置获取连接等待超时的时间
-        connectionTimeout: 30000
-        # 校验超时时间
-        validationTimeout: 5000
-        # 空闲连接存活最大时间，默认10分钟
-        idleTimeout: 600000
-        # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认30分钟
-        maxLifetime: 1800000
-        # 多久检查一次连接的活性
-        keepaliveTime: 30000
-
---- # redis 单机配置(单机与集群只能开启一个另一个需要注释掉)
-spring.data:
-  redis:
-    # 地址
-    host: localhost
-    # 端口，默认为6379
-    port: 6379
-    # 数据库索引
-    database: 1
-
-# redisson 配置
-redisson:
-  # redis key前缀
-  keyPrefix:
-  # 线程池数量
-  threads: 4
-  # Netty线程池数量
-  nettyThreads: 8
-  # 单节点配置
-  singleServerConfig:
-    # 客户端名称
-    clientName: im-admin
-    # 最小空闲连接数
-    connectionMinimumIdleSize: 8
-    # 连接池大小
-    connectionPoolSize: 32
-    # 连接空闲超时，单位：毫秒
-    idleConnectionTimeout: 10000
-    # 命令等待超时，单位：毫秒
-    timeout: 3000
-    # 发布和订阅连接池大小
-    subscriptionConnectionPoolSize: 50
 
 minio:
   endpoint: http://127.0.0.1:9000 #内网地址
