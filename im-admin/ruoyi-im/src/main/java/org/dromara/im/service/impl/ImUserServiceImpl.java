@@ -101,7 +101,7 @@ public class ImUserServiceImpl implements IImUserService {
         LambdaQueryWrapper<ImUser> wrapper = Wrappers.lambdaQuery();
         wrapper.like(StringUtils.isNotBlank(bo.getUserName()), ImUser::getUserName, bo.getUserName());
         wrapper.like(StringUtils.isNotBlank(bo.getNickName()), ImUser::getNickName, bo.getNickName());
-        wrapper.orderByDesc(ImUser::getCreatedTime);
+        wrapper.orderByDesc(ImUser::getId);
         return wrapper;
     }
 

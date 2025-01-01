@@ -3,19 +3,17 @@
 #### 介绍
 本项目为盒子IM后台管理,主要为盒子IM提供用户管理、群组管理、消息管理、敏感词管理等后台功能。
 
-盒子IM前台代码地址：https://gitee.com/bluexsx/box-im  
+缺少后台管理基本不影响盒子IM的业务功能，建议先把业务服务跑起来，再来搭建后台服务:
+业务代码地址：https://gitee.com/bluexsx/box-im  
 详细文档:  https://www.yuque.com/u1475064/mufu2a
 
+#### 基于RuoYi-Vue-Plus框架
+为了减少重复工作，达到快速开发目的，本项目选择了一款优秀的开源脚手架RuoYi-Vue-Plus进行二次开发。
 
-#### 基于maku框架
-为了减少重复工作，达到快速开发目的，本项目选择了一款优秀的开源脚手架-maku进行二次开发。
+RuoYi-Vue-Plus的仓库:    
+后端:https://gitee.com/dromara/RuoYi-Vue-Plus   
+前端: https://gitee.com/JavaLionLi/plus-ui
 
-maku的仓库:    
-https://gitee.com/makunet/maku-boot      
-https://gitee.com/makunet/maku-admin
-
-maku的文档:   
-https://maku.net/docs/maku-boot/index
 
 #### 框架改造说明
 为了更好地与盒子IM的业务相结合，同时保持代码的简洁性，对ruoyi-vue-plus框架进行了以下改造:
@@ -40,11 +38,11 @@ https://maku.net/docs/maku-boot/index
 进入 im-admin目录，打开控制台
 ```
 mvn clean package
-java -jar ./maku-server/target/im-admin.jar
+java -jar ./ruoyi-admin/target/im-admin.jar
 ```
 
 3.启动前端  
-进入 maku-admin目录，打开控制台
+进入 im-admin-ui目录，打开控制台
 ```
 npm install
 npm run dev
@@ -52,15 +50,8 @@ npm run dev
 访问 http://localhost:3000
 
 #### 界面截图:
-![输入图片说明](%E6%88%AA%E5%9B%BE/1.png)
 
-![输入图片说明](%E6%88%AA%E5%9B%BE/2.png)
 
-![输入图片说明](%E6%88%AA%E5%9B%BE/3.png)
-
-![输入图片说明](%E6%88%AA%E5%9B%BE/4.png)
-
-![输入图片说明](%E6%88%AA%E5%9B%BE/5.png)
 
 
 #### 点下star吧

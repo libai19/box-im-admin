@@ -47,7 +47,7 @@
       <el-table v-loading="loading" :data="privateMessageList" >
         <el-table-column label="发送用户" align="center" prop="sendUserName" />
         <el-table-column label="接收用户" align="center" prop="recvUserName" />
-        <el-table-column label="发送内容" align="center" prop="content" >
+        <el-table-column label="发送内容" align="center" prop="content" width="400" >
           <template #default="scope">
             <im-message-content :message="scope.row" ></im-message-content>
           </template>

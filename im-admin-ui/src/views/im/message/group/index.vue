@@ -41,7 +41,7 @@
       <el-table v-loading="loading" :data="groupMessageList" >
         <el-table-column label="群名" align="center" prop="groupName" />
         <el-table-column label="发送用户" align="center" prop="sendUserName" />
-        <el-table-column label="发送内容" align="center" prop="content" >
+        <el-table-column label="发送内容" align="center" prop="content"  width="400">
           <template #default="scope">
             <im-message-content :message="scope.row" ></im-message-content>
           </template>
