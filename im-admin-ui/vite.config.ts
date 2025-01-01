@@ -71,6 +71,9 @@ export default defineConfig(({ mode, command }: ConfigEnv): UserConfig => {
         'image-conversion',
         'element-plus/es/components/**/css'
       ]
+    },
+    build: {
+      chunkSizeWarningLimit: 2048,
     }
   };
 });
