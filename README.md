@@ -3,8 +3,8 @@
 #### 介绍
 本项目为盒子IM后台管理,主要为盒子IM提供用户管理、群组管理、消息管理、敏感词管理等后台功能。
 
-缺少后台管理基本不影响盒子IM的业务功能，建议先把业务服务跑起来，再来搭建后台服务:
-业务代码地址：https://gitee.com/bluexsx/box-im  
+建议先把业务服务跑起来，再回来搭建后台服务:
+盒子IM业务仓库地址：https://gitee.com/bluexsx/box-im  
 详细文档:  https://www.yuque.com/u1475064/mufu2a
 
 #### 基于RuoYi-Vue-Plus框架
