@@ -49,10 +49,6 @@ public class ImGroup implements TransPojo {
      */
     private String notice;
 
-    /**
-     * 群备注
-     */
-    private String remark;
 
     /**
      * 是否已解散

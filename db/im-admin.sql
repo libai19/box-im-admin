@@ -469,7 +469,6 @@ insert into sys_dict_type values(10, '000000', '系统状态', 'sys_common_statu
 insert into sys_dict_type values(11, '000000', '授权类型', 'sys_grant_type',     103, 1, sysdate(), null, null, '认证授权类型');
 insert into sys_dict_type values(12, '000000', '设备类型', 'sys_device_type',    103, 1, sysdate(), null, null, '客户端设备类型');
 insert into sys_dict_type values(13, '000000', '布尔值', 'im_bool',     103, 1, sysdate(), null, null, '布尔值, true 或 false');
-insert into sys_dict_type values(14, '000000', '用户状态', 'im_user_status',    103, 1, sysdate(), null, null, 'IM用户状态');
 insert into sys_dict_type values(15, '000000', '消息状态', 'im_message_status',    103, 1, sysdate(), null, null, 'IM消息状态');
 insert into sys_dict_type values(16, '000000', '消息类型', 'im_message_type',    103, 1, sysdate(), null, null, 'IM消息类型');
 
@@ -533,8 +532,6 @@ insert into sys_dict_data values(37, '000000', 0,  'iOS', 'ios',          'sys_d
 insert into sys_dict_data values(38, '000000', 0,  '小程序', 'xcx',       'sys_device_type',     '',   'default', 'N', 103, 1, sysdate(), null, null, '小程序');
 insert into sys_dict_data values(39, '000000', 0,  '否',    'false',         'im_bool',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(40, '000000', 0,  '是', 'true',     'im_bool',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
-insert into sys_dict_data values(41, '000000', 0,  '正常', '0',          'im_user_status',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
-insert into sys_dict_data values(42, '000000', 0,  '已注销', '1',       'im_user_status',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(43, '000000', 1,  '未发送', '0',      'im_message_status',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(44, '000000', 2,  '送达', '1',       'im_message_status',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(45, '000000', 3,  '撤回', '2',       'im_message_status',     '',   'warning', 'N', 103, 1, sysdate(), null, null, '');

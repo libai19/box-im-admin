@@ -54,7 +54,7 @@ export interface UserVO {
   createdTime: string;
 
   /**
-   * 
+   *
    */
   type: number;
 
@@ -68,15 +68,6 @@ export interface UserVO {
    */
   reason: string;
 
-  /**
-   * 客户端id,用于uni-push推送
-   */
-  cid: string | number;
-
-  /**
-   * 状态 0：正常   1:已注销
-   */
-  status: number;
 
 }
 
@@ -132,7 +123,7 @@ export interface UserForm extends BaseEntity {
   createdTime?: string;
 
   /**
-   * 
+   *
    */
   type?: number;
 
@@ -145,16 +136,6 @@ export interface UserForm extends BaseEntity {
    * 被封禁原因
    */
   reason?: string;
-
-  /**
-   * 客户端id,用于uni-push推送
-   */
-  cid?: string | number;
-
-  /**
-   * 状态 0：正常   1:已注销
-   */
-  status?: number;
 
 }
 
