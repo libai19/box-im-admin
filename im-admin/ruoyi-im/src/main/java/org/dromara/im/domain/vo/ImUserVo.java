@@ -101,18 +101,5 @@ public class ImUserVo {
     @ExcelProperty(value = "被封禁原因")
     private String reason;
 
-    /**
-     * 客户端id,用于uni-push推送
-     */
-    @ExcelProperty(value = "客户端id")
-    private String cid;
-
-    /**
-     * 状态 0：正常   1:已注销
-     */
-    @ExcelProperty(value = "状态", converter = ExcelDictConvert.class)
-    @ExcelDictFormat(readConverterExp = "0=正常,1=已注销")
-    private Long status;
-
 
 }

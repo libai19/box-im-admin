@@ -41,11 +41,6 @@
             <dict-tag :options="im_bool" :value="scope.row.isBanned" />
           </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" prop="status">
-          <template #default="scope">
-            <dict-tag :options="im_user_status" :value="scope.row.status" />
-          </template>
-        </el-table-column>
         <el-table-column label="注册时间" align="center" prop="createdTime" width="180">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createdTime, '{y}-{m}-{d}') }}</span>
@@ -103,9 +98,6 @@
         <el-form-item v-if="form.isBanned" label="被封禁原因" prop="reason">
           <el-input v-model="form.reason" placeholder="请输入被封禁原因" />
         </el-form-item>
-        <el-form-item label="客户端id" prop="cid">
-          <el-input v-model="form.cid" placeholder="请输入客户端id,用于uni-push推送" />
-        </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -150,9 +142,7 @@ const initFormData: UserForm = {
   createdTime: undefined,
   type: undefined,
   isBanned: undefined,
-  reason: undefined,
-  cid: undefined,
-  status: undefined
+  reason: undefined
 }
 const data = reactive<PageData<UserForm, UserQuery>>({
   form: { ...initFormData },
@@ -169,7 +159,6 @@ const data = reactive<PageData<UserForm, UserQuery>>({
 const { queryParams, form, rules } = toRefs(data);
 
 const { im_bool } = toRefs<any>(proxy?.useDict('im_bool'));
-const { im_user_status } = toRefs<any>(proxy?.useDict('im_user_status'));
 const { sys_user_sex } = toRefs<any>(proxy?.useDict('sys_user_sex'));
 
 /** 查询用户列表 */

@@ -83,15 +83,6 @@ public class ImUser implements TransPojo {
      */
     private String reason;
 
-    /**
-     * 客户端id,用于uni-push推送
-     */
-    private String cid;
-
-    /**
-     * 状态 0：正常   1:已注销
-     */
-    private Long status;
 
 
 }
