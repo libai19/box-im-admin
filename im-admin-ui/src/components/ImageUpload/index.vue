@@ -59,7 +59,7 @@ const props = defineProps({
 });
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'on-success']);
 
 const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
@@ -99,6 +99,7 @@ const handleBeforeUpload = (file: any) => {
 // 上传成功回调
 const handleUploadSuccess = (res: any) => {
     if (res.code === 200) {
+        emit('on-success', res.data);
         emit('update:modelValue', res.data.originUrl);
     } else {
         emit('update:modelValue', '');
