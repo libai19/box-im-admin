@@ -57,7 +57,7 @@ const router = useRouter();
 const loginForm = ref<LoginData>({
   tenantId: '000000',
   username: 'admin',
-  password: 'admin123',
+  password: '',
   rememberMe: false,
   code: '',
   uuid: ''
@@ -202,7 +202,7 @@ onMounted(() => {
   background: #ffffff;
   width: 400px;
   padding: 25px 25px 5px 25px;
-  
+
   margin-right: 12%;
   .el-input {
     height: 40px;

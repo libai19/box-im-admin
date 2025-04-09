@@ -544,6 +544,7 @@ insert into sys_dict_data values(51, '000000', 5,  '视频', '4',      'im_messa
 insert into sys_dict_data values(52, '000000', 6,  '文字提示', '21',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(53, '000000', 7,  '语音通话', '40',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(54, '000000', 8,  '视频通话', '41',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(55, '000000', 9,  '消息撤回', '10',       'im_message_type',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
 
 -- ----------------------------
 -- 13、参数配置表
