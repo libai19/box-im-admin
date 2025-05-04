@@ -47,7 +47,7 @@ java -jar ./ruoyi-admin/target/im-admin.jar
 npm install
 npm run dev
 ```
-访问 http://localhost:3000
+访问 http://localhost:3000, 默认管理员账号: admin/admin123
 
 #### 界面截图:
 ![输入图片说明](%E6%88%AA%E5%9B%BE/1.jpg)

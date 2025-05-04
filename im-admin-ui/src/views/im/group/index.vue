@@ -32,7 +32,8 @@
         <el-table-column label="群名" align="center" prop="name" />
         <el-table-column label="群头像" align="center" prop="headImage" width="100">
           <template #default="scope">
-            <image-preview v-if="scope.row.headImageThumb" :src="scope.row.headImageThumb" :full-src="scope.row.headImage" :width="40" :height="40" />
+            <image-preview v-if="scope.row.headImageThumb" :src="scope.row.headImageThumb"
+              :full-src="scope.row.headImage" :width="40" :height="40" />
           </template>
         </el-table-column>
         <el-table-column label="群主" align="center" prop="ownerUserName" />
@@ -56,8 +57,10 @@
           <template #default="scope">
             <el-button link type="primary" v-hasPermi="['im:group:query']"
               @click="handleDetail(scope.row)">详情</el-button>
-            <el-button v-if="scope.row.isBanned" link type="danger" v-hasPermi="['im:group:ban']" @click="handleUnban(scope.row)">解封</el-button>
-            <el-button v-else link type="danger" v-hasPermi="['im:group:ban']" @click="handleBan(scope.row)">封禁</el-button>
+            <el-button v-if="scope.row.isBanned" link type="danger" v-hasPermi="['im:group:ban']"
+              @click="handleUnban(scope.row)">解封</el-button>
+            <el-button v-else link type="danger" v-hasPermi="['im:group:ban']"
+              @click="handleBan(scope.row)">封禁</el-button>
             <el-button link type="primary" @click="handleShowMember(scope.row.id)">查看成员</el-button>
           </template>
         </el-table-column>
