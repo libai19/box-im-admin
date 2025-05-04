@@ -4,6 +4,12 @@
       <div v-show="showSearch" class="mb-[10px]">
         <el-card shadow="hover">
           <el-form ref="queryFormRef" :model="queryParams" :inline="true">
+            <el-form-item label="用户1" prop="sendId">
+              <im-user-select v-model="queryParams.sendId"></im-user-select>
+            </el-form-item>
+            <el-form-item label="用户2" prop="recvId">
+              <im-user-select v-model="queryParams.recvId"></im-user-select>
+            </el-form-item>
             <el-form-item label="发送时间" prop="createdTime">
               <el-date-picker
                     v-model="dateRange"
@@ -14,12 +20,6 @@
                     end-placeholder="结束日期"
                     :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
                   ></el-date-picker>
-            </el-form-item>
-            <el-form-item label="发送用户" prop="sendId">
-              <im-user-select v-model="queryParams.sendId"></im-user-select>
-            </el-form-item>
-            <el-form-item label="接收用户" prop="recvId">
-              <im-user-select v-model="queryParams.recvId"></im-user-select>
             </el-form-item>
             <el-form-item label="内容" prop="content">
               <el-input v-model="queryParams.content"></el-input>

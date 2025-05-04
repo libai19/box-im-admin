@@ -55,8 +55,10 @@
           <template #default="scope">
             <el-button link type="primary" v-hasPermi="['im:user:query']"
               @click="handleDetail(scope.row)">详情</el-button>
-            <el-button v-if="scope.row.isBanned" link type="danger" v-hasPermi="['im:user:ban']" @click="unbanHandle(scope.row)">解封</el-button>
-            <el-button v-else link type="danger" v-hasPermi="['im:user:ban']" @click="banHandle(scope.row)">封禁</el-button>
+            <el-button v-if="scope.row.isBanned" link type="danger" v-hasPermi="['im:user:ban']"
+              @click="unbanHandle(scope.row)">解封</el-button>
+            <el-button v-else link type="danger" v-hasPermi="['im:user:ban']"
+              @click="banHandle(scope.row)">封禁</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,7 +70,8 @@
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="800px" append-to-body>
       <el-form ref="userFormRef" :model="form" :rules="rules" label-width="100px" disabled>
         <el-form-item label="用户头像" prop="headImage">
-          <image-preview :src="form.headImageThumb" :full-src="form.headImage" :width="100" :height="100" />
+          <image-preview v-if="scope.row.headImageThumb" :src="form.headImageThumb" :full-src="form.headImage"
+            :width="100" :height="100" />
         </el-form-item>
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入用户名" />

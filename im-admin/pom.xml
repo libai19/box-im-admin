@@ -29,7 +29,6 @@
         <redisson.version>3.37.0</redisson.version>
         <lock4j.version>2.2.7</lock4j.version>
         <dynamic-ds.version>4.3.1</dynamic-ds.version>
-        <snailjob.version>1.1.2</snailjob.version>
         <mapstruct-plus.version>1.4.5</mapstruct-plus.version>
         <mapstruct-plus.lombok.version>0.2.0</mapstruct-plus.lombok.version>
         <lombok.version>1.18.34</lombok.version>
@@ -53,13 +52,6 @@
     </properties>
 
     <profiles>
-        <profile>
-            <id>local</id>
-            <properties>
-                <!-- 环境标识，需要与配置文件的名称相对应 -->
-                <profiles.active>local</profiles.active>
-            </properties>
-        </profile>
         <profile>
             <id>dev</id>
             <properties>
@@ -234,18 +226,6 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>lock4j-redisson-spring-boot-starter</artifactId>
                 <version>${lock4j.version}</version>
-            </dependency>
-
-            <!-- SnailJob Client -->
-            <dependency>
-                <groupId>com.aizuda</groupId>
-                <artifactId>snail-job-client-starter</artifactId>
-                <version>${snailjob.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aizuda</groupId>
-                <artifactId>snail-job-client-job-core</artifactId>
-                <version>${snailjob.version}</version>
             </dependency>
 
             <!-- 加密包引入 -->

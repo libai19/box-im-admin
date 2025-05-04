@@ -32,7 +32,7 @@
         <el-table-column label="群名" align="center" prop="name" />
         <el-table-column label="群头像" align="center" prop="headImage" width="100">
           <template #default="scope">
-            <image-preview :src="scope.row.headImageThumb" :full-src="scope.row.headImage" :width="40" :height="40" />
+            <image-preview v-if="scope.row.headImageThumb" :src="scope.row.headImageThumb" :full-src="scope.row.headImage" :width="40" :height="40" />
           </template>
         </el-table-column>
         <el-table-column label="群主" align="center" prop="ownerUserName" />

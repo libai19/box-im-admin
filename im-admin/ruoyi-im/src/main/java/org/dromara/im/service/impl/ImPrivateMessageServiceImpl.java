@@ -17,6 +17,7 @@ import org.dromara.im.service.IImPrivateMessageService;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 私聊消息Service业务层处理
@@ -60,11 +61,23 @@ public class ImPrivateMessageServiceImpl implements IImPrivateMessageService {
     private LambdaQueryWrapper<ImPrivateMessage> buildQueryWrapper(ImPrivateMessageBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<ImPrivateMessage> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(bo.getSendId() != null, ImPrivateMessage::getSendId, bo.getSendId());
-        wrapper.eq(bo.getRecvId() != null, ImPrivateMessage::getRecvId, bo.getRecvId());
+        if (!Objects.isNull(bo.getSendId()) && !Objects.isNull(bo.getRecvId())) {
+            // 指定了两个用户，返回这两个用户之间的聊天记录
+            wrapper.and(wrap -> wrap.and(wp -> wp.eq(ImPrivateMessage::getSendId, bo.getSendId())
+                    .eq(ImPrivateMessage::getRecvId, bo.getRecvId()))
+                .or(wp -> wp.eq(ImPrivateMessage::getSendId, bo.getRecvId())
+                    .eq(ImPrivateMessage::getRecvId, bo.getSendId())));
+
+        } else if (!Objects.isNull(bo.getSendId())) {
+            wrapper.and(wp -> wp.eq(ImPrivateMessage::getSendId, bo.getSendId()).or()
+                .eq(ImPrivateMessage::getRecvId, bo.getSendId()));
+        } else if (!Objects.isNull(bo.getRecvId())) {
+            wrapper.and(wp -> wp.eq(ImPrivateMessage::getSendId, bo.getRecvId()).or()
+                .eq(ImPrivateMessage::getRecvId, bo.getRecvId()));
+        }
         wrapper.like(StringUtils.isNotBlank(bo.getContent()), ImPrivateMessage::getContent, bo.getContent());
-        wrapper.eq(bo.getType() != null, ImPrivateMessage::getType, bo.getType());
-        wrapper.eq(bo.getStatus() != null, ImPrivateMessage::getStatus, bo.getStatus());
+        wrapper.eq(!Objects.isNull(bo.getType()), ImPrivateMessage::getType, bo.getType());
+        wrapper.eq(!Objects.isNull(bo.getStatus()), ImPrivateMessage::getStatus, bo.getStatus());
         wrapper.between(params.get("beginTime") != null && params.get("endTime") != null, ImPrivateMessage::getSendTime,
             params.get("beginTime"), params.get("endTime"));
         wrapper.orderByDesc(ImPrivateMessage::getId);
