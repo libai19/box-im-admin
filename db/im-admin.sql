@@ -532,7 +532,7 @@ insert into sys_dict_data values(37, '000000', 0,  'iOS', 'ios',          'sys_d
 insert into sys_dict_data values(38, '000000', 0,  '小程序', 'xcx',       'sys_device_type',     '',   'default', 'N', 103, 1, sysdate(), null, null, '小程序');
 insert into sys_dict_data values(39, '000000', 0,  '否',    'false',         'im_bool',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(40, '000000', 0,  '是', 'true',     'im_bool',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
-insert into sys_dict_data values(43, '000000', 1,  '未发送', '0',      'im_message_status',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
+insert into sys_dict_data values(43, '000000', 1,  '未送达', '0',      'im_message_status',     '',   'danger', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(44, '000000', 2,  '送达', '1',       'im_message_status',     '',   'primary', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(45, '000000', 3,  '撤回', '2',       'im_message_status',     '',   'warning', 'N', 103, 1, sysdate(), null, null, '');
 insert into sys_dict_data values(46, '000000', 4,  '已读', '3',       'im_message_status',     '',   'success', 'N', 103, 1, sysdate(), null, null, '');
