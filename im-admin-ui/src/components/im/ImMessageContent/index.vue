@@ -41,4 +41,11 @@ const props = defineProps({
 	color: inherit;
 	text-decoration: none;
 }
+
+.message-text {
+	display: inline-flex;
+	align-items: center;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
 </style>
