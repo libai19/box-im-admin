@@ -2,7 +2,7 @@
 	<div>
 		<div v-if="message.type == 1">
 			<image-preview :src="JSON.parse(message.content).thumbUrl" :full-src="JSON.parse(message.content).originUrl"
-				:width="40" :height="40" />
+				:width="80" :height="80" />
 		</div>
 		<div v-else-if="message.type == 2">
 			<el-link type="primary" :href="JSON.parse(message.content).url" :download="JSON.parse(message.content).name"

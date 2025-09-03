@@ -76,10 +76,10 @@
           <image-preview :src="form.headImageThumb" :full-src="form.headImage" :width="50" :height="50" />
         </el-form-item>
         <el-form-item label="群名字" prop="name">
-          <el-input v-model="form.name" placeholder="请输入群名字" />
+          <el-input v-model="form.name" />
         </el-form-item>
         <el-form-item label="群主" prop="name">
-          <el-input v-model="form.ownerUserName" placeholder="请输入群名字" />
+          <el-input v-model="form.ownerUserName" />
         </el-form-item>
         <el-form-item label="创建时间" prop="createdTime">
           <el-date-picker clearable v-model="form.createdTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss">
@@ -92,9 +92,9 @@
           <dict-tag :options="im_bool" :value="form.isBanned" />
         </el-form-item>
         <el-form-item v-if="form.isBanned" label="被封禁原因" prop="reason">
-          <el-input v-model="form.reason" placeholder="请输入被封禁原因" />
+          <el-input v-model="form.reason" />
         </el-form-item>
-        <el-form-item label="群公告" prop="notice">
+        <el-form-item v-if="form.notice" label="群公告" prop="notice">
           <el-input type="textarea" v-model="form.notice"></el-input>
         </el-form-item>
       </el-form>
