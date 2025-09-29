@@ -16,6 +16,7 @@ import org.dromara.im.mapper.ImGroupMessageMapper;
 import org.dromara.im.service.IImGroupMessageService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,6 +57,19 @@ public class ImGroupMessageServiceImpl implements IImGroupMessageService {
         return TableDataInfo.build(result);
     }
 
+    /**
+     * 按天统计群聊消息数量
+     *
+     * @param days 统计天数
+     * @return 按天统计数据
+     */
+    @Override
+    public List<Map<String, Object>> getDailyGroupMessageCount(Integer days) {
+        if (days == null || days <= 0) {
+            days = 7; // 默认统计最近7天
+        }
+        return baseMapper.getDailyGroupMessageCount(days);
+    }
 
     private LambdaQueryWrapper<ImGroupMessage> buildQueryWrapper(ImGroupMessageBo bo) {
         Map<String, Object> params = bo.getParams();

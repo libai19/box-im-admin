@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
@@ -23,7 +24,9 @@ import org.dromara.im.mq.ImRedisMQTemplate;
 import org.dromara.im.service.IImUserService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户Service业务层处理
@@ -124,5 +127,66 @@ public class ImUserServiceImpl implements IImUserService {
         LambdaQueryWrapper<ImUser> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.in(ImUser::getId, ids);
         return baseMapper.selectVoList(queryWrapper);
+    }
+
+    /**
+     * 按天统计用户注册数量
+     *
+     * @param days 统计天数
+     * @return 统计结果
+     */
+    @Override
+    public List<Map<String, Object>> getDailyRegistrationCount(Integer days) {
+        if (days == null || days <= 0) {
+            days = 7; // 默认统计最近7天
+        }
+        return baseMapper.getDailyRegistrationCount(days);
+    }
+
+    /**
+     * 获取总用户数量
+     *
+     * @return 总用户数量
+     */
+    @Override
+    public Long getTotalUserCount() {
+        return baseMapper.selectCount(null);
+    }
+
+
+    /**
+     * 获取日活跃用户数量（最近1天）
+     *
+     * @return 日活跃用户数量
+     */
+    @Override
+    public Long getDailyActiveUserCount() {
+        LambdaQueryWrapper<ImUser> wrapper = Wrappers.lambdaQuery();
+        wrapper.ge(ImUser::getLastLoginTime, DateUtils.addMonths(new Date(), -1));
+        return baseMapper.selectCount(wrapper);
+    }
+
+    /**
+     * 获取周活跃用户数量（最近7天）
+     *
+     * @return 周活跃用户数量
+     */
+    @Override
+    public Long getWeeklyActiveUserCount() {
+        LambdaQueryWrapper<ImUser> wrapper = Wrappers.lambdaQuery();
+        wrapper.ge(ImUser::getLastLoginTime, DateUtils.addMonths(new Date(), -7));
+        return baseMapper.selectCount(wrapper);
+    }
+
+    /**
+     * 获取月活跃用户数量（最近30天）
+     *
+     * @return 月活跃用户数量
+     */
+    @Override
+    public Long getMonthlyActiveUserCount() {
+        LambdaQueryWrapper<ImUser> wrapper = Wrappers.lambdaQuery();
+        wrapper.ge(ImUser::getLastLoginTime, DateUtils.addMonths(new Date(), -30));
+        return baseMapper.selectCount(wrapper);
     }
 }

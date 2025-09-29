@@ -16,6 +16,7 @@ import org.dromara.im.mapper.ImPrivateMessageMapper;
 import org.dromara.im.service.IImPrivateMessageService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -57,6 +58,19 @@ public class ImPrivateMessageServiceImpl implements IImPrivateMessageService {
         return TableDataInfo.build(result);
     }
 
+    /**
+     * 按天统计私聊消息量
+     *
+     * @param days 统计天数
+     * @return 统计结果
+     */
+    @Override
+    public List<Map<String, Object>> getDailyMessageCount(Integer days) {
+        if (days == null || days <= 0) {
+            days = 7; // 默认统计最近7天
+        }
+        return baseMapper.getDailyMessageCount(days);
+    }
 
     private LambdaQueryWrapper<ImPrivateMessage> buildQueryWrapper(ImPrivateMessageBo bo) {
         Map<String, Object> params = bo.getParams();

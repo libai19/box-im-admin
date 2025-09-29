@@ -27,3 +27,14 @@ export const getGroupMessage = (id: string | number): AxiosPromise<GroupMessageV
   });
 };
 
+/**
+ * 按天统计群聊消息量
+ * @param days 统计天数
+ */
+export const getDailyGroupMessageCount = (days?: number): AxiosPromise<any[]> => {
+  return request({
+    url: '/im/groupMessage/dailyCount',
+    method: 'get',
+    params: { days }
+  });
+};

@@ -70,36 +70,34 @@
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="800px" append-to-body>
       <el-form ref="userFormRef" :model="form" :rules="rules" label-width="100px" disabled>
         <el-form-item label="用户头像" prop="headImage">
-          <image-preview v-if="scope.row.headImageThumb" :src="form.headImageThumb" :full-src="form.headImage"
+          <image-preview v-if="form.headImageThumb" :src="form.headImageThumb" :full-src="form.headImage"
             :width="100" :height="100" />
         </el-form-item>
         <el-form-item label="用户名" prop="userName">
-          <el-input v-model="form.userName" placeholder="请输入用户名" />
+          <el-input v-model="form.userName" />
         </el-form-item>
         <el-form-item label="性别" prop="sex">
           <dict-tag :options="sys_user_sex" :value="form.sex" />
         </el-form-item>
         <el-form-item label="用户昵称" prop="nickName">
-          <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
+          <el-input v-model="form.nickName"  />
         </el-form-item>
         <el-form-item label="个性签名" prop="signature">
-          <el-input v-model="form.signature" placeholder="请输入个性签名" />
+          <el-input v-model="form.signature" />
         </el-form-item>
         <el-form-item label="最后登录时间" prop="lastLoginTime">
-          <el-date-picker clearable v-model="form.lastLoginTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss"
-            placeholder="请选择最后登录时间">
+          <el-date-picker clearable v-model="form.lastLoginTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="注册时间" prop="createdTime">
-          <el-date-picker clearable v-model="form.createdTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss"
-            placeholder="请选择创建时间">
+          <el-date-picker clearable v-model="form.createdTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="是否被封禁" prop="isBanned">
           <dict-tag :options="im_bool" :value="form.isBanned" />
         </el-form-item>
         <el-form-item v-if="form.isBanned" label="被封禁原因" prop="reason">
-          <el-input v-model="form.reason" placeholder="请输入被封禁原因" />
+          <el-input v-model="form.reason"/>
         </el-form-item>
       </el-form>
       <template #footer>

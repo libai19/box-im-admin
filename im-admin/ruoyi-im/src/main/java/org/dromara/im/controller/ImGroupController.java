@@ -104,4 +104,13 @@ public class ImGroupController extends BaseController {
     public TableDataInfo<ImGroupMemberVo> findMembers( ImGroupMemberBo bo, PageQuery pageQuery) {
         return groupMemberService.queryPageList(bo,pageQuery);
     }
+
+    /**
+     * 获取总群组数量
+     */
+    @SaCheckPermission("im:group:list")
+    @GetMapping("/totalCount")
+    public R<Long> getTotalGroupCount() {
+        return R.ok(groupService.getTotalGroupCount());
+    }
 }

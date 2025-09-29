@@ -5,6 +5,9 @@ import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.domain.bo.ImPrivateMessageBo;
 import org.dromara.im.domain.vo.ImPrivateMessageVo;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 私聊消息Service接口
  *
@@ -31,6 +34,12 @@ public interface IImPrivateMessageService {
     TableDataInfo<ImPrivateMessageVo> queryPageList(ImPrivateMessageBo bo, PageQuery pageQuery);
 
 
-
+    /**
+     * 按天统计私聊消息量
+     *
+     * @param days 统计天数
+     * @return 统计结果
+     */
+    List<Map<String, Object>> getDailyMessageCount(Integer days);
 
 }

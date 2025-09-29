@@ -1,81 +1,530 @@
 <template>
   <div class="app-container home">
-    <el-row :gutter="20">
-      <el-col :sm="24" :lg="12" style="padding-left: 20px">
-        <h2>盒子IM 后台管理系统</h2>
-        <h4>盒子IM是一个仿微信的聊天系统，支持私聊、群聊、离线消息、发送图片、文件、语音、emoji表情、音视频通话等功能</h4>
+    <!-- 统计指标卡片 -->
+    <el-row :gutter="20" style="margin-bottom: 20px">
+      <el-col :span="6">
+        <el-card class="statistics-card">
+          <div class="statistics-item">
+            <div class="statistics-icon" style="background-color: #409EFF;">
+              <el-icon size="24">
+                <User />
+              </el-icon>
+            </div>
+            <div class="statistics-content">
+              <div class="statistics-title">总用户量</div>
+              <div class="statistics-value">{{ totalUserCount }}</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card class="statistics-card">
+          <div class="statistics-item">
+            <div class="statistics-icon" style="background-color: #67C23A;">
+              <el-icon size="24">
+                <ChatDotRound />
+              </el-icon>
+            </div>
+            <div class="statistics-content">
+              <div class="statistics-title">总群组数量</div>
+              <div class="statistics-value">{{ totalGroupCount }}</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card class="statistics-card">
+          <div class="statistics-item">
+            <div class="statistics-icon" style="background-color: #E6A23C;">
+              <el-icon size="24">
+                <Timer />
+              </el-icon>
+            </div>
+            <div class="statistics-content">
+              <div class="statistics-title">日活用户</div>
+              <div class="statistics-value">{{ dailyActiveCount }}</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card class="statistics-card">
+          <div class="statistics-item">
+            <div class="statistics-icon" style="background-color: #909399;">
+              <el-icon size="24">
+                <Clock />
+              </el-icon>
+            </div>
+            <div class="statistics-content">
+              <div class="statistics-title">月活用户</div>
+              <div class="statistics-value">{{ monthlyActiveCount }}</div>
+            </div>
+          </div>
+        </el-card>
       </el-col>
     </el-row>
-    <el-divider />
+
+    <!-- 统计图表 -->
+    <div class="chart-section">
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-card>
+            <template #header>
+              <span>用户注册</span>
+              <el-select v-model="registrationSelectedDays" @change="loadRegistrationChartData"
+                style="width: 100px; float: right;" size="small">
+                <el-option label="7天" :value="7"></el-option>
+                <el-option label="15天" :value="15"></el-option>
+                <el-option label="30天" :value="30"></el-option>
+              </el-select>
+            </template>
+            <div ref="registrationChartContainer" style="width: 100%; height: 300px;"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card>
+            <template #header>
+              <span>消息统计</span>
+              <el-select v-model="selectedDays" @change="loadChartData" style="width: 100px; float: right;"
+                size="small">
+                <el-option label="7天" :value="7"></el-option>
+                <el-option label="15天" :value="15"></el-option>
+                <el-option label="30天" :value="30"></el-option>
+              </el-select>
+            </template>
+            <div ref="chartContainer" style="width: 100%; height: 300px;"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script setup name="Index" lang="ts">
-const goTarget = (url: string) => {
-  window.open(url, '__blank');
+import { ref, onMounted, nextTick, computed } from 'vue';
+import * as echarts from 'echarts';
+import { getDailyMessageCount } from '@/api/im/privateMessage';
+import { getDailyGroupMessageCount } from '@/api/im/groupMessage';
+import { getDailyRegistrationCount, getTotalUserCount, getActiveUserStats } from '@/api/im/user';
+import { getTotalGroupCount } from '@/api/im/group';
+import { User, ChatDotRound, Timer, Calendar, Clock } from '@element-plus/icons-vue';
+
+const chartContainer = ref<HTMLElement>();
+const selectedDays = ref(7);
+let chartInstance: echarts.ECharts | null = null;
+
+const registrationChartContainer = ref<HTMLElement>();
+const registrationSelectedDays = ref(7);
+let registrationChartInstance: echarts.ECharts | null = null;
+
+// 总用户数量
+const totalUserCount = ref(0);
+
+// 总群组数量
+const totalGroupCount = ref(0);
+
+// 活跃用户数据
+const dailyActiveCount = ref(0);
+const weeklyActiveCount = ref(0);
+const monthlyActiveCount = ref(0);
+
+// 加载总用户数量
+const loadTotalUserCount = async () => {
+  try {
+    const response = await getTotalUserCount();
+    totalUserCount.value = response.data;
+  } catch (error) {
+    console.error('加载总用户数量失败:', error);
+    totalUserCount.value = 0;
+  }
+};
+
+// 加载总群组数量
+const loadTotalGroupCount = async () => {
+  try {
+    const response = await getTotalGroupCount();
+    totalGroupCount.value = response.data;
+  } catch (error) {
+    console.error('加载总群组数量失败:', error);
+    totalGroupCount.value = 0;
+  }
+};
+
+// 加载活跃用户统计数据
+const loadActiveUserStats = async () => {
+  try {
+    const response = await getActiveUserStats();
+    dailyActiveCount.value = response.data.dailyActive;
+    weeklyActiveCount.value = response.data.weeklyActive;
+    monthlyActiveCount.value = response.data.monthlyActive;
+  } catch (error) {
+    console.error('加载活跃用户统计失败:', error);
+    dailyActiveCount.value = 0;
+    weeklyActiveCount.value = 0;
+    monthlyActiveCount.value = 0;
+  }
+};
+
+
+// 加载图表数据
+const loadChartData = async () => {
+  try {
+    // 同时加载私聊和群聊数据
+    const [privateResponse, groupResponse] = await Promise.all([
+      getDailyMessageCount(selectedDays.value),
+      getDailyGroupMessageCount(selectedDays.value)
+    ]);
+
+    const privateData = privateResponse.data;
+    const groupData = groupResponse.data;
+
+    // 处理数据，确保所有日期都有数据
+    const chartData = processChartData(privateData, groupData);
+
+    // 更新图表
+    if (chartInstance) {
+      chartInstance.setOption({
+        xAxis: {
+          data: chartData.dates
+        },
+        series: [
+          {
+            data: chartData.privateCounts
+          },
+          {
+            data: chartData.groupCounts
+          }
+        ]
+      });
+    }
+  } catch (error) {
+    console.error('加载图表数据失败:', error);
+  }
+};
+
+// 处理图表数据，填充缺失的日期
+const processChartData = (privateData: any[], groupData: any[]) => {
+  const dates: string[] = [];
+  const privateCounts: number[] = [];
+  const groupCounts: number[] = [];
+
+  // 生成日期范围
+  const today = new Date();
+  for (let i = selectedDays.value - 1; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    dates.push(dateStr);
+
+    // 查找对应日期的私聊数据
+    const privateDayData = privateData.find(item => item.date === dateStr);
+    privateCounts.push(privateDayData ? parseInt(privateDayData.count) : 0);
+
+    // 查找对应日期的群聊数据
+    const groupDayData = groupData.find(item => item.date === dateStr);
+    groupCounts.push(groupDayData ? parseInt(groupDayData.count) : 0);
+  }
+
+  return { dates, privateCounts, groupCounts };
+};
+
+// 加载用户注册统计图表数据
+const loadRegistrationChartData = async () => {
+  try {
+    const response = await getDailyRegistrationCount(registrationSelectedDays.value);
+    const data = response.data;
+
+    // 处理数据，确保所有日期都有数据
+    const chartData = processRegistrationChartData(data);
+
+    // 更新图表
+    if (registrationChartInstance) {
+      registrationChartInstance.setOption({
+        xAxis: {
+          data: chartData.dates
+        },
+        series: [{
+          data: chartData.counts
+        }]
+      });
+    }
+  } catch (error) {
+    console.error('加载用户注册统计图表数据失败:', error);
+  }
+};
+
+// 处理用户注册统计图表数据，填充缺失的日期
+const processRegistrationChartData = (data: any[]) => {
+  const dates: string[] = [];
+  const counts: number[] = [];
+
+  // 生成日期范围
+  const today = new Date();
+  for (let i = registrationSelectedDays.value - 1; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    dates.push(dateStr);
+
+    // 查找对应日期的数据
+    const dayData = data.find(item => item.date === dateStr);
+    counts.push(dayData ? parseInt(dayData.count) : 0);
+  }
+
+  return { dates, counts };
+};
+
+// 初始化图表
+const initChart = async () => {
+  await nextTick();
+  if (chartContainer.value) {
+    chartInstance = echarts.init(chartContainer.value);
+
+    const option = {
+      title: {
+        text: '每日消息量趋势对比',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'axis',
+        formatter: (params: any) => {
+          let result = `${params[0].name}<br/>`;
+          params.forEach((param: any) => {
+            result += `${param.seriesName}: ${param.value}<br/>`;
+          });
+          return result;
+        }
+      },
+      legend: {
+        data: ['私聊消息', '群聊消息'],
+        top: 30
+      },
+      xAxis: {
+        type: 'category',
+        data: [],
+        axisLabel: {
+          formatter: (value: string) => {
+            return value.substring(5); // 只显示月-日
+          }
+        }
+      },
+      yAxis: {
+        type: 'value',
+        name: '消息量'
+      },
+      series: [
+        {
+          name: '私聊消息',
+          type: 'line',
+          data: [],
+          smooth: true,
+          itemStyle: {
+            color: '#409EFF'
+          },
+          areaStyle: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0, color: 'rgba(64, 158, 255, 0.3)'
+              }, {
+                offset: 1, color: 'rgba(64, 158, 255, 0.1)'
+              }]
+            }
+          }
+        },
+        {
+          name: '群聊消息',
+          type: 'line',
+          data: [],
+          smooth: true,
+          itemStyle: {
+            color: '#67C23A'
+          },
+          areaStyle: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0, color: 'rgba(103, 194, 58, 0.3)'
+              }, {
+                offset: 1, color: 'rgba(103, 194, 58, 0.1)'
+              }]
+            }
+          }
+        }
+      ],
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        top: '15%',
+        containLabel: true
+      }
+    };
+
+    chartInstance.setOption(option);
+
+    // 加载初始数据
+    await loadChartData();
+  }
+};
+
+onMounted(() => {
+  loadTotalUserCount();
+  loadTotalGroupCount();
+  loadActiveUserStats();
+  initChart();
+  initRegistrationChart();
+});
+
+// 初始化用户注册统计图表
+const initRegistrationChart = async () => {
+  await nextTick();
+  if (registrationChartContainer.value) {
+    registrationChartInstance = echarts.init(registrationChartContainer.value);
+
+    const option = {
+      title: {
+        text: '每日用户注册趋势',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'axis',
+        formatter: (params: any) => {
+          const data = params[0];
+          return `${data.name}<br/>注册用户: ${data.value}`;
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: [],
+        axisLabel: {
+          formatter: (value: string) => {
+            return value.substring(5); // 只显示月-日
+          }
+        }
+      },
+      yAxis: {
+        type: 'value',
+        name: '注册用户数'
+      },
+      series: [{
+        name: '注册用户',
+        type: 'line',
+        data: [],
+        smooth: true,
+        itemStyle: {
+          color: '#E6A23C'
+        },
+        areaStyle: {
+          color: {
+            type: 'linear',
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [{
+              offset: 0, color: 'rgba(230, 162, 60, 0.3)'
+            }, {
+              offset: 1, color: 'rgba(230, 162, 60, 0.1)'
+            }]
+          }
+        }
+      }],
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      }
+    };
+
+    registrationChartInstance.setOption(option);
+
+    // 加载初始数据
+    await loadRegistrationChartData();
+  }
 };
 </script>
 
 <style scoped lang="scss">
-.home {
-  blockquote {
-    padding: 10px 20px;
-    margin: 0 0 20px;
-    font-size: 17.5px;
-    border-left: 5px solid #eee;
-  }
-  hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 0;
-    border-top: 1px solid #eee;
-  }
-  .col-item {
-    margin-bottom: 20px;
-  }
+.app-container {
+  padding: 20px;
+}
 
-  ul {
-    padding: 0;
-    margin: 0;
+// 统计卡片样式
+.statistics-card {
+  border-radius: 8px;
+  border: 1px solid #f0f2f5;
+
+  :deep(.el-card__body) {
+    padding: 16px;
   }
+}
 
-  font-family: 'open sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  color: #676a6c;
-  overflow-x: hidden;
+.statistics-item {
+  display: flex;
+  align-items: center;
 
-  ul {
-    list-style-type: none;
+  .statistics-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    color: white;
   }
 
-  h4 {
-    margin-top: 0px;
-  }
+  .statistics-content {
+    flex: 1;
 
-  h2 {
-    margin-top: 10px;
-    font-size: 26px;
-    font-weight: 100;
-  }
+    .statistics-title {
+      font-size: 13px;
+      color: #8c8c8c;
+      margin-bottom: 4px;
+    }
 
-  p {
-    margin-top: 10px;
-
-    b {
-      font-weight: 700;
+    .statistics-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: #262626;
+      line-height: 1;
     }
   }
+}
 
-  .update-log {
-    ol {
-      display: block;
-      list-style-type: decimal;
-      margin-block-start: 1em;
-      margin-block-end: 1em;
-      margin-inline-start: 0;
-      margin-inline-end: 0;
-      padding-inline-start: 40px;
+// 图表区域
+.chart-section {
+  margin-top: 24px;
+
+  .el-card {
+    border-radius: 8px;
+    border: 1px solid #f0f2f5;
+
+    :deep(.el-card__body) {
+      padding: 16px;
     }
+  }
+}
+
+// 卡片头部样式优化
+:deep(.el-card__header) {
+  border-bottom: 1px solid #f0f2f5;
+  padding: 12px 16px;
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #262626;
   }
 }
 </style>

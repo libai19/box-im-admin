@@ -113,7 +113,10 @@ security:
     # swagger 文档配置
     - /*/api-docs
     - /*/api-docs/**
-
+    - /swagger-ui/**
+    - /swagger-ui.html
+    - /v3/api-docs
+    - /v3/api-docs/**
 
 # MyBatisPlus配置
 # https://baomidou.com/config/
@@ -144,16 +147,29 @@ mybatis-encryptor:
   publicKey:
   privateKey:
 
-# 【bug】ruoyi的这个文档配置似乎没有生效，跟代码也对不上
+# SpringDoc OpenAPI 3.0 配置,访问: http://localhost:8889/swagger-ui/index.html
 springdoc:
   api-docs:
     # 是否开启接口文档
     enabled: true
+    # API文档路径
+    path: /v3/api-docs
+  swagger-ui:
+    # Swagger UI 访问路径
+    path: /swagger-ui.html
+    # 是否启用
+    enabled: true
+    # 显示操作ID
+    display-operation-id: true
+    # 显示请求持续时间
+    display-request-duration: true
   info:
     # 标题
-    title: '标题：${app.name}后台管理系统'
+    title: '${app.name}后台管理系统'
     # 版本
-    version: '版本号: ${app.version}'
+    version: '${app.version}'
+    # 描述
+    description: '盒子IM后台管理系统API文档'
   components:
     # 鉴权方式配置
     security-schemes:
@@ -161,10 +177,10 @@ springdoc:
         type: APIKEY
         in: HEADER
         name: ${sa-token.token-name}
-  #这里定义了两个分组，可定义多个，也可以不定义
+  # 分组配置
   group-configs:
-    - group: 1.演示模块
-      packages-to-scan: org.dromara.demo
+    - group: 1.IM模块
+      packages-to-scan: org.dromara.im
     - group: 2.通用模块
       packages-to-scan: org.dromara.web
     - group: 3.系统模块
