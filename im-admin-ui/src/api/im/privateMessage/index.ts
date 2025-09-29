@@ -27,3 +27,16 @@ export const getPrivateMessage = (id: string | number): AxiosPromise<PrivateMess
   });
 };
 
+
+
+/**
+ * 按天统计私聊消息量
+ * @param days 统计天数
+ */
+export const getDailyMessageCount = (days?: number): AxiosPromise<any[]> => {
+  return request({
+    url: '/im/privateMessage/dailyCount',
+    method: 'get',
+    params: { days }
+  });
+};

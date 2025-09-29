@@ -128,6 +128,15 @@ public class ImGroupServiceImpl implements IImGroupService {
         return  baseMapper.selectVoList(queryWrapper);
     }
 
+    /**
+     * 获取总群组数量
+     * @return 总群组数量
+     */
+    @Override
+    public Long getTotalGroupCount() {
+        return baseMapper.selectCount(null);
+    }
+
     private LambdaQueryWrapper<ImGroup> buildQueryWrapper(ImGroupBo bo) {
         Map<String, Object> params =  bo.getParams();
         LambdaQueryWrapper<ImGroup> wrapper = Wrappers.lambdaQuery();

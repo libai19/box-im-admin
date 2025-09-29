@@ -11,10 +11,10 @@ import org.dromara.im.domain.bo.ImGroupMessageBo;
 import org.dromara.im.domain.vo.ImGroupMessageVo;
 import org.dromara.im.service.IImGroupMessageService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 群消息
@@ -51,5 +51,15 @@ public class ImGroupMessageController extends BaseController {
         return R.ok(imGroupMessageService.queryById(id));
     }
 
+    /**
+     * 按天统计群聊消息量
+     *
+     * @param days 统计天数，默认7天
+     */
+    @SaCheckPermission("im:groupMessage:list")
+    @GetMapping("/dailyCount")
+    public R<List<Map<String, Object>>> getDailyGroupMessageCount(@RequestParam(defaultValue = "7") Integer days) {
+        return R.ok(imGroupMessageService.getDailyGroupMessageCount(days));
+    }
 
 }

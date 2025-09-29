@@ -11,10 +11,10 @@ import org.dromara.im.domain.bo.ImPrivateMessageBo;
 import org.dromara.im.domain.vo.ImPrivateMessageVo;
 import org.dromara.im.service.IImPrivateMessageService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 私聊消息
@@ -50,6 +50,17 @@ public class ImPrivateMessageController extends BaseController {
     public R<ImPrivateMessageVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(imPrivateMessageService.queryById(id));
+    }
+
+    /**
+     * 按天统计私聊消息量
+     *
+     * @param days 统计天数，默认7天
+     */
+    @SaCheckPermission("im:privateMessage:list")
+    @GetMapping("/dailyCount")
+    public R<List<Map<String, Object>>> getDailyMessageCount(@RequestParam(value = "days", defaultValue = "7") Integer days) {
+        return R.ok(imPrivateMessageService.getDailyMessageCount(days));
     }
 
 }

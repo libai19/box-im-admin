@@ -22,7 +22,9 @@ import org.dromara.im.util.CommaTextUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -100,5 +102,38 @@ public class ImUserController extends BaseController {
         List<Long> arrIds = CommaTextUtils.asList(ids).stream().map(Long::parseLong).collect(Collectors.toList());
         List<ImUserVo> vos = userService.findByIds(arrIds);
         return R.ok(vos);
+    }
+
+    /**
+     * 按天统计用户注册数量
+     *
+     * @param days 统计天数，默认7天
+     */
+    @SaCheckPermission("im:user:list")
+    @GetMapping("/dailyRegistrationCount")
+    public R<List<Map<String, Object>>> getDailyRegistrationCount(@RequestParam(value = "days", defaultValue = "7") Integer days) {
+        return R.ok(userService.getDailyRegistrationCount(days));
+    }
+
+    /**
+     * 获取总用户数量
+     */
+    @SaCheckPermission("im:user:list")
+    @GetMapping("/totalCount")
+    public R<Long> getTotalUserCount() {
+        return R.ok(userService.getTotalUserCount());
+    }
+
+    /**
+     * 获取活跃用户统计（日活、周活、月活）
+     */
+    @SaCheckPermission("im:user:list")
+    @GetMapping("/activeStats")
+    public R<Map<String, Long>> getActiveUserStats() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("dailyActive", userService.getDailyActiveUserCount());
+        stats.put("weeklyActive", userService.getWeeklyActiveUserCount());
+        stats.put("monthlyActive", userService.getMonthlyActiveUserCount());
+        return R.ok(stats);
     }
 }

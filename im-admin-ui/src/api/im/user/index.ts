@@ -61,3 +61,34 @@ export const findUserByName = (name?: String): AxiosPromise<UserVO[]> => {
   });
 };
 
+/**
+ * 按天统计用户注册数量
+ * @param days 统计天数
+ */
+export const getDailyRegistrationCount = (days?: number): AxiosPromise<any[]> => {
+  return request({
+    url: '/im/user/dailyRegistrationCount',
+    method: 'get',
+    params: { days }
+  });
+};
+
+/**
+ * 获取总用户数量
+ */
+export const getTotalUserCount = (): AxiosPromise<number> => {
+  return request({
+    url: '/im/user/totalCount',
+    method: 'get'
+  });
+};
+
+/**
+ * 获取活跃用户统计（日活、周活、月活）
+ */
+export const getActiveUserStats = (): AxiosPromise<any> => {
+  return request({
+    url: '/im/user/activeStats',
+    method: 'get'
+  });
+};

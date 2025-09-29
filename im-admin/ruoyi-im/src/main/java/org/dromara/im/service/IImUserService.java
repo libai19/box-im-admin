@@ -8,6 +8,7 @@ import org.dromara.im.domain.dto.ImUserUnbanDto;
 import org.dromara.im.domain.vo.ImUserVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户Service接口
@@ -69,5 +70,37 @@ public interface IImUserService {
      * @param ids 用户id
      */
     List<ImUserVo> findByIds(List<Long> ids);
+
+    /**
+     * 按天统计用户注册数量
+     *
+     * @param days 统计天数
+     * @return 统计结果
+     */
+    List<Map<String, Object>> getDailyRegistrationCount(Integer days);
+
+    /**
+     * 获取总用户数量
+     * @return 总用户数量
+     */
+    Long getTotalUserCount();
+
+    /**
+     * 获取日活跃用户数量（最近1天）
+     * @return 日活跃用户数量
+     */
+    Long getDailyActiveUserCount();
+
+    /**
+     * 获取周活跃用户数量（最近7天）
+     * @return 周活跃用户数量
+     */
+    Long getWeeklyActiveUserCount();
+
+    /**
+     * 获取月活跃用户数量（最近30天）
+     * @return 月活跃用户数量
+     */
+    Long getMonthlyActiveUserCount();
 
 }

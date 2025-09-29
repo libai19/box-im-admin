@@ -61,3 +61,14 @@ export const findGroupByName = (name?: String): AxiosPromise<GroupVO[]> => {
   });
 };
 
+
+/**
+ * 获取总群组数量
+ */
+export const getTotalGroupCount = (): AxiosPromise<number> => {
+  return request({
+    url: '/im/group/totalCount',
+    method: 'get'
+  });
+};
+

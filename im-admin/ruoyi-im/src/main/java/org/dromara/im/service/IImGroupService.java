@@ -65,6 +65,11 @@ public interface IImGroupService {
     List<ImGroupVo> findByName(String name);
 
 
+    /**
+     * 获取总群组数量
+     * @return 总群组数量
+     */
+    Long getTotalGroupCount();
 
 
 }

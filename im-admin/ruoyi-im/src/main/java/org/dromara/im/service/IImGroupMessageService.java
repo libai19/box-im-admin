@@ -5,6 +5,9 @@ import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.domain.bo.ImGroupMessageBo;
 import org.dromara.im.domain.vo.ImGroupMessageVo;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 群消息Service接口
  *
@@ -30,6 +33,12 @@ public interface IImGroupMessageService {
      */
     TableDataInfo<ImGroupMessageVo> queryPageList(ImGroupMessageBo bo, PageQuery pageQuery);
 
-
+    /**
+     * 按天统计群聊消息数量
+     *
+     * @param days 统计天数
+     * @return 按天统计数据
+     */
+    List<Map<String, Object>> getDailyGroupMessageCount(Integer days);
 
 }
