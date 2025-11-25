@@ -49,7 +49,7 @@ import { getCodeImg, getTenantList } from '@/api/login';
 import { useUserStore } from '@/store/modules/user';
 import { LoginData, TenantVO } from '@/api/types';
 import { to } from 'await-to-js';
-import logo from '@/assets/logo/logo.png';
+
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -73,9 +73,9 @@ const loginRules: ElFormRules = {
 const codeUrl = ref('');
 const loading = ref(false);
 // 验证码开关
-const captchaEnabled = ref(true);
+const captchaEnabled = ref(false);
 // 租户开关
-const tenantEnabled = ref(true);
+const tenantEnabled = ref(false);
 
 // 注册开关
 const register = ref(false);

@@ -162,7 +162,7 @@ public class ImUserServiceImpl implements IImUserService {
     @Override
     public Long getDailyActiveUserCount() {
         LambdaQueryWrapper<ImUser> wrapper = Wrappers.lambdaQuery();
-        wrapper.ge(ImUser::getLastLoginTime, DateUtils.addMonths(new Date(), -1));
+        wrapper.ge(ImUser::getLastLoginTime, DateUtils.addDays(new Date(), -1));
         return baseMapper.selectCount(wrapper);
     }
 
@@ -174,19 +174,19 @@ public class ImUserServiceImpl implements IImUserService {
     @Override
     public Long getWeeklyActiveUserCount() {
         LambdaQueryWrapper<ImUser> wrapper = Wrappers.lambdaQuery();
-        wrapper.ge(ImUser::getLastLoginTime, DateUtils.addMonths(new Date(), -7));
+        wrapper.ge(ImUser::getLastLoginTime, DateUtils.addDays(new Date(), -7));
         return baseMapper.selectCount(wrapper);
     }
 
     /**
-     * 获取月活跃用户数量（最近30天）
+     * 获取月活跃用户数量（
      *
      * @return 月活跃用户数量
      */
     @Override
     public Long getMonthlyActiveUserCount() {
         LambdaQueryWrapper<ImUser> wrapper = Wrappers.lambdaQuery();
-        wrapper.ge(ImUser::getLastLoginTime, DateUtils.addMonths(new Date(), -30));
+        wrapper.ge(ImUser::getLastLoginTime, DateUtils.addDays(new Date(), -30));
         return baseMapper.selectCount(wrapper);
     }
 }
