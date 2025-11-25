@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.common.core.constant.HttpStatus;
-import org.dromara.common.core.exception.SseException;
 import org.dromara.common.core.utils.ServletUtils;
 import org.dromara.common.core.utils.SpringUtils;
 import org.dromara.common.core.utils.StringUtils;
@@ -57,11 +56,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         try {
                             StpUtil.checkLogin();
                         } catch (NotLoginException e) {
-                            if (request.getRequestURI().contains("sse")) {
-                                throw new SseException(e.getMessage(), e.getCode());
-                            } else {
-                                throw e;
-                            }
+                            throw e;
                         }
 
                         // 检查 header 与 param 里的 clientid 与 token 里的是否一致
@@ -70,8 +65,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         String clientId = StpUtil.getExtra(LoginHelper.CLIENT_KEY).toString();
                         if (!StringUtils.equalsAny(clientId, headerCid, paramCid)) {
                             // token 无效
-                            throw NotLoginException.newInstance(StpUtil.getLoginType(),
-                                "-100", "客户端ID与Token不匹配",
+                            throw NotLoginException.newInstance(StpUtil.getLoginType(), "-100", "客户端ID与Token不匹配",
                                 StpUtil.getTokenValue());
                         }
 
@@ -94,12 +88,9 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SaServletFilter getSaServletFilter() {
         String username = SpringUtils.getProperty("spring.boot.admin.client.username");
         String password = SpringUtils.getProperty("spring.boot.admin.client.password");
-        return new SaServletFilter()
-            .addInclude("/actuator", "/actuator/**")
-            .setAuth(obj -> {
-                SaHttpBasicUtil.check(username + ":" + password);
-            })
-            .setError(e -> SaResult.error(e.getMessage()).setCode(HttpStatus.UNAUTHORIZED));
+        return new SaServletFilter().addInclude("/actuator", "/actuator/**").setAuth(obj -> {
+            SaHttpBasicUtil.check(username + ":" + password);
+        }).setError(e -> SaResult.error(e.getMessage()).setCode(HttpStatus.UNAUTHORIZED));
     }
 
 }

@@ -23,10 +23,10 @@ import org.dromara.common.json.utils.JsonUtils;
 import org.dromara.common.satoken.utils.LoginHelper;
 import org.dromara.common.social.config.properties.SocialLoginConfigProperties;
 import org.dromara.common.social.config.properties.SocialProperties;
-import org.dromara.common.social.utils.SocialUtils;
-import org.dromara.common.sse.dto.SseMessageDto;
-import org.dromara.common.sse.utils.SseMessageUtils;
+import org.dromara.common.social.utils.SocialUtils;;
 import org.dromara.common.tenant.helper.TenantHelper;
+import org.dromara.common.websocket.dto.WebSocketMessageDto;
+import org.dromara.common.websocket.utils.WebSocketUtils;
 import org.dromara.system.domain.bo.SysTenantBo;
 import org.dromara.system.domain.vo.SysClientVo;
 import org.dromara.system.domain.vo.SysTenantVo;
@@ -102,10 +102,10 @@ public class AuthController {
 
         Long userId = LoginHelper.getUserId();
         scheduledExecutorService.schedule(() -> {
-            SseMessageDto dto = new SseMessageDto();
+            WebSocketMessageDto dto = new WebSocketMessageDto();
             dto.setMessage("欢迎登录盒子IM后台管理系统");
-            dto.setUserIds(List.of(userId));
-            SseMessageUtils.publishMessage(dto);
+            dto.setSessionKeys(List.of(userId));
+            WebSocketUtils.publishMessage(dto);
         }, 5, TimeUnit.SECONDS);
         return R.ok(loginVo);
     }

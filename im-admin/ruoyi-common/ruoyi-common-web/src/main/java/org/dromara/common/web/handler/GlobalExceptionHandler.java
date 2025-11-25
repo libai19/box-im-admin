@@ -9,10 +9,8 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.common.core.domain.R;
 import org.dromara.common.core.exception.ServiceException;
-import org.dromara.common.core.exception.SseException;
 import org.dromara.common.core.exception.base.BaseException;
 import org.dromara.common.core.utils.StreamUtils;
-import org.dromara.common.json.utils.JsonUtils;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -54,17 +52,6 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage());
         Integer code = e.getCode();
         return ObjectUtil.isNotNull(code) ? R.fail(code, e.getMessage()) : R.fail(e.getMessage());
-    }
-
-    /**
-     * 认证失败
-     */
-    @ResponseStatus(org.springframework.http.HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(SseException.class)
-    public String handleNotLoginException(SseException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',认证失败'{}',无法访问系统资源", requestURI, e.getMessage());
-        return JsonUtils.toJsonString(R.fail(HttpStatus.HTTP_UNAUTHORIZED, "认证失败，无法访问系统资源"));
     }
 
     /**
