@@ -28,10 +28,10 @@ spring:
           password: M5V8N0d4Rwqpo2gF_
 
 minio:
-  endpoint: http://127.0.0.1:9001 #内网地址
-  domain: https://www.boxim.online/file  #外网访问地址
-  accessKey: admin
-  secretKey: 3fBSt6AkgFuD77D6
+  endpoint: http://127.0.0.1:9000 #内网地址
+  domain: http://your-server-ip:9000  #外网访问地址，部署时修改为实际IP或域名
+  accessKey: minioadmin
+  secretKey: minioadmin
   bucketName: box-im
   imagePath: image
   filePath: file
