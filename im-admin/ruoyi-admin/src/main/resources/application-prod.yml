@@ -32,7 +32,7 @@ minio:
   domain: http://your-server-ip:9000  #外网访问地址，部署时修改为实际IP或域名
   accessKey: minioadmin
   secretKey: minioadmin
-  bucketName: box-im
+  bucketName: zhixiao-im
   imagePath: image
   filePath: file
   videoPath: video

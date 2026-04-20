@@ -31,7 +31,7 @@ minio:
   domain: http://127.0.0.1:9000  #外网访问地址
   accessKey: minioadmin
   secretKey: minioadmin
-  bucketName: box-im
+  bucketName: zhixiao-im
   imagePath: image
   filePath: file
   videoPath: video
