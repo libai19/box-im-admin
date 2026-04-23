@@ -17,6 +17,7 @@ import org.dromara.common.web.core.BaseController;
 import org.dromara.im.domain.bo.ImGroupBo;
 import org.dromara.im.domain.bo.ImGroupMemberBo;
 import org.dromara.im.domain.dto.ImGroupBanDto;
+import org.dromara.im.domain.dto.ImGroupStatusDto;
 import org.dromara.im.domain.dto.ImGroupUnbanDto;
 import org.dromara.im.domain.vo.ImGroupMemberVo;
 import org.dromara.im.domain.vo.ImGroupVo;
@@ -88,6 +89,20 @@ public class ImGroupController extends BaseController {
     @SaCheckPermission("im:group:ban")
     public void unban(@RequestBody @Valid ImGroupUnbanDto dto) {
         groupService.unban(dto);
+    }
+
+    @Operation(summary = "设置解散状态")
+    @PutMapping("/dissolve")
+    @SaCheckPermission("im:group:status")
+    public R<Void> dissolve(@RequestBody @Valid ImGroupStatusDto dto) {
+        return toAjax(groupService.setDissolve(dto));
+    }
+
+    @Operation(summary = "设置全员禁言状态")
+    @PutMapping("/mute")
+    @SaCheckPermission("im:group:status")
+    public R<Void> mute(@RequestBody @Valid ImGroupStatusDto dto) {
+        return toAjax(groupService.setMuted(dto));
     }
 
     @GetMapping("/findByName")

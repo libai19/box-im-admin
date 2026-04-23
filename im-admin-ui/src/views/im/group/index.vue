@@ -45,7 +45,12 @@
         </el-table-column>
         <el-table-column label="是否解散" align="center" prop="dissolve">
           <template #default="scope">
-            <dict-tag :options="im_bool" :value="scope.row.dissolve" />
+            <el-switch v-model="scope.row.dissolve" v-hasPermi="['im:group:status']" @change="handleDissolveChange(scope.row)" />
+          </template>
+        </el-table-column>
+        <el-table-column label="是否开启禁言" align="center" prop="muted">
+          <template #default="scope">
+            <el-switch v-model="scope.row.muted" v-hasPermi="['im:group:status']" @change="handleMuteChange(scope.row)" />
           </template>
         </el-table-column>
         <el-table-column label="是否封禁" align="center" prop="isBanned">
@@ -88,6 +93,9 @@
         <el-form-item label="是否已解散" prop="dissolve">
           <dict-tag :options="im_bool" :value="form.dissolve" />
         </el-form-item>
+        <el-form-item label="是否开启禁言" prop="muted">
+          <dict-tag :options="im_bool" :value="form.muted" />
+        </el-form-item>
         <el-form-item label="是否被封禁" prop="isBanned">
           <dict-tag :options="im_bool" :value="form.isBanned" />
         </el-form-item>
@@ -112,7 +120,7 @@
 </template>
 
 <script setup name="Group" lang="ts">
-import { listGroup, getGroup, ban, unban } from '@/api/im/group';
+import { listGroup, getGroup, ban, unban, dissolveGroup, muteGroup } from '@/api/im/group';
 import { GroupVO, GroupQuery, GroupForm } from '@/api/im/group/types';
 import member from './member.vue';
 
@@ -148,6 +156,7 @@ const initFormData: GroupForm = {
   dissolve: undefined,
   createdTime: undefined,
   isBanned: undefined,
+  muted: undefined,
   reason: undefined
 }
 const data = reactive<PageData<GroupForm, GroupQuery>>({
@@ -163,6 +172,7 @@ const data = reactive<PageData<GroupForm, GroupQuery>>({
     dissolve: undefined,
     createdTime: undefined,
     isBanned: undefined,
+    muted: undefined,
     reason: undefined,
     params: {
     }
@@ -248,6 +258,28 @@ const handleUnban = (group: any) => {
       ElMessage.success(`群组'${group.name}'解封成功`);
     })
   })
+}
+
+const handleDissolveChange = async (group: GroupVO) => {
+  const text = group.dissolve ? '解散' : '恢复';
+  try {
+    await ElMessageBox.confirm(`确定${text}群组'${group.name}'？`, '提示', { confirmButtonText: '确定', cancelButtonText: '取消' });
+    await dissolveGroup({ id: group.id, dissolve: !!group.dissolve });
+    ElMessage.success(`${text}成功`);
+  } catch {
+    group.dissolve = group.dissolve ? 0 : 1;
+  }
+}
+
+const handleMuteChange = async (group: GroupVO) => {
+  const text = group.muted ? '开启禁言' : '关闭禁言';
+  try {
+    await ElMessageBox.confirm(`确定${text}群组'${group.name}'？`, '提示', { confirmButtonText: '确定', cancelButtonText: '取消' });
+    await muteGroup({ id: group.id, muted: !!group.muted });
+    ElMessage.success(`${text}成功`);
+  } catch {
+    group.muted = group.muted ? 0 : 1;
+  }
 }
 
 const handleShowMember = (id: number) => {

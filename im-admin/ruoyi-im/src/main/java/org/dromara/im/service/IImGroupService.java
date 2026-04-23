@@ -4,6 +4,7 @@ import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.domain.bo.ImGroupBo;
 import org.dromara.im.domain.dto.ImGroupBanDto;
+import org.dromara.im.domain.dto.ImGroupStatusDto;
 import org.dromara.im.domain.dto.ImGroupUnbanDto;
 import org.dromara.im.domain.vo.ImGroupVo;
 
@@ -56,6 +57,15 @@ public interface IImGroupService {
      */
     void unban(ImGroupUnbanDto dto);
 
+    /**
+     * 设置群解散状态
+     */
+    Boolean setDissolve(ImGroupStatusDto dto);
+
+    /**
+     * 设置群全员禁言状态
+     */
+    Boolean setMuted(ImGroupStatusDto dto);
 
     /**
      * 根据用户名查找

@@ -48,6 +48,11 @@ export interface GroupVO {
   isBanned: number;
 
   /**
+   * 是否开启全员禁言
+   */
+  muted: number;
+
+  /**
    * 被封禁原因
    */
   reason: string;
@@ -110,6 +115,11 @@ export interface GroupForm extends BaseEntity {
   isBanned?: number;
 
   /**
+   * 是否开启全员禁言
+   */
+  muted?: number;
+
+  /**
    * 被封禁原因
    */
   reason?: string;
@@ -159,6 +169,11 @@ export interface GroupQuery extends PageQuery {
   isBanned?: number;
 
   /**
+   * 是否开启全员禁言
+   */
+  muted?: number;
+
+  /**
    * 被封禁原因
    */
   reason?: string;
@@ -191,3 +206,8 @@ export interface GroupUnbanDTO {
   id?: string | number;
 }
 
+export interface GroupStatusDTO {
+  id?: string | number;
+  dissolve?: boolean;
+  muted?: boolean;
+}

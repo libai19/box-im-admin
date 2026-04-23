@@ -18,6 +18,7 @@ import org.dromara.im.constant.ImRedisKey;
 import org.dromara.im.domain.ImGroup;
 import org.dromara.im.domain.bo.ImGroupBo;
 import org.dromara.im.domain.dto.ImGroupBanDto;
+import org.dromara.im.domain.dto.ImGroupStatusDto;
 import org.dromara.im.domain.dto.ImGroupUnbanDto;
 import org.dromara.im.domain.vo.ImGroupVo;
 import org.dromara.im.mapper.ImGroupMapper;
@@ -116,6 +117,23 @@ public class ImGroupServiceImpl implements IImGroupService {
         redisMQTemplate.opsForList().rightPush(ImRedisKey.IM_QUEUE_GROUP_UNBAN, dto);
     }
 
+    @CacheEvict(key = "#dto.getId()")
+    @Override
+    public Boolean setDissolve(ImGroupStatusDto dto) {
+        LambdaUpdateWrapper<ImGroup> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(ImGroup::getId, dto.getId());
+        wrapper.set(ImGroup::getDissolve, dto.getDissolve());
+        return baseMapper.update(wrapper) > 0;
+    }
+
+    @CacheEvict(key = "#dto.getId()")
+    @Override
+    public Boolean setMuted(ImGroupStatusDto dto) {
+        LambdaUpdateWrapper<ImGroup> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(ImGroup::getId, dto.getId());
+        wrapper.set(ImGroup::getMuted, dto.getMuted());
+        return baseMapper.update(wrapper) > 0;
+    }
 
     @Override
     public List<ImGroupVo> findByName(String name) {
@@ -145,6 +163,7 @@ public class ImGroupServiceImpl implements IImGroupService {
         wrapper.eq(bo.getDissolve() != null, ImGroup::getDissolve, bo.getDissolve());
         wrapper.eq(bo.getCreatedTime() != null, ImGroup::getCreatedTime, bo.getCreatedTime());
         wrapper.eq(bo.getIsBanned() != null, ImGroup::getIsBanned, bo.getIsBanned());
+        wrapper.eq(bo.getMuted() != null, ImGroup::getMuted, bo.getMuted());
         wrapper.eq(StringUtils.isNotBlank(bo.getReason()), ImGroup::getReason, bo.getReason());
         wrapper.between(params.get("beginTime") != null && params.get("endTime") != null,
             ImGroup::getCreatedTime, params.get("beginTime"), params.get("endTime"));

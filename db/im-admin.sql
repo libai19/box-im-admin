@@ -361,6 +361,25 @@ insert into sys_menu values('7003', '敏感词删除', '7', '3',  '#', '', '', 1
 insert into sys_menu values('7004', '敏感词修改', '7', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:edit',         '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('7005', '敏感词导出', '7', '5',  '#', '', '', 1, 0, 'F', '0', '0', 'im:sensitiveWord:export',         '#', 103, 1, sysdate(), null, null, '');
 
+-- IM-系统消息
+insert into sys_menu values('62', '推送任务', '6', '3', 'pushTask', 'im/pushTask/index', '', 1, 0, 'C', '0', '0', 'im:pushTask:list', 'message', 103, 1, sysdate(), null, null, 'IM推送任务');
+insert into sys_menu values('6201', '推送任务查询', '62', '1', '#', '', '', 1, 0, 'F', '0', '0', 'im:pushTask:query', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6202', '推送任务删除', '62', '2', '#', '', '', 1, 0, 'F', '0', '0', 'im:pushTask:remove', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6203', '再次推送', '62', '3', '#', '', '', 1, 0, 'F', '0', '0', 'im:pushTask:resend', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('63', '系统消息', '6', '4', 'systemMessage', 'im/systemMessage/index', '', 1, 0, 'C', '0', '0', 'im:systemMessage:list', 'message', 103, 1, sysdate(), null, null, 'IM系统消息');
+insert into sys_menu values('6301', '系统消息查询', '63', '1', '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:query', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6302', '系统消息新增', '63', '2', '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:add', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6303', '系统消息修改', '63', '3', '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:edit', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6304', '系统消息删除', '63', '4', '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:remove', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6305', '系统消息推送', '63', '5', '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:push', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6306', '系统消息导出', '63', '6', '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:export', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('8', '用户投诉', '0', '4', 'im/complaint', 'im/complaint/index', '', 1, 0, 'C', '0', '0', 'im:complaint:list', 'documentation', 103, 1, sysdate(), null, null, 'IM用户投诉');
+insert into sys_menu values('8001', '投诉查询', '8', '1', '#', '', '', 1, 0, 'F', '0', '0', 'im:complaint:query', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('8002', '投诉处理', '8', '2', '#', '', '', 1, 0, 'F', '0', '0', 'im:complaint:handle', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('8003', '投诉删除', '8', '3', '#', '', '', 1, 0, 'F', '0', '0', 'im:complaint:remove', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('8004', '投诉导出', '8', '4', '#', '', '', 1, 0, 'F', '0', '0', 'im:complaint:export', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('5005', '群聊状态', '5', '5', '#', '', '', 1, 0, 'F', '0', '0', 'im:group:status', '#', 103, 1, sysdate(), null, null, '');
+
 
 
 -- ----------------------------
@@ -698,6 +717,5 @@ create table sys_client (
 
 insert into sys_client values (1, 'e5cd7e4891bf95d1d19206ce24a7b32e', 'pc', 'pc123', 'password,social', 'pc', 1800, 604800, 0, 0, 103, 1, sysdate(), 1, sysdate());
 insert into sys_client values (2, '428a8310cd442757ae699df5d894f051', 'app', 'app123', 'password,sms,social', 'android', 1800, 604800, 0, 0, 103, 1, sysdate(), 1, sysdate());
-
 
 

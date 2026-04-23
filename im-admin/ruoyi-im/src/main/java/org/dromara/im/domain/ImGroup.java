@@ -66,6 +66,11 @@ public class ImGroup implements TransPojo {
     private Boolean isBanned;
 
     /**
+     * 是否开启全员禁言
+     */
+    private Boolean muted;
+
+    /**
      * 被封禁原因
      */
     private String reason;

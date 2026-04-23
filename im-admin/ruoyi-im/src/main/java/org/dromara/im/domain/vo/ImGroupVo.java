@@ -84,6 +84,13 @@ public class ImGroupVo implements TransPojo {
     private Boolean isBanned;
 
     /**
+     * 是否开启全员禁言
+     */
+    @ExcelProperty(value = "是否开启禁言", converter = ExcelDictConvert.class)
+    @ExcelDictFormat(readConverterExp = "false=否,true=是")
+    private Boolean muted;
+
+    /**
      * 被封禁原因
      */
     @ExcelProperty(value = "被封禁原因")

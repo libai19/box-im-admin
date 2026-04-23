@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
-import { GroupVO, GroupBanDTO, GroupUnbanDTO, GroupQuery } from '@/api/im/group/types';
+import { GroupVO, GroupBanDTO, GroupUnbanDTO, GroupQuery, GroupStatusDTO } from '@/api/im/group/types';
 
 /**
  * 查询群列表
@@ -52,6 +52,22 @@ export const unban = (data: GroupUnbanDTO) => {
   });
 };
 
+export const dissolveGroup = (data: GroupStatusDTO) => {
+  return request({
+    url: '/im/group/dissolve',
+    method: 'put',
+    data
+  });
+};
+
+export const muteGroup = (data: GroupStatusDTO) => {
+  return request({
+    url: '/im/group/mute',
+    method: 'put',
+    data
+  });
+};
+
 
 
 export const findGroupByName = (name?: String): AxiosPromise<GroupVO[]> => {
@@ -71,4 +87,3 @@ export const getTotalGroupCount = (): AxiosPromise<number> => {
     method: 'get'
   });
 };
-
