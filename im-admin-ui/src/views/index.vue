@@ -2,7 +2,7 @@
   <div class="app-container home">
     <!-- 统计指标卡片 -->
     <el-row :gutter="20" style="margin-bottom: 20px">
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="8" :lg="4" :xl="4">
         <el-card class="statistics-card">
           <div class="statistics-item">
             <div class="statistics-icon" style="background-color: #409EFF;">
@@ -17,7 +17,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="8" :lg="4" :xl="4">
         <el-card class="statistics-card">
           <div class="statistics-item">
             <div class="statistics-icon" style="background-color: #67C23A;">
@@ -32,7 +32,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="8" :lg="4" :xl="4">
         <el-card class="statistics-card">
           <div class="statistics-item">
             <div class="statistics-icon" style="background-color: #E6A23C;">
@@ -47,7 +47,22 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :sm="12" :md="8" :lg="4" :xl="4">
+        <el-card class="statistics-card">
+          <div class="statistics-item">
+            <div class="statistics-icon" style="background-color: #8e44ad;">
+              <el-icon size="24">
+                <Calendar />
+              </el-icon>
+            </div>
+            <div class="statistics-content">
+              <div class="statistics-title">周活用户</div>
+              <div class="statistics-value">{{ weeklyActiveCount }}</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="8" :lg="4" :xl="4">
         <el-card class="statistics-card">
           <div class="statistics-item">
             <div class="statistics-icon" style="background-color: #909399;">
