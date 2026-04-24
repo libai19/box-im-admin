@@ -43,7 +43,7 @@
         </el-table-column>
         <el-table-column label="是否被封禁" align="center" prop="isBanned">
           <template #default="scope">
-            <el-tag :type="scope.row.isBanned ? 'danger' : 'primary'">
+            <el-tag :class="['ban-status-tag', scope.row.isBanned ? 'is-banned' : 'is-normal']">
               {{ scope.row.isBanned ? '是' : '否' }}
             </el-tag>
           </template>
@@ -103,7 +103,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="是否被封禁" prop="isBanned">
-          <el-tag :type="form.isBanned ? 'danger' : 'primary'">
+          <el-tag :class="['ban-status-tag', form.isBanned ? 'is-banned' : 'is-normal']">
             {{ form.isBanned ? '是' : '否' }}
           </el-tag>
         </el-form-item>
@@ -297,3 +297,17 @@ onMounted(() => {
   getList();
 });
 </script>
+
+<style scoped>
+.ban-status-tag.is-banned {
+  color: #f56c6c;
+  background-color: #fef0f0;
+  border-color: #fde2e2;
+}
+
+.ban-status-tag.is-normal {
+  color: #409eff;
+  background-color: #ecf5ff;
+  border-color: #d9ecff;
+}
+</style>
