@@ -43,7 +43,9 @@
         </el-table-column>
         <el-table-column label="是否被封禁" align="center" prop="isBanned">
           <template #default="scope">
-            <dict-tag :options="im_bool" :value="scope.row.isBanned" />
+            <el-tag :type="scope.row.isBanned ? 'danger' : 'primary'">
+              {{ scope.row.isBanned ? '是' : '否' }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="注册时间" align="center" prop="createdTime" width="180">
@@ -101,7 +103,9 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="是否被封禁" prop="isBanned">
-          <dict-tag :options="im_bool" :value="form.isBanned" />
+          <el-tag :type="form.isBanned ? 'danger' : 'primary'">
+            {{ form.isBanned ? '是' : '否' }}
+          </el-tag>
         </el-form-item>
         <el-form-item v-if="form.isBanned" label="被封禁原因" prop="reason">
           <el-input v-model="form.reason"/>
