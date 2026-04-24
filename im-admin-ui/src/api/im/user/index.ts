@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
-import { UserVO, UserBanDTO, UserUnbanDTO, UserQuery } from '@/api/im/user/types';
+import { UserVO, UserBanDTO, UserBatchBanDTO, UserUnbanDTO, UserQuery } from '@/api/im/user/types';
 
 /**
  * 查询用户列表
@@ -40,6 +40,18 @@ export const ban = (data: UserBanDTO) => {
   });
 };
 
+/**
+ * 批量封禁用户
+ * @param data
+ */
+export const batchBan = (data: UserBatchBanDTO) => {
+  return request({
+    url: '/im/user/ban/batch',
+    method: 'put',
+    data: data
+  });
+};
+
 
 /**
  * 解封用户
@@ -50,6 +62,17 @@ export const unban = (data: UserUnbanDTO) => {
     url: '/im/user/unban',
     method: 'put',
     data: data
+  });
+};
+
+/**
+ * 删除用户
+ * @param ids
+ */
+export const delUser = (ids: string | number | Array<string | number>) => {
+  return request({
+    url: '/im/user/' + ids,
+    method: 'delete'
   });
 };
 

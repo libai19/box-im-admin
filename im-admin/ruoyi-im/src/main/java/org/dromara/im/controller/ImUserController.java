@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.core.domain.R;
@@ -14,6 +15,7 @@ import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.common.web.core.BaseController;
 import org.dromara.im.domain.bo.ImUserBo;
+import org.dromara.im.domain.dto.ImUserBatchBanDto;
 import org.dromara.im.domain.dto.ImUserBanDto;
 import org.dromara.im.domain.dto.ImUserUnbanDto;
 import org.dromara.im.domain.vo.ImUserVo;
@@ -79,12 +81,27 @@ public class ImUserController extends BaseController {
         userService.ban(dto);
     }
 
+    @Operation(summary = "批量账号封禁")
+    @PutMapping("/ban/batch")
+    @SaCheckPermission("im:user:ban")
+    public void batchBan(@RequestBody @Valid ImUserBatchBanDto dto){
+        userService.batchBan(dto);
+    }
+
 
     @Operation(summary = "账号解封")
     @PutMapping("/unban")
     @SaCheckPermission("im:user:ban")
     public void unban(@RequestBody @Valid ImUserUnbanDto dto){
         userService.unban(dto);
+    }
+
+    @Operation(summary = "删除用户")
+    @Log(title = "用户", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{ids}")
+    @SaCheckPermission("im:user:remove")
+    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+        return toAjax(userService.deleteWithValidByIds(List.of(ids), true));
     }
 
     @GetMapping("/findByName")

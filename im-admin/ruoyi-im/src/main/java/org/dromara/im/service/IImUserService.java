@@ -3,6 +3,7 @@ package org.dromara.im.service;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.im.domain.bo.ImUserBo;
+import org.dromara.im.domain.dto.ImUserBatchBanDto;
 import org.dromara.im.domain.dto.ImUserBanDto;
 import org.dromara.im.domain.dto.ImUserUnbanDto;
 import org.dromara.im.domain.vo.ImUserVo;
@@ -51,11 +52,26 @@ public interface IImUserService {
     void ban(ImUserBanDto dto);
 
     /**
+     * 批量封禁用户
+     *
+     * @param dto dto
+     */
+    void batchBan(ImUserBatchBanDto dto);
+
+    /**
      *  解封用户
      *
      * @param dto dto
      */
     void unban(ImUserUnbanDto dto);
+
+    /**
+     * 批量删除用户
+     *
+     * @param ids 用户id
+     * @param isValid 是否校验
+     */
+    Boolean deleteWithValidByIds(List<Long> ids, Boolean isValid);
 
     /**
      * 根据用户名查找

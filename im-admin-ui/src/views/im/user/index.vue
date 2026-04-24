@@ -14,6 +14,10 @@
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+              <el-button type="danger" plain icon="Lock" :disabled="multiple" @click="handleBatchBan"
+                v-hasPermi="['im:user:ban']">选中批量封禁</el-button>
+              <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
+                v-hasPermi="['im:user:remove']">选中批量删除</el-button>
               <el-button type="warning" plain icon="Download" @click="handleExport"
                 v-hasPermi="['im:user:export']">导出</el-button>
             </el-form-item>
@@ -24,6 +28,7 @@
 
     <el-card shadow="never">
       <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="用户名" align="center" prop="userName" />
         <el-table-column label="用户昵称" align="center" prop="nickName" />
         <el-table-column label="用户头像" align="center" prop="headImageThumb" width="100">
@@ -48,7 +53,7 @@
         </el-table-column>
         <el-table-column label="最后登录时间" align="center" prop="lastLoginTime" width="180">
           <template #default="scope">
-            <span>{{ parseTime(scope.row.lastLoginTime, '{y}-{m}-{d}') }}</span>
+            <span>{{ scope.row.lastLoginTime ? parseTime(scope.row.lastLoginTime, '{y}-{m}-{d} {h}:{i}:{s}') : '-' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -59,6 +64,8 @@
               @click="unbanHandle(scope.row)">解封</el-button>
             <el-button v-else link type="danger" v-hasPermi="['im:user:ban']"
               @click="banHandle(scope.row)">封禁</el-button>
+            <el-button link type="danger" v-hasPermi="['im:user:remove']"
+              @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -110,7 +117,7 @@
 </template>
 
 <script setup name="User" lang="ts">
-import { listUser, getUser, ban, unban } from '@/api/im/user';
+import { listUser, getUser, ban, batchBan, unban, delUser } from '@/api/im/user';
 import { UserVO, UserQuery, UserForm } from '@/api/im/user/types';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
@@ -230,6 +237,20 @@ const banHandle = (user: any) => {
   })
 }
 
+const handleBatchBan = () => {
+  ElMessageBox.prompt('封禁原因:', '确定对选中的用户进行批量封禁？', {
+    inputPattern: /\S/,
+    inputErrorMessage: '请输入封禁原因',
+    confirmButtonText: '确定',
+    cancelButtonText: '取消'
+  }).then(({ value }) => {
+    batchBan({ ids: ids.value, reason: value }).then(() => {
+      ElMessage.success('批量封禁成功');
+      getList();
+    })
+  })
+}
+
 const unbanHandle = (user: any) => {
   ElMessageBox.confirm('确定解除该用户的封禁状态？？', '提示', {
     confirmButtonText: '确定',
@@ -241,6 +262,22 @@ const unbanHandle = (user: any) => {
       ElMessage.success(`用户'${user.userName}'解锁成功`);
     })
 
+  })
+}
+
+/** 删除按钮操作 */
+const handleDelete = (row?: UserVO) => {
+  const _ids = row?.id || ids.value;
+  const title = row?.userName ? `是否确认删除用户 "${row.userName}"？` : `是否确认删除选中的 ${ids.value.length} 个用户？`;
+  ElMessageBox.confirm(title, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    return delUser(_ids);
+  }).then(() => {
+    ElMessage.success('删除成功');
+    getList();
   })
 }
 

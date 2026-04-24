@@ -16,6 +16,7 @@ import org.dromara.im.constant.ImConstant;
 import org.dromara.im.constant.ImRedisKey;
 import org.dromara.im.domain.ImUser;
 import org.dromara.im.domain.bo.ImUserBo;
+import org.dromara.im.domain.dto.ImUserBatchBanDto;
 import org.dromara.im.domain.dto.ImUserBanDto;
 import org.dromara.im.domain.dto.ImUserUnbanDto;
 import org.dromara.im.domain.vo.ImUserVo;
@@ -92,12 +93,32 @@ public class ImUserServiceImpl implements IImUserService {
     }
 
     @Override
+    public void batchBan(ImUserBatchBanDto dto) {
+        LambdaUpdateWrapper<ImUser> wrapper = Wrappers.lambdaUpdate();
+        wrapper.in(ImUser::getId, dto.getIds());
+        wrapper.set(ImUser::getIsBanned, true);
+        wrapper.set(ImUser::getReason, dto.getReason());
+        baseMapper.update(wrapper);
+        dto.getIds().forEach(id -> {
+            ImUserBanDto banDto = new ImUserBanDto();
+            banDto.setId(id);
+            banDto.setReason(dto.getReason());
+            redisMQTemplate.opsForList().rightPush(ImRedisKey.IM_QUEUE_USER_BANNED, banDto);
+        });
+    }
+
+    @Override
     public void unban(ImUserUnbanDto dto) {
         LambdaUpdateWrapper<ImUser> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(ImUser::getId, dto.getId());
         wrapper.set(ImUser::getIsBanned, false);
         wrapper.set(ImUser::getReason, Strings.EMPTY);
         baseMapper.update(wrapper);
+    }
+
+    @Override
+    public Boolean deleteWithValidByIds(List<Long> ids, Boolean isValid) {
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     private LambdaQueryWrapper<ImUser> buildQueryWrapper(ImUserBo bo) {

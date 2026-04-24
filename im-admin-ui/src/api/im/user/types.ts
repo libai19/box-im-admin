@@ -173,6 +173,19 @@ export interface UserBanDTO {
   reason?: string;
 }
 
+export interface UserBatchBanDTO {
+
+  /**
+   * 用户id列表
+   */
+  ids?: Array<string | number>;
+
+  /**
+   * 被封禁原因
+   */
+  reason?: string;
+}
+
 
 export interface UserUnbanDTO {
 
@@ -181,5 +194,4 @@ export interface UserUnbanDTO {
    */
   id?: string | number;
 }
-
 

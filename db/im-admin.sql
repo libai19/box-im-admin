@@ -336,6 +336,7 @@ insert into sys_menu values('4', '用户管理', '0', '1', 'im/user',           
 insert into sys_menu values('4001', '用户查询', '4', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:user:query',        '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('4002', '用户封禁', '4', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:user:ban',          '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('4003', '用户导出', '4', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'im:user:export',         '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('4004', '用户删除', '4', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'im:user:remove',         '#', 103, 1, sysdate(), null, null, '');
 
 -- IM-群聊管理
 insert into sys_menu values('5', '群聊管理', '0', '2', 'im/group',          'im/group/index', '', 1, 0, 'C', '0', '0', 'im:group:list', 'peoples',     103, 1, sysdate(), null, null, 'IM群聊管理');
@@ -717,5 +718,4 @@ create table sys_client (
 
 insert into sys_client values (1, 'e5cd7e4891bf95d1d19206ce24a7b32e', 'pc', 'pc123', 'password,social', 'pc', 1800, 604800, 0, 0, 103, 1, sysdate(), 1, sysdate());
 insert into sys_client values (2, '428a8310cd442757ae699df5d894f051', 'app', 'app123', 'password,sms,social', 'android', 1800, 604800, 0, 0, 103, 1, sysdate(), 1, sysdate());
-
 
