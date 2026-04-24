@@ -187,6 +187,15 @@ public class SysLoginService {
         String errorKey = CacheConstants.PWD_ERR_CNT_KEY + username;
         String loginFail = Constants.LOGIN_FAIL;
 
+        if (ObjectUtil.defaultIfNull(maxRetryCount, 0) <= 0) {
+            if (supplier.get()) {
+                recordLogininfor(tenantId, username, loginFail, MessageUtils.message("user.password.not.match"));
+                throw new UserException("user.password.not.match");
+            }
+            RedisUtils.deleteObject(errorKey);
+            return;
+        }
+
         // 获取用户登录错误次数，默认为0 (可自定义限制策略 例如: key + username + ip)
         int errorNumber = ObjectUtil.defaultIfNull(RedisUtils.getCacheObject(errorKey), 0);
         // 锁定时间内登录 则踢出
