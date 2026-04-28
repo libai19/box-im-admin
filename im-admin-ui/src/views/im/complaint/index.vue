@@ -18,6 +18,12 @@
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
             </el-form-item>
+            <el-form-item label="投诉提示" class="notice-template-item">
+              <el-input v-model="noticeTemplate" maxlength="20" show-word-limit clearable style="width: 300px" />
+              <el-button v-hasPermi="['im:complaint:handle']" class="ml-2" type="primary" :loading="noticeSaving" @click="submitNoticeTemplate">
+                确认
+              </el-button>
+            </el-form-item>
           </el-form>
         </el-card>
       </div>
@@ -89,16 +95,18 @@
 </template>
 
 <script setup name="ImComplaint" lang="ts">
-import { getComplaint, handleComplaint, listComplaint } from '@/api/im/complaint';
+import { getComplaint, getComplaintNoticeTemplate, handleComplaint, listComplaint, updateComplaintNoticeTemplate } from '@/api/im/complaint';
 import { ComplaintHandleForm, ComplaintQuery, ComplaintVO } from '@/api/im/complaint/types';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const complaintList = ref<ComplaintVO[]>([]);
 const loading = ref(true);
 const buttonLoading = ref(false);
+const noticeSaving = ref(false);
 const showSearch = ref(true);
 const total = ref(0);
 const current = ref<ComplaintVO>();
+const noticeTemplate = ref('');
 const queryFormRef = ref<ElFormInstance>();
 const handleFormRef = ref<ElFormInstance>();
 const dialog = reactive({ visible: false, title: '', mode: 'detail' });
@@ -116,6 +124,27 @@ const getList = async () => {
   complaintList.value = res.rows;
   total.value = res.total;
   loading.value = false;
+};
+
+const getNoticeTemplate = async () => {
+  const { data } = await getComplaintNoticeTemplate();
+  noticeTemplate.value = data || '';
+};
+
+const submitNoticeTemplate = async () => {
+  const value = noticeTemplate.value.trim();
+  if (!value) {
+    proxy?.$modal.msgWarning('投诉提示不能为空');
+    return;
+  }
+  if (value.length > 20) {
+    proxy?.$modal.msgWarning('投诉提示不能超过20字');
+    return;
+  }
+  noticeSaving.value = true;
+  await updateComplaintNoticeTemplate(value).finally(() => (noticeSaving.value = false));
+  proxy?.$modal.msgSuccess('修改成功');
+  noticeTemplate.value = value;
 };
 
 const handleQuery = () => {
@@ -156,5 +185,14 @@ const submitHandle = () => {
   });
 };
 
-onMounted(getList);
+onMounted(() => {
+  getList();
+  getNoticeTemplate();
+});
 </script>
+
+<style scoped>
+.notice-template-item {
+  margin-left: 12px;
+}
+</style>

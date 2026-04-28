@@ -25,6 +25,21 @@ export const handleComplaint = (data: ComplaintHandleForm) => {
   });
 };
 
+export const getComplaintNoticeTemplate = () => {
+  return request({
+    url: '/im/complaint/notice-template',
+    method: 'get'
+  });
+};
+
+export const updateComplaintNoticeTemplate = (value: string) => {
+  return request({
+    url: '/im/complaint/notice-template',
+    method: 'put',
+    data: { value }
+  });
+};
+
 export const delComplaint = (id: string | number | Array<string | number>) => {
   return request({
     url: '/im/complaint/' + id,
