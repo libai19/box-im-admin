@@ -37,7 +37,7 @@ import java.util.Objects;
 public class ImComplaintController extends BaseController {
 
     private static final String COMPLAINT_NOTICE_TEMPLATE_KEY = "complaint.notice.template";
-    private static final String DEFAULT_COMPLAINT_NOTICE_TEMPLATE = "您被举报，请文明用词";
+    private static final String DEFAULT_COMPLAINT_NOTICE_TEMPLATE = "举报了您，请注意文明用词";
 
     private final IImComplaintService complaintService;
     private final ImAppConfigMapper appConfigMapper;
@@ -93,7 +93,10 @@ public class ImComplaintController extends BaseController {
         if (value == null || value.trim().isEmpty()) {
             return R.fail("投诉提示不能为空");
         }
-        value = value.trim();
+        value = normalizeNoticeTemplate(value);
+        if (value.isEmpty()) {
+            return R.fail("投诉提示不能为空");
+        }
         if (value.length() > 20) {
             return R.fail("投诉提示不能超过20字");
         }
@@ -115,6 +118,18 @@ public class ImComplaintController extends BaseController {
             appConfigMapper.updateById(config);
         }
         return R.ok();
+    }
+
+    private String normalizeNoticeTemplate(String value) {
+        String text = value.trim()
+            .replace("用户{complainantName}", "")
+            .replace("{complainantName}", "")
+            .replace("{complainantId}", "")
+            .trim();
+        if (text.startsWith("用户")) {
+            text = text.substring(2).trim();
+        }
+        return text;
     }
 
     @SaCheckPermission("im:complaint:remove")

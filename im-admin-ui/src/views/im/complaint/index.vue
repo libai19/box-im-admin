@@ -19,7 +19,7 @@
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
             </el-form-item>
             <el-form-item label="投诉提示" class="notice-template-item">
-              <el-input v-model="noticeTemplate" maxlength="20" show-word-limit clearable style="width: 300px" />
+              <el-input v-model="noticeTemplate" maxlength="20" show-word-limit clearable placeholder="只填写提示正文，系统自动加用户昵称" style="width: 300px" />
               <el-button v-hasPermi="['im:complaint:handle']" class="ml-2" type="primary" :loading="noticeSaving" @click="submitNoticeTemplate">
                 确认
               </el-button>
