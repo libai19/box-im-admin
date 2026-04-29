@@ -1,6 +1,7 @@
 package org.dromara.im.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import org.dromara.common.log.enums.BusinessType;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.common.web.core.BaseController;
+import org.dromara.im.constant.ImConstant;
 import org.dromara.im.domain.ImAppConfig;
 import org.dromara.im.domain.bo.ImComplaintBo;
 import org.dromara.im.domain.vo.ImComplaintVo;
@@ -35,7 +37,7 @@ import java.util.Objects;
 public class ImComplaintController extends BaseController {
 
     private static final String COMPLAINT_NOTICE_TEMPLATE_KEY = "complaint.notice.template";
-    private static final String DEFAULT_COMPLAINT_NOTICE_TEMPLATE = "用户{complainantName}举报了您，请注意文明用词";
+    private static final String DEFAULT_COMPLAINT_NOTICE_TEMPLATE = "您被举报，请文明用词";
 
     private final IImComplaintService complaintService;
     private final ImAppConfigMapper appConfigMapper;
@@ -69,6 +71,7 @@ public class ImComplaintController extends BaseController {
     }
 
     @SaCheckPermission("im:complaint:list")
+    @DS(ImConstant.DS_IM_PLATFORM)
     @GetMapping("/notice-template")
     public R<String> getNoticeTemplate() {
         ImAppConfig config = appConfigMapper.selectOne(Wrappers.<ImAppConfig>lambdaQuery()
@@ -81,6 +84,7 @@ public class ImComplaintController extends BaseController {
     }
 
     @SaCheckPermission("im:complaint:handle")
+    @DS(ImConstant.DS_IM_PLATFORM)
     @Log(title = "投诉提示", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping("/notice-template")
@@ -101,7 +105,7 @@ public class ImComplaintController extends BaseController {
             config = new ImAppConfig();
             config.setConfigKey(COMPLAINT_NOTICE_TEMPLATE_KEY);
             config.setConfigValue(value);
-            config.setRemark("用户被投诉后的实时提示词，支持 {complainantName} 和 {complainantId}");
+            config.setRemark("用户被投诉后的实时提示，最多20字");
             config.setCreatedTime(now);
             config.setUpdatedTime(now);
             appConfigMapper.insert(config);
