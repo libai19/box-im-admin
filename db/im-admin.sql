@@ -251,6 +251,7 @@ insert into sys_menu values('109',  '在线用户',     '2',   '1', 'online',   
 insert into sys_menu values('113',  '缓存监控',     '2',   '5', 'cache',            'monitor/cache/index',          '', 1, 0, 'C', '0', '0', 'monitor:cache:list',          'redis',         103, 1, sysdate(), null, null, '缓存监控菜单');
 insert into sys_menu values('115',  '代码生成',     '3',   '2', 'gen',              'tool/gen/index',               '', 1, 0, 'C', '0', '0', 'tool:gen:list',               'code',          103, 1, sysdate(), null, null, '代码生成菜单');
 insert into sys_menu values('123',  '客户端管理',   '1',   '11', 'client',           'system/client/index',          '', 1, 0, 'C', '0', '0', 'system:client:list',          'international', 103, 1, sysdate(), null, null, '客户端管理菜单');
+insert into sys_menu values('125',  'Windows客户端版本',   '1',   '13', 'windowsVersion',           'im/windowsVersion/index',          '', 1, 0, 'C', '0', '0', 'im:windowsVersion:view',          'international', 103, 1, sysdate(), null, null, 'Windows客户端版本配置');
 
 
 -- 三级菜单
@@ -330,6 +331,8 @@ insert into sys_menu values('1062', '客户端管理新增', '123', '2',  '#', '
 insert into sys_menu values('1063', '客户端管理修改', '123', '3',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:edit',         '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('1064', '客户端管理删除', '123', '4',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:remove',       '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('1065', '客户端管理导出', '123', '5',  '#', '', '', 1, 0, 'F', '0', '0', 'system:client:export',       '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('1066', 'Windows客户端版本查看', '125', '1',  '#', '', '', 1, 0, 'F', '0', '0', 'im:windowsVersion:view',        '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('1067', 'Windows客户端版本修改', '125', '2',  '#', '', '', 1, 0, 'F', '0', '0', 'im:windowsVersion:edit',        '#', 103, 1, sysdate(), null, null, '');
 
 -- IM-用户管理
 insert into sys_menu values('4', '用户管理', '0', '1', 'im/user',           'im/user/index', '', 1, 0, 'C', '0', '0', 'im:user:list', 'user',     103, 1, sysdate(), null, null, 'IM用户管理');
@@ -718,4 +721,3 @@ create table sys_client (
 
 insert into sys_client values (1, 'e5cd7e4891bf95d1d19206ce24a7b32e', 'pc', 'pc123', 'password,social', 'pc', 1800, 604800, 0, 0, 103, 1, sysdate(), 1, sysdate());
 insert into sys_client values (2, '428a8310cd442757ae699df5d894f051', 'app', 'app123', 'password,sms,social', 'android', 1800, 604800, 0, 0, 103, 1, sysdate(), 1, sysdate());
-
