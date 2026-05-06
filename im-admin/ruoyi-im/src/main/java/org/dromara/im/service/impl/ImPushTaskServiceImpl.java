@@ -9,35 +9,34 @@ import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.common.satoken.utils.LoginHelper;
-import org.dromara.common.websocket.utils.WebSocketUtils;
 import org.dromara.im.constant.ImConstant;
+import org.dromara.im.constant.ImRedisKey;
 import org.dromara.im.domain.ImPushTask;
 import org.dromara.im.domain.ImSystemMessage;
 import org.dromara.im.domain.bo.ImPushTaskBo;
+import org.dromara.im.domain.dto.ImSystemMessagePushDto;
 import org.dromara.im.domain.vo.ImPushTaskVo;
 import org.dromara.im.mapper.ImPushTaskMapper;
 import org.dromara.im.mapper.ImSystemMessageMapper;
+import org.dromara.im.mq.ImRedisMQTemplate;
 import org.dromara.im.service.IImPushTaskService;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Arrays;
 
 @DS(ImConstant.DS_IM_PLATFORM)
 @RequiredArgsConstructor
 @Service
 public class ImPushTaskServiceImpl implements IImPushTaskService {
 
-    private static final String IM_SYSTEM_QUEUE = "im:message:system";
-
     private final ImPushTaskMapper baseMapper;
     private final ImSystemMessageMapper systemMessageMapper;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final ImRedisMQTemplate redisMQTemplate;
 
     @Override
     public ImPushTaskVo queryById(Long id) {
@@ -106,14 +105,24 @@ public class ImPushTaskServiceImpl implements IImPushTaskService {
 
     private void send(ImPushTask task) {
         try {
-            Map<String, Object> payload = new HashMap<>();
-            payload.put("id", task.getMessageId());
-            payload.put("title", task.getTitle());
-            payload.put("content", task.getContent());
-            payload.put("targetType", task.getTargetType());
-            payload.put("targetIds", task.getTargetIds());
-            redisTemplate.opsForList().rightPush(IM_SYSTEM_QUEUE, payload);
-            WebSocketUtils.publishAll("[系统消息] " + task.getTitle());
+            ImSystemMessage message = systemMessageMapper.selectById(task.getMessageId());
+            if (message == null) {
+                throw new IllegalArgumentException("系统消息不存在");
+            }
+            validateTarget(message);
+            ImSystemMessagePushDto payload = new ImSystemMessagePushDto();
+            payload.setId(message.getId());
+            payload.setTitle(message.getTitle());
+            payload.setCover(message.getCover());
+            payload.setSummary(message.getSummary());
+            payload.setContentType(message.getContentType());
+            payload.setContent(message.getContent());
+            payload.setLinkUrl(message.getLinkUrl());
+            payload.setType(message.getType());
+            payload.setTargetType(message.getTargetType());
+            payload.setTargetIds(message.getTargetIds());
+            payload.setSendTime(new Date());
+            redisMQTemplate.opsForList().rightPush(ImRedisKey.IM_QUEUE_SYSTEM_MESSAGE, payload);
             task.setStatus(1);
             task.setFailReason(null);
         } catch (Exception e) {
@@ -121,5 +130,22 @@ public class ImPushTaskServiceImpl implements IImPushTaskService {
             task.setFailReason(e.getMessage());
         }
         task.setPushTime(new Date());
+    }
+
+    private void validateTarget(ImSystemMessage message) {
+        if (message.getTargetType() == null || message.getTargetType() == 0) {
+            return;
+        }
+        if (StringUtils.isBlank(message.getTargetIds())) {
+            throw new IllegalArgumentException("指定用户不能为空");
+        }
+        try {
+            Arrays.stream(message.getTargetIds().split(","))
+                .map(String::trim)
+                .filter(StringUtils::isNotBlank)
+                .forEach(Long::valueOf);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("指定用户格式不正确");
+        }
     }
 }

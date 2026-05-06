@@ -21,7 +21,9 @@ public class ImRedisKey {
      */
     public static final String IM_QUEUE_GROUP_UNBAN = "im:queue:group:unban";
 
-
-
+    /**
+     * 后台系统消息推送处理队列
+     */
+    public static final String IM_QUEUE_SYSTEM_MESSAGE = "im:queue:system:message";
 
 }
