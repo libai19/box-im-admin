@@ -3,7 +3,7 @@
     <template v-for="(item, index) in options">
       <template v-if="values.includes(item.value)">
         <span
-          v-if="(item.elTagType === 'default' || item.elTagType === '') && (item.elTagClass === '' || item.elTagClass == null)"
+          v-if="isPlainTag(item) && (item.elTagClass === '' || item.elTagClass == null)"
           :key="item.value"
           :index="index"
           :class="item.elTagClass"
@@ -78,6 +78,11 @@ const unmatchArray = computed(() => {
   // 没有value不显示
   return handleArray(itemUnmatchArray);
 });
+
+const isPlainTag = (item: DictDataOption) => {
+  const tagType = item.elTagType as string | undefined;
+  return tagType === 'default' || tagType === '';
+};
 
 const handleArray = (array: Array<string | number>) => {
   if (array.length === 0) return '';

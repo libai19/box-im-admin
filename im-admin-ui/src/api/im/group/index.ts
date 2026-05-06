@@ -70,10 +70,11 @@ export const muteGroup = (data: GroupStatusDTO) => {
 
 
 
-export const findGroupByName = (name?: String): AxiosPromise<GroupVO[]> => {
+export const findGroupByName = (name?: string): AxiosPromise<GroupVO[]> => {
   return request({
-    url: '/im/group/findByName?name='+name,
-    method: 'get'
+    url: '/im/group/findByName',
+    method: 'get',
+    params: { name }
   });
 };
 

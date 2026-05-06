@@ -1,4 +1,15 @@
-import type { Modeler, Modeling, Canvas, ElementRegistry, Moddle, BpmnFactory } from 'bpmn';
+type BpmnService = {
+  getRootElement?: () => { businessObject?: { get: (key: string) => string | undefined } };
+};
+
+type Modeler = {
+  get<T = BpmnService>(name: string): T;
+};
+type Modeling = BpmnService;
+type Canvas = BpmnService;
+type ElementRegistry = BpmnService;
+type Moddle = BpmnService;
+type BpmnFactory = BpmnService;
 
 type ModelerStore = {
   modeler: Modeler | undefined;

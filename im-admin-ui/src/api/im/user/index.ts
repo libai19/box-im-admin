@@ -77,10 +77,20 @@ export const delUser = (ids: string | number | Array<string | number>) => {
 };
 
 
-export const findUserByName = (name?: String): AxiosPromise<UserVO[]> => {
+export const findUserByName = (name?: string): AxiosPromise<UserVO[]> => {
   return request({
-    url: '/im/user/findByName?name=' + name,
-    method: 'get'
+    url: '/im/user/findByName',
+    method: 'get',
+    params: { name }
+  });
+};
+
+export const findUserByIds = (ids: string | number | Array<string | number>): AxiosPromise<UserVO[]> => {
+  const value = Array.isArray(ids) ? ids.join(',') : ids;
+  return request({
+    url: '/im/user/findByIds',
+    method: 'get',
+    params: { ids: value }
   });
 };
 

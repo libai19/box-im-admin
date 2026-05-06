@@ -11,6 +11,7 @@
 import { computed } from 'vue'
 import { ref } from 'vue'
 import { findGroupByName } from '@/api/im/group'
+import { GroupVO } from '@/api/im/group/types'
 
 const props = defineProps({
 	multiple: {
@@ -26,8 +27,8 @@ const props = defineProps({
 })
 
 const loading = ref(false)
-const options = ref()
-const model = defineModel<number | Array<Number> | string | Array<String>>()
+const options = ref<GroupVO[]>([])
+const model = defineModel<string | number | Array<string | number>>()
 const groupIds = computed({
 	get() {
         if(model.value != undefined){
@@ -35,18 +36,21 @@ const groupIds = computed({
         }else if(props.multiple){
             return []
         }
+        return undefined
 	},
 	set(value) {
 		model.value = value
 	}
 })
 
-const handleRemote = (name: String)=>{
+const handleRemote = (name: string)=>{
 	loading.value = true
     findGroupByName(name).then((res) => {
       loading.value = false;
       options.value = res.data;
-	}); 
+	}).catch(() => {
+      loading.value = false;
+    });
 }
 
 </script>

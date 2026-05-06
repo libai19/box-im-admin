@@ -93,7 +93,7 @@ watch(
 );
 
 const handleLogin = () => {
-  loginRef.value?.validate(async (valid: boolean, fields: any) => {
+  loginRef.value?.validate(async (valid: boolean) => {
     if (valid) {
       loading.value = true;
       // 勾选了需要记住密码设置在 localStorage 中设置记住用户名和密码
@@ -122,8 +122,6 @@ const handleLogin = () => {
           await getCode();
         }
       }
-    } else {
-      console.log('error submit!', fields);
     }
   });
 };

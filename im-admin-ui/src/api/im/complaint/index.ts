@@ -40,9 +40,9 @@ export const updateComplaintNoticeTemplate = (value: string) => {
   });
 };
 
-export const delComplaint = (id: string | number | Array<string | number>) => {
+export const delComplaint = (ids: string | number | Array<string | number>) => {
   return request({
-    url: '/im/complaint/' + id,
+    url: '/im/complaint/' + ids,
     method: 'delete'
   });
 };

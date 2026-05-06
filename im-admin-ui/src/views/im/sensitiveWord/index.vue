@@ -37,7 +37,7 @@
           <el-col :span="1.5">
             <el-button type="warning" plain icon="Download" @click="handleExport" v-hasPermi="['im:sensitiveWord:export']">导出</el-button>
           </el-col>
-          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+          <right-toolbar v-model:showSearch="showSearch" @query-table="getList"></right-toolbar>
         </el-row>
       </template>
 
@@ -64,8 +64,8 @@
     <!-- 添加或修改敏感词对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="800px" append-to-body>
       <el-form ref="sensitiveWordFormRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="内容">
-          <el-input v-model="form.content" :min-height="192"/>
+        <el-form-item label="内容" prop="content">
+          <el-input v-model="form.content" type="textarea" :rows="4" maxlength="200" show-word-limit />
         </el-form-item>
         <el-form-item label="是否启用" prop="enabled">
           <el-switch v-model="form.enabled"/>
@@ -222,8 +222,14 @@ const handleExport = () => {
 }
 
 
-const switchEnabled = (row: any) => {
-    enableSensitiveWord(row)
+const switchEnabled = async (row: SensitiveWordVO) => {
+  const nextValue = row.enabled;
+  try {
+    await enableSensitiveWord({ id: row.id, enabled: nextValue });
+    proxy?.$modal.msgSuccess(nextValue ? '已开启' : '已关闭');
+  } catch {
+    row.enabled = !nextValue;
+  }
 }
 
 onMounted(() => {

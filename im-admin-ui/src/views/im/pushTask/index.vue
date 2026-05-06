@@ -7,6 +7,13 @@
             <el-form-item label="推送消息" prop="title">
               <el-input v-model="queryParams.title" placeholder="请输入系统消息" clearable @keyup.enter="handleQuery" />
             </el-form-item>
+            <el-form-item label="推送状态" prop="status">
+              <el-select v-model="queryParams.status" placeholder="请选择" clearable style="width: 160px">
+                <el-option label="待发送" :value="0" />
+                <el-option label="已发送" :value="1" />
+                <el-option label="失败" :value="2" />
+              </el-select>
+            </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -59,7 +66,7 @@ const ids = ref<Array<string | number>>([]);
 const multiple = ref(true);
 const total = ref(0);
 const queryFormRef = ref<ElFormInstance>();
-const queryParams = ref<PushTaskQuery>({ pageNum: 1, pageSize: 10, title: '' });
+const queryParams = ref<PushTaskQuery>({ pageNum: 1, pageSize: 10, title: '', status: undefined });
 
 const statusLabel = (status?: number) => ({ 0: '待发送', 1: '已发送', 2: '失败' }[status || 0] || '待发送');
 const targetCount = (targetIds?: string) => (targetIds ? targetIds.split(',').filter(Boolean).length : 0);

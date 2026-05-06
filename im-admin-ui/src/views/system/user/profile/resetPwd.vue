@@ -19,6 +19,7 @@
 <script setup lang="ts">
 import { updateUserPwd } from '@/api/system/user';
 import type { ResetPwdForm } from '@/api/system/user/types';
+import type { FormRules } from 'element-plus';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const pwdRef = ref<ElFormInstance>();
@@ -35,7 +36,7 @@ const equalToPassword = (rule: any, value: string, callback: any) => {
     callback();
   }
 };
-const rules = ref({
+const rules = ref<FormRules<ResetPwdForm>>({
   oldPassword: [{ required: true, message: '旧密码不能为空', trigger: 'blur' }],
   newPassword: [
     { required: true, message: '新密码不能为空', trigger: 'blur' },

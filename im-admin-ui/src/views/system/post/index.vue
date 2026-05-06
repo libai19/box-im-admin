@@ -212,6 +212,8 @@ const data = reactive<PageData<PostForm, PostQuery>>({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
+    deptId: undefined,
+    belongDeptId: undefined,
     postCode: '',
     postName: '',
     postCategory: '',

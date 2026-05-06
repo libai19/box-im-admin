@@ -401,19 +401,20 @@ const getRoleDeptTreeSelect = async (roleId: string | number) => {
   return res.data;
 };
 /** 树权限（展开/折叠）*/
-const handleCheckedTreeExpand = (value: boolean, type: string) => {
+const handleCheckedTreeExpand = (value: CheckboxValueType, type: string) => {
+  const checked = value as boolean;
   if (type == 'menu') {
     let treeList = menuOptions.value;
     for (let i = 0; i < treeList.length; i++) {
       if (menuRef.value) {
-        menuRef.value.store.nodesMap[treeList[i].id].expanded = value;
+        menuRef.value.store.nodesMap[treeList[i].id].expanded = checked;
       }
     }
   } else if (type == 'dept') {
     let treeList = deptOptions.value;
     for (let i = 0; i < treeList.length; i++) {
       if (deptRef.value) {
-        deptRef.value.store.nodesMap[treeList[i].id].expanded = value;
+        deptRef.value.store.nodesMap[treeList[i].id].expanded = checked;
       }
     }
   }

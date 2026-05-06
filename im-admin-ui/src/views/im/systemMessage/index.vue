@@ -10,6 +10,7 @@
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+              <el-button v-hasPermi="['im:systemMessage:export']" type="warning" plain icon="Download" @click="handleExport">导出</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -67,8 +68,8 @@
             <el-radio :value="1">指定用户</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="form.targetType === 1" label="用户ID" prop="targetIds">
-          <el-input v-model="form.targetIds" placeholder="多个用户ID用英文逗号分隔" />
+        <el-form-item v-if="form.targetType === 1" label="指定用户" prop="targetIds">
+          <im-user-select v-model="selectedTargetIds" multiple placeholder="请选择接收用户" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -97,9 +98,13 @@ const dialog = reactive({ visible: false, title: '' });
 const queryParams = ref<SystemMessageQuery>({ pageNum: 1, pageSize: 10, title: '' });
 const initForm: SystemMessageForm = { title: '', cover: '', summary: '', contentType: 1, content: '', linkUrl: '', type: 1, targetType: 0, targetIds: '', status: 0 };
 const form = ref<SystemMessageForm>({ ...initForm });
+const selectedTargetIds = ref<Array<string | number>>([]);
 const rules = {
   title: [{ required: true, message: '标题不能为空', trigger: 'blur' }],
-  contentType: [{ required: true, message: '内容类型不能为空', trigger: 'change' }]
+  contentType: [{ required: true, message: '内容类型不能为空', trigger: 'change' }],
+  content: [{ required: true, message: '富文本内容不能为空', trigger: 'blur' }],
+  linkUrl: [{ required: true, message: '链接地址不能为空', trigger: 'blur' }],
+  targetIds: [{ required: true, message: '请选择接收用户', trigger: 'change' }]
 };
 
 const getList = async () => {
@@ -127,6 +132,7 @@ const handleSelectionChange = (selection: SystemMessageVO[]) => {
 
 const reset = () => {
   form.value = { ...initForm };
+  selectedTargetIds.value = [];
   messageFormRef.value?.resetFields();
 };
 
@@ -140,11 +146,13 @@ const handleUpdate = async (row: SystemMessageVO) => {
   reset();
   const { data } = await getSystemMessage(row.id);
   form.value = data;
+  selectedTargetIds.value = data.targetIds ? data.targetIds.split(',').filter(Boolean) : [];
   dialog.title = '修改系统消息';
   dialog.visible = true;
 };
 
 const submitForm = () => {
+  form.value.targetIds = form.value.targetType === 1 ? selectedTargetIds.value.join(',') : '';
   messageFormRef.value?.validate(async (valid: boolean) => {
     if (!valid) return;
     buttonLoading.value = true;
@@ -168,6 +176,16 @@ const handleDelete = async (row?: SystemMessageVO) => {
   await delSystemMessage(messageIds);
   proxy?.$modal.msgSuccess('删除成功');
   getList();
+};
+
+const handleExport = () => {
+  proxy?.download(
+    'im/systemMessage/export',
+    {
+      ...queryParams.value
+    },
+    `systemMessage_${new Date().getTime()}.xlsx`
+  );
 };
 
 onMounted(getList);

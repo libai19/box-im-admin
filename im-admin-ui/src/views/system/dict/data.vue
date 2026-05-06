@@ -131,7 +131,6 @@ import { optionselect as getDictOptionselect, getType } from '@/api/system/dict/
 import { listData, getData, delData, addData, updateData } from '@/api/system/dict/data';
 import { DictTypeVO } from '@/api/system/dict/type/types';
 import { DictDataForm, DictDataQuery, DictDataVO } from '@/api/system/dict/data/types';
-import { RouteLocationNormalized } from 'vue-router';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const route = useRoute();
@@ -229,18 +228,7 @@ const handleQuery = () => {
 };
 /** 返回按钮操作 */
 const handleClose = () => {
-  const obj: RouteLocationNormalized = {
-    fullPath: '',
-    hash: '',
-    matched: [],
-    meta: undefined,
-    name: undefined,
-    params: undefined,
-    query: undefined,
-    redirectedFrom: undefined,
-    path: '/system/dict'
-  };
-  proxy?.$tab.closeOpenPage(obj);
+  proxy?.$tab.closeOpenPage({ path: '/system/dict' });
 };
 /** 重置按钮操作 */
 const resetQuery = () => {

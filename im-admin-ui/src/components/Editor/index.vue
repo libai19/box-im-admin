@@ -12,7 +12,7 @@
 import '@wangeditor/editor/dist/css/style.css'
 import { onBeforeUnmount, shallowRef } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { IDomEditor, IEditorConfig } from '@wangieditor/editor'
+import { IDomEditor, IEditorConfig } from '@wangeditor/editor'
 import { globalHeaders } from '@/utils/request';
 import axios from 'axios';
 
@@ -51,15 +51,12 @@ const editorConfig: Partial<IEditorConfig> = {
 	MENU_CONF: {
 		uploadImage: {
 			async customUpload(file: File, insertFn: InsertFnType) {
-				// file 即选中的文件
-				console.log(file)
 				const fd = new FormData()
 				fd.append('file', file)
 				let url = import.meta.env.VITE_APP_BASE_API + '/system/image/upload';
 				let headers = globalHeaders();
 				headers['Content-Type'] = 'multipart/form-data';
 				let res = await axios.post(url, fd, { headers })
-				console.log(res);
 				insertFn(res.data.data.originUrl, file.name, '')
 			}
 		}

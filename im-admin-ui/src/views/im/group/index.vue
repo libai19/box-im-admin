@@ -229,7 +229,7 @@ const handleDetail = async (row?: GroupVO) => {
   const res = await getGroup(_id);
   Object.assign(form.value, res.data);
   dialog.visible = true;
-  dialog.title = "用户信息";
+  dialog.title = "群组信息";
 }
 
 const handleBan = (group: any) => {
@@ -261,24 +261,26 @@ const handleUnban = (group: any) => {
 }
 
 const handleDissolveChange = async (group: GroupVO) => {
+  const nextValue = !!group.dissolve;
   const text = group.dissolve ? '解散' : '恢复';
   try {
     await ElMessageBox.confirm(`确定${text}群组'${group.name}'？`, '提示', { confirmButtonText: '确定', cancelButtonText: '取消' });
-    await dissolveGroup({ id: group.id, dissolve: !!group.dissolve });
+    await dissolveGroup({ id: group.id, dissolve: nextValue });
     ElMessage.success(`${text}成功`);
   } catch {
-    group.dissolve = group.dissolve ? 0 : 1;
+    group.dissolve = nextValue ? 0 : 1;
   }
 }
 
 const handleMuteChange = async (group: GroupVO) => {
+  const nextValue = !!group.muted;
   const text = group.muted ? '开启禁言' : '关闭禁言';
   try {
     await ElMessageBox.confirm(`确定${text}群组'${group.name}'？`, '提示', { confirmButtonText: '确定', cancelButtonText: '取消' });
-    await muteGroup({ id: group.id, muted: !!group.muted });
+    await muteGroup({ id: group.id, muted: nextValue });
     ElMessage.success(`${text}成功`);
   } catch {
-    group.muted = group.muted ? 0 : 1;
+    group.muted = nextValue ? 0 : 1;
   }
 }
 

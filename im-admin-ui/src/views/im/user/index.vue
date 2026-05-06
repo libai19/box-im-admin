@@ -16,7 +16,7 @@
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
               <el-button type="danger" plain icon="Lock" :disabled="multiple" @click="handleBatchBan"
                 v-hasPermi="['im:user:ban']">选中批量封禁</el-button>
-              <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
+              <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()"
                 v-hasPermi="['im:user:remove']">选中批量删除</el-button>
               <el-button type="warning" plain icon="Download" @click="handleExport"
                 v-hasPermi="['im:user:export']">导出</el-button>
@@ -180,20 +180,17 @@ const getList = async () => {
   userList.value = res.rows;
   total.value = res.total;
   loading.value = false;
-  console.log("getList")
 }
 /** 搜索按钮操作 */
 const handleQuery = () => {
   queryParams.value.pageNum = 1;
   getList();
-  console.log("handleQuery")
 }
 
 /** 重置按钮操作 */
 const resetQuery = () => {
   queryFormRef.value?.resetFields();
   handleQuery();
-  console.log("handleQuery")
 }
 
 /** 多选框选中数据 */
@@ -201,14 +198,12 @@ const handleSelectionChange = (selection: UserVO[]) => {
   ids.value = selection.map(item => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
-  console.log("handleSelectionChange")
 }
 
 /** 表单重置 */
 const reset = () => {
   form.value = { ...initFormData };
   userFormRef.value?.resetFields();
-  console.log("reset")
 }
 
 /** 修改按钮操作 */

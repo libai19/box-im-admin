@@ -17,6 +17,7 @@
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+              <el-button v-hasPermi="['im:complaint:export']" type="warning" plain icon="Download" @click="handleExport">导出</el-button>
             </el-form-item>
             <el-form-item label="投诉提示" class="notice-template-item">
               <el-input v-model="noticeTemplate" maxlength="20" show-word-limit clearable placeholder="只填写提示正文，系统自动加用户昵称" style="width: 300px" />
@@ -32,10 +33,14 @@
     <el-card shadow="hover">
       <template #header>
         <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
+            <el-button v-hasPermi="['im:complaint:remove']" type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()">删除</el-button>
+          </el-col>
           <right-toolbar v-model:showSearch="showSearch" @query-table="getList"></right-toolbar>
         </el-row>
       </template>
-      <el-table v-loading="loading" :data="complaintList">
+      <el-table v-loading="loading" :data="complaintList" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="发起用户" align="center" prop="userName" min-width="120" />
         <el-table-column label="投诉对象" align="center" prop="targetName" min-width="140" />
         <el-table-column label="投诉对象类型" align="center" prop="targetType" width="120">
@@ -58,6 +63,7 @@
           <template #default="scope">
             <el-button v-hasPermi="['im:complaint:query']" link type="primary" @click="handleDetail(scope.row)">详情</el-button>
             <el-button v-hasPermi="['im:complaint:handle']" link type="primary" @click="handleProcess(scope.row)">处理</el-button>
+            <el-button v-hasPermi="['im:complaint:remove']" link type="danger" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -73,6 +79,11 @@
         <el-descriptions-item label="投诉时间">{{ parseTime(current?.createdTime) }}</el-descriptions-item>
         <el-descriptions-item label="处理状态">{{ statusLabel(current?.status) }}</el-descriptions-item>
         <el-descriptions-item label="投诉内容" :span="2">{{ current?.content }}</el-descriptions-item>
+        <el-descriptions-item v-if="complaintImages.length" label="图片证据" :span="2">
+          <div class="complaint-images">
+            <image-preview v-for="image in complaintImages" :key="image" :src="image" :width="72" :height="72" />
+          </div>
+        </el-descriptions-item>
         <el-descriptions-item v-if="current?.result" label="处理结果" :span="2">{{ current?.result }}</el-descriptions-item>
       </el-descriptions>
       <el-form v-if="dialog.mode === 'process'" ref="handleFormRef" :model="handleForm" :rules="rules" label-width="80px" class="mt-4">
@@ -95,7 +106,7 @@
 </template>
 
 <script setup name="ImComplaint" lang="ts">
-import { getComplaint, getComplaintNoticeTemplate, handleComplaint, listComplaint, updateComplaintNoticeTemplate } from '@/api/im/complaint';
+import { delComplaint, getComplaint, getComplaintNoticeTemplate, handleComplaint, listComplaint, updateComplaintNoticeTemplate } from '@/api/im/complaint';
 import { ComplaintHandleForm, ComplaintQuery, ComplaintVO } from '@/api/im/complaint/types';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
@@ -105,6 +116,8 @@ const buttonLoading = ref(false);
 const noticeSaving = ref(false);
 const showSearch = ref(true);
 const total = ref(0);
+const ids = ref<Array<string | number>>([]);
+const multiple = ref(true);
 const current = ref<ComplaintVO>();
 const noticeTemplate = ref('');
 const queryFormRef = ref<ElFormInstance>();
@@ -117,6 +130,7 @@ const rules = { result: [{ required: true, message: '处理结果不能为空', 
 
 const reasonLabel = (type?: number) => ({ 1: '垃圾信息', 2: '骚扰', 3: '诈骗', 4: '其他' }[type || 0] || '其他');
 const statusLabel = (status?: number) => ({ 0: '未处理', 1: '处理中', 2: '已处理' }[status || 0] || '未处理');
+const complaintImages = computed(() => (current.value?.images || '').split(',').map((item) => item.trim()).filter(Boolean));
 
 const getList = async () => {
   loading.value = true;
@@ -152,6 +166,11 @@ const handleQuery = () => {
   getList();
 };
 
+const handleSelectionChange = (selection: ComplaintVO[]) => {
+  ids.value = selection.map((item) => item.id);
+  multiple.value = !selection.length;
+};
+
 const resetQuery = () => {
   queryFormRef.value?.resetFields();
   handleQuery();
@@ -185,6 +204,24 @@ const submitHandle = () => {
   });
 };
 
+const handleDelete = async (row?: ComplaintVO) => {
+  const complaintIds = row?.id || ids.value;
+  await proxy?.$modal.confirm('是否确认删除投诉编号为 "' + complaintIds + '" 的数据项？');
+  await delComplaint(complaintIds);
+  proxy?.$modal.msgSuccess('删除成功');
+  getList();
+};
+
+const handleExport = () => {
+  proxy?.download(
+    'im/complaint/export',
+    {
+      ...queryParams.value
+    },
+    `complaint_${new Date().getTime()}.xlsx`
+  );
+};
+
 onMounted(() => {
   getList();
   getNoticeTemplate();
@@ -194,5 +231,11 @@ onMounted(() => {
 <style scoped>
 .notice-template-item {
   margin-left: 12px;
+}
+
+.complaint-images {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 </style>

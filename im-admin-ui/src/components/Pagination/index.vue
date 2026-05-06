@@ -29,7 +29,7 @@ const props = defineProps({
   page: propTypes.number.def(1),
   limit: propTypes.number.def(20),
   pageSizes: {
-    type: Array,
+    type: Array as PropType<number[]>,
     default: () => [10, 20, 30, 50]
   },
   // 移动端页码按钮的数量端默认值5

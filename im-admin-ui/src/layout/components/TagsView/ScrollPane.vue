@@ -11,7 +11,7 @@ import useTagsViewStore from '@/store/modules/tagsView';
 const tagAndTagSpacing = ref(4);
 
 const scrollContainerRef = ref<ElScrollbarInstance>();
-const scrollWrapper = computed(() => scrollContainerRef.value?.$refs.wrapRef);
+const scrollWrapper = computed<HTMLElement | undefined>(() => scrollContainerRef.value?.$refs.wrapRef as HTMLElement | undefined);
 
 onMounted(() => {
   scrollWrapper.value?.addEventListener('scroll', emitScroll, true);
@@ -23,6 +23,7 @@ onBeforeUnmount(() => {
 const handleScroll = (e: WheelEvent) => {
   const eventDelta = (e as any).wheelDelta || -e.deltaY * 40;
   const $scrollWrapper = scrollWrapper.value;
+  if (!$scrollWrapper) return;
   $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4;
 };
 const emits = defineEmits(['scroll']);
@@ -35,8 +36,9 @@ const visitedViews = computed(() => tagsViewStore.visitedViews);
 
 const moveToTarget = (currentTag: RouteLocationNormalized) => {
   const $container = scrollContainerRef.value?.$el;
-  const $containerWidth = $container.offsetWidth;
+  const $containerWidth = $container?.offsetWidth || 0;
   const $scrollWrapper = scrollWrapper.value;
+  if (!$container || !$scrollWrapper) return;
 
   let firstTag = null;
   let lastTag = null;
@@ -69,6 +71,8 @@ const moveToTarget = (currentTag: RouteLocationNormalized) => {
     }
 
     // the tag's offsetLeft after of nextTag
+    if (!prevTag || !nextTag) return;
+
     const afterNextTagOffsetLeft = nextTag.offsetLeft + nextTag.offsetWidth + tagAndTagSpacing.value;
 
     // the tag's offsetLeft before of prevTag
