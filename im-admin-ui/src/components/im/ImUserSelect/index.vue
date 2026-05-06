@@ -1,6 +1,6 @@
 <template>
     <el-select v-model="userIds" :multiple="multiple" filterable remote clearable
-        :placeholder="placeholder" :remote-method="handleRemote" :loading="loading">
+        :placeholder="placeholder" :remote-method="handleRemote" :loading="loading" @visible-change="handleVisibleChange">
         <el-option v-for="user in options" :key="user.id" :label="user.userName" :value="user.id" />
     </el-select>
 </template>
@@ -41,7 +41,7 @@ const userIds = computed({
 	}
 })
 
-const handleRemote = (name: string)=>{
+const handleRemote = (name = '')=>{
 	loading.value = true
     findUserByName(name).then((res) => {
       loading.value = false;
@@ -49,6 +49,12 @@ const handleRemote = (name: string)=>{
 	}).catch(() => {
       loading.value = false;
     });
+}
+
+const handleVisibleChange = (visible: boolean) => {
+  if (visible && options.value.length === 0) {
+    handleRemote('');
+  }
 }
 
 watch(

@@ -107,7 +107,7 @@ public class ImUserController extends BaseController {
     @GetMapping("/findByName")
     @Operation(summary = "根据用户名查找用户",description = "用于下拉框选择用户")
     @SaCheckPermission("im:user:list")
-    public R<List<ImUserVo>> findByName(@RequestParam String name){
+    public R<List<ImUserVo>> findByName(@RequestParam(required = false, defaultValue = "") String name){
         List<ImUserVo> vos = userService.findByName(name);
         return R.ok(vos);
     }

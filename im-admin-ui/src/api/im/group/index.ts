@@ -74,7 +74,7 @@ export const findGroupByName = (name?: string): AxiosPromise<GroupVO[]> => {
   return request({
     url: '/im/group/findByName',
     method: 'get',
-    params: { name }
+    params: { name: name ?? '' }
   });
 };
 

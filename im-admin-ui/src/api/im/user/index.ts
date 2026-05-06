@@ -81,7 +81,7 @@ export const findUserByName = (name?: string): AxiosPromise<UserVO[]> => {
   return request({
     url: '/im/user/findByName',
     method: 'get',
-    params: { name }
+    params: { name: name ?? '' }
   });
 };
 

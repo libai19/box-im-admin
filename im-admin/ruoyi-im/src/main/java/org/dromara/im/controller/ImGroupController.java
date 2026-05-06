@@ -108,7 +108,7 @@ public class ImGroupController extends BaseController {
     @GetMapping("/findByName")
     @Operation(summary = "根据名称查找群组",description = "用于下拉框选择群组")
     @SaCheckPermission("im:group:list")
-    public R<List<ImGroupVo>> findByName(@RequestParam String name){
+    public R<List<ImGroupVo>> findByName(@RequestParam(required = false, defaultValue = "") String name){
         List<ImGroupVo> vos = groupService.findByName(name);
         return R.ok(vos);
     }
