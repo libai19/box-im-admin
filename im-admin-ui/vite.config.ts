@@ -74,6 +74,37 @@ export default defineConfig(({ mode, command }: ConfigEnv): UserConfig => {
     },
     build: {
       chunkSizeWarningLimit: 2048,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes('node_modules')) {
+              return;
+            }
+            if (id.includes('element-plus') || id.includes('@element-plus')) {
+              return 'element-plus';
+            }
+            if (id.includes('@wangeditor')) {
+              return 'editor';
+            }
+            if (id.includes('echarts')) {
+              return 'echarts';
+            }
+            if (id.includes('vxe-table')) {
+              return 'vxe-table';
+            }
+            if (id.includes('bpmn-js') || id.includes('diagram-js') || id.includes('tiny-svg')) {
+              return 'bpmn';
+            }
+            if (id.includes('highlight.js') || id.includes('@highlightjs')) {
+              return 'highlight';
+            }
+            if (id.includes('vue') || id.includes('pinia') || id.includes('vue-router') || id.includes('vue-i18n')) {
+              return 'vue';
+            }
+            return 'vendor';
+          }
+        }
+      }
     }
   };
 });
