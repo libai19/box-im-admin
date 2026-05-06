@@ -26,6 +26,7 @@
     <el-card shadow="hover">
       <template #header>
         <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5"><el-button v-hasPermi="['im:pushTask:add']" type="primary" plain icon="Plus" @click="handleAdd">新增推送</el-button></el-col>
           <el-col :span="1.5"><el-button v-hasPermi="['im:pushTask:remove']" type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()">删除</el-button></el-col>
           <right-toolbar v-model:showSearch="showSearch" @query-table="getList"></right-toolbar>
         </el-row>
@@ -51,25 +52,72 @@
       </el-table>
       <pagination v-show="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="getList" />
     </el-card>
+
+    <el-dialog v-model="dialog.visible" title="新增推送任务" width="720px" append-to-body>
+      <el-form ref="taskFormRef" :model="form" :rules="rules" label-width="96px">
+        <el-form-item label="系统消息" prop="messageId">
+          <el-select v-model="form.messageId" filterable remote clearable placeholder="请输入标题搜索系统消息" :remote-method="loadMessageOptions" :loading="messageLoading" style="width: 100%">
+            <el-option v-for="item in messageOptions" :key="item.id" :label="item.title" :value="item.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="接收用户" prop="targetType">
+          <el-radio-group v-model="form.targetType">
+            <el-radio :value="0">全体用户</el-radio>
+            <el-radio :value="1">指定用户</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item v-if="form.targetType === 1" label="指定用户" prop="targetIds">
+          <im-user-select v-model="selectedTargetIds" multiple placeholder="请选择接收用户" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button :loading="buttonLoading" type="primary" @click="submitForm">立即推送</el-button>
+        <el-button @click="dialog.visible = false">取消</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup name="ImPushTask" lang="ts">
-import { delPushTask, listPushTask, resendPushTask } from '@/api/im/pushTask';
-import { PushTaskQuery, PushTaskVO } from '@/api/im/pushTask/types';
+import { addPushTask, delPushTask, listPushTask, resendPushTask } from '@/api/im/pushTask';
+import { PushTaskForm, PushTaskQuery, PushTaskVO } from '@/api/im/pushTask/types';
+import { listSystemMessage } from '@/api/im/systemMessage';
+import { SystemMessageVO } from '@/api/im/systemMessage/types';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const taskList = ref<PushTaskVO[]>([]);
 const loading = ref(true);
 const showSearch = ref(true);
+const buttonLoading = ref(false);
+const messageLoading = ref(false);
 const ids = ref<Array<string | number>>([]);
 const multiple = ref(true);
 const total = ref(0);
 const queryFormRef = ref<ElFormInstance>();
+const taskFormRef = ref<ElFormInstance>();
 const queryParams = ref<PushTaskQuery>({ pageNum: 1, pageSize: 10, title: '', status: undefined });
+const dialog = reactive({ visible: false });
+const form = ref<PushTaskForm>({ messageId: undefined, targetType: 0, targetIds: '' });
+const selectedTargetIds = ref<Array<string | number>>([]);
+const messageOptions = ref<SystemMessageVO[]>([]);
 
 const statusLabel = (status?: number) => ({ 0: '待发送', 1: '已发送', 2: '失败' }[status || 0] || '待发送');
 const targetCount = (targetIds?: string) => (targetIds ? targetIds.split(',').filter(Boolean).length : 0);
+const rules = {
+  messageId: [{ required: true, message: '请选择系统消息', trigger: 'change' }],
+  targetIds: [
+    {
+      validator: (_rule: any, _value: string, callback: (error?: Error) => void) => {
+        if (form.value.targetType === 1 && selectedTargetIds.value.length === 0) {
+          callback(new Error('请选择接收用户'));
+          return;
+        }
+        callback();
+      },
+      trigger: 'change'
+    }
+  ]
+};
 
 const getList = async () => {
   loading.value = true;
@@ -92,6 +140,36 @@ const resetQuery = () => {
 const handleSelectionChange = (selection: PushTaskVO[]) => {
   ids.value = selection.map((item) => item.id);
   multiple.value = !selection.length;
+};
+
+const loadMessageOptions = async (title?: string) => {
+  messageLoading.value = true;
+  try {
+    const res = await listSystemMessage({ pageNum: 1, pageSize: 20, title });
+    messageOptions.value = res.rows;
+  } finally {
+    messageLoading.value = false;
+  }
+};
+
+const handleAdd = () => {
+  form.value = { messageId: undefined, targetType: 0, targetIds: '' };
+  selectedTargetIds.value = [];
+  taskFormRef.value?.resetFields();
+  loadMessageOptions();
+  dialog.visible = true;
+};
+
+const submitForm = () => {
+  form.value.targetIds = form.value.targetType === 1 ? selectedTargetIds.value.join(',') : '';
+  taskFormRef.value?.validate(async (valid: boolean) => {
+    if (!valid) return;
+    buttonLoading.value = true;
+    await addPushTask(form.value).finally(() => (buttonLoading.value = false));
+    proxy?.$modal.msgSuccess('推送成功');
+    dialog.visible = false;
+    getList();
+  });
 };
 
 const handleResend = async (row: PushTaskVO) => {

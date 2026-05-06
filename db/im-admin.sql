@@ -370,6 +370,7 @@ insert into sys_menu values('62', '推送任务', '6', '3', 'pushTask', 'im/push
 insert into sys_menu values('6201', '推送任务查询', '62', '1', '#', '', '', 1, 0, 'F', '0', '0', 'im:pushTask:query', '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('6202', '推送任务删除', '62', '2', '#', '', '', 1, 0, 'F', '0', '0', 'im:pushTask:remove', '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('6203', '再次推送', '62', '3', '#', '', '', 1, 0, 'F', '0', '0', 'im:pushTask:resend', '#', 103, 1, sysdate(), null, null, '');
+insert into sys_menu values('6204', '新增推送', '62', '4', '#', '', '', 1, 0, 'F', '0', '0', 'im:pushTask:add', '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('63', '系统消息', '6', '4', 'systemMessage', 'im/systemMessage/index', '', 1, 0, 'C', '0', '0', 'im:systemMessage:list', 'message', 103, 1, sysdate(), null, null, 'IM系统消息');
 insert into sys_menu values('6301', '系统消息查询', '63', '1', '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:query', '#', 103, 1, sysdate(), null, null, '');
 insert into sys_menu values('6302', '系统消息新增', '63', '2', '#', '', '', 1, 0, 'F', '0', '0', 'im:systemMessage:add', '#', 103, 1, sysdate(), null, null, '');

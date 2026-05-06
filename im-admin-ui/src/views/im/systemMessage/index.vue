@@ -37,6 +37,9 @@
         <el-table-column label="状态" align="center" width="100">
           <template #default="scope"><el-tag :type="scope.row.status === 1 ? 'success' : 'info'">{{ scope.row.status === 1 ? '已推送' : '草稿' }}</el-tag></template>
         </el-table-column>
+        <el-table-column label="接收范围" align="center" min-width="120">
+          <template #default="scope">{{ targetLabel(scope.row.targetType, scope.row.targetIds) }}</template>
+        </el-table-column>
         <el-table-column label="创建者" align="center" prop="creatorName" width="120" />
         <el-table-column label="操作" align="center" fixed="right" width="180">
           <template #default="scope">
@@ -104,8 +107,22 @@ const rules = {
   contentType: [{ required: true, message: '内容类型不能为空', trigger: 'change' }],
   content: [{ required: true, message: '富文本内容不能为空', trigger: 'blur' }],
   linkUrl: [{ required: true, message: '链接地址不能为空', trigger: 'blur' }],
-  targetIds: [{ required: true, message: '请选择接收用户', trigger: 'change' }]
+  targetIds: [
+    {
+      validator: (_rule: any, _value: string, callback: (error?: Error) => void) => {
+        if (form.value.targetType === 1 && selectedTargetIds.value.length === 0) {
+          callback(new Error('请选择接收用户'));
+          return;
+        }
+        callback();
+      },
+      trigger: 'change'
+    }
+  ]
 };
+
+const targetCount = (targetIds?: string) => (targetIds ? targetIds.split(',').filter(Boolean).length : 0);
+const targetLabel = (targetType?: number, targetIds?: string) => (targetType === 1 ? `指定用户（${targetCount(targetIds)}人）` : '全体用户');
 
 const getList = async () => {
   loading.value = true;

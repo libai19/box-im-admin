@@ -55,6 +55,29 @@ public class ImPushTaskServiceImpl implements IImPushTaskService {
     }
 
     @Override
+    public Boolean insertByBo(ImPushTaskBo bo) {
+        ImSystemMessage message = systemMessageMapper.selectById(bo.getMessageId());
+        if (message == null) {
+            return false;
+        }
+        ImPushTask task = new ImPushTask();
+        task.setMessageId(message.getId());
+        task.setTitle(message.getTitle());
+        task.setContent(message.getContentType() != null && message.getContentType() == 2 ? message.getLinkUrl() : message.getContent());
+        task.setTargetType(bo.getTargetType() == null ? 0 : bo.getTargetType());
+        task.setTargetIds(task.getTargetType() == 1 ? bo.getTargetIds() : null);
+        task.setCreator(LoginHelper.getUserId());
+        task.setCreatedTime(new Date());
+        send(task);
+        systemMessageMapper.update(Wrappers.<ImSystemMessage>lambdaUpdate()
+            .eq(ImSystemMessage::getId, message.getId())
+            .set(ImSystemMessage::getStatus, 1)
+            .set(ImSystemMessage::getPushTime, task.getPushTime())
+            .set(ImSystemMessage::getUpdatedTime, new Date()));
+        return baseMapper.insert(task) > 0;
+    }
+
+    @Override
     public Boolean pushMessage(Long messageId) {
         ImSystemMessage message = systemMessageMapper.selectById(messageId);
         if (message == null) {
@@ -109,7 +132,7 @@ public class ImPushTaskServiceImpl implements IImPushTaskService {
             if (message == null) {
                 throw new IllegalArgumentException("系统消息不存在");
             }
-            validateTarget(message);
+            validateTarget(task.getTargetType(), task.getTargetIds());
             ImSystemMessagePushDto payload = new ImSystemMessagePushDto();
             payload.setId(message.getId());
             payload.setTitle(message.getTitle());
@@ -119,8 +142,8 @@ public class ImPushTaskServiceImpl implements IImPushTaskService {
             payload.setContent(message.getContent());
             payload.setLinkUrl(message.getLinkUrl());
             payload.setType(message.getType());
-            payload.setTargetType(message.getTargetType());
-            payload.setTargetIds(message.getTargetIds());
+            payload.setTargetType(task.getTargetType());
+            payload.setTargetIds(task.getTargetIds());
             payload.setSendTime(new Date());
             redisMQTemplate.opsForList().rightPush(ImRedisKey.IM_QUEUE_SYSTEM_MESSAGE, payload);
             task.setStatus(1);
@@ -132,15 +155,15 @@ public class ImPushTaskServiceImpl implements IImPushTaskService {
         task.setPushTime(new Date());
     }
 
-    private void validateTarget(ImSystemMessage message) {
-        if (message.getTargetType() == null || message.getTargetType() == 0) {
+    private void validateTarget(Integer targetType, String targetIds) {
+        if (targetType == null || targetType == 0) {
             return;
         }
-        if (StringUtils.isBlank(message.getTargetIds())) {
+        if (StringUtils.isBlank(targetIds)) {
             throw new IllegalArgumentException("指定用户不能为空");
         }
         try {
-            Arrays.stream(message.getTargetIds().split(","))
+            Arrays.stream(targetIds.split(","))
                 .map(String::trim)
                 .filter(StringUtils::isNotBlank)
                 .forEach(Long::valueOf);

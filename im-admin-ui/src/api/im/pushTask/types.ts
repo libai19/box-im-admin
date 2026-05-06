@@ -17,3 +17,10 @@ export interface PushTaskQuery extends PageQuery {
   status?: number;
   params?: any;
 }
+
+export interface PushTaskForm {
+  id?: string | number;
+  messageId?: string | number;
+  targetType?: number;
+  targetIds?: string;
+}

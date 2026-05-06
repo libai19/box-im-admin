@@ -16,6 +16,8 @@ public interface IImPushTaskService {
 
     List<ImPushTaskVo> queryList(ImPushTaskBo bo);
 
+    Boolean insertByBo(ImPushTaskBo bo);
+
     Boolean pushMessage(Long messageId);
 
     Boolean resend(Long id);

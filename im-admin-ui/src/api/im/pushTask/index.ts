@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
-import { PushTaskQuery, PushTaskVO } from './types';
+import { PushTaskForm, PushTaskQuery, PushTaskVO } from './types';
 
 export const listPushTask = (query?: PushTaskQuery): AxiosPromise<PushTaskVO[]> => {
   return request({
@@ -14,6 +14,14 @@ export const getPushTask = (id: string | number): AxiosPromise<PushTaskVO> => {
   return request({
     url: '/im/pushTask/' + id,
     method: 'get'
+  });
+};
+
+export const addPushTask = (data: PushTaskForm) => {
+  return request({
+    url: '/im/pushTask',
+    method: 'post',
+    data
   });
 };
 

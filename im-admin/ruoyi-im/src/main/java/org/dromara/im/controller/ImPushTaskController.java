@@ -38,6 +38,13 @@ public class ImPushTaskController extends BaseController {
         return R.ok(pushTaskService.queryById(id));
     }
 
+    @SaCheckPermission("im:pushTask:add")
+    @Log(title = "推送任务", businessType = BusinessType.INSERT)
+    @PostMapping
+    public R<Void> add(@Validated @RequestBody ImPushTaskBo bo) {
+        return toAjax(pushTaskService.insertByBo(bo));
+    }
+
     @SaCheckPermission("im:pushTask:resend")
     @Log(title = "推送任务", businessType = BusinessType.UPDATE)
     @PostMapping("/resend/{id}")
